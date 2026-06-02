@@ -8,6 +8,25 @@ document.querySelectorAll('.nav a').forEach(link => {
     });
 });
 
+// ======================== Transparent Nav (scroll to solid) ========================
+(function initHeaderScroll() {
+    const header = document.getElementById('header');
+    if (!header) return;
+
+    function updateHeader() {
+        // Switch after scrolling past ~80% of hero height (trigger before hero fully exits)
+        const scrollThreshold = window.innerHeight * 0.8;
+        if (window.scrollY > scrollThreshold) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    }
+
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    updateHeader(); // run once on load to set correct initial state
+})();
+
 // ======================== Scroll Animations (IntersectionObserver) ========================
 const fadeEls = document.querySelectorAll('.fade-in');
 const observer = new IntersectionObserver((entries) => {

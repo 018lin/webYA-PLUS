@@ -4,41 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>惠尔口腔 - 预防胜于一切的治疗</title>
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="icon" href="images/01_logo.png">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Common CSS -->
     <link rel="stylesheet" href="css/style.css">
     <style>
         /* ========== Homepage-specific Styles ========== */
-        .mission-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-size: 13px;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
-        .hero-quote {
-            font-size: 15px;
-            opacity: 0.9;
-            margin-top: 16px;
-            font-style: italic;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 16px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
         .philosophy-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -245,21 +217,6 @@
             .brushing-steps { grid-template-columns: repeat(2, 1fr); }
             .age-timeline { grid-template-columns: 1fr; }
         }
-
-        /* Slogan highlight in hero */
-        .slogan-em {
-            display: block;
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #80d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-        }
-        @media (max-width: 768px) {
-            .slogan-em { font-size: 32px; }
-        }
     </style>
 </head>
 <body>
@@ -268,7 +225,7 @@
 <header class="header" id="header">
     <div class="container">
         <a href="index.html" class="logo">
-            <div class="logo-icon">B</div>
+            <img src="images/01_logo.png" alt="惠尔口腔" style="height:42px;width:auto;">
             <div class="logo-text">惠尔口腔 <span>HuiEr Dental</span></div>
         </a>
         <nav class="nav" id="nav">
@@ -286,85 +243,21 @@
     </div>
 </header>
 
-<!-- ===================== HERO SWIPER ===================== -->
-<section class="hero">
-    <div class="swiper swiper-hero">
-        <div class="swiper-wrapper">
-
-            <!-- Slide 1: 核心Slogan + 医生团队 -->
-            <div class="swiper-slide">
-                <div class="hero-overlay" style="background:linear-gradient(135deg,rgba(0,45,90,0.4) 0%,rgba(0,91,172,0.25) 100%);"></div>
-                <div style="position:absolute;inset:0;background:linear-gradient(135deg,#002d5a 0%,#005BAC 50%,#0072C6 100%);display:flex;align-items:center;justify-content:center;">
-                    <img src="images/18_nav_doctors.jpg" alt="惠尔口腔团队" style="width:80%;height:100%;object-fit:cover;">
-                </div>
-                <div class="hero-content">
-                    <span class="mission-badge"><i class="fas fa-heart"></i> 自2009年 · 坚守至今</span>
-                    <span class="slogan-em">预防胜于一切的治疗</span>
-                    <p style="font-size:20px;font-weight:500;max-width:600px;margin:0 auto;">
-                        惠州惠尔口腔自2009年成立以来，始终坚持的核心医疗理念
-                    </p>
-                    <p style="font-size:15px;opacity:0.85;margin-top:12px;text-shadow:0 1px 4px rgba(0,0,0,0.3);">
-                        比起治疗已出现的口腔疾病，更鼓励您注重日常预防、维持口腔卫生和定期检查
-                    </p>
-                    <a href="about.html" class="hero-btn" style="margin-top:8px;"><i class="fas fa-heart"></i>&nbsp; 了解我们的理念</a>
-                </div>
-            </div>
-
-            <!-- Slide 2: 我们的立场 -->
-            <div class="swiper-slide">
-                <div class="hero-overlay"></div>
-                <div style="position:absolute;inset:0;background:linear-gradient(135deg,#003d6b 0%,#00609c 50%,#0080c0 100%);"></div>
-                <!-- Decorative tooth pattern -->
-                <div style="position:absolute;right:80px;bottom:40px;font-size:200px;color:rgba(255,255,255,0.04);font-family:serif;">🦷</div>
-                <div style="position:absolute;left:80px;top:60px;font-size:100px;color:rgba(255,255,255,0.03);">🦷</div>
-                <div class="hero-content">
-                    <span class="mission-badge"><i class="fas fa-quote-left"></i> 我们的心里话</span>
-                    <h1 style="font-size:36px;">
-                        我们不想赚你<br>补牙、镶牙、种牙的钱
-                    </h1>
-                    <p style="font-size:18px;max-width:600px;margin:0 auto;">
-                        我们只做预防——认真教您刷牙，帮您养成良好的口腔习惯
-                    </p>
-                    <p style="font-size:16px;opacity:0.85;margin-top:16px;max-width:500px;margin-left:auto;margin-right:auto;border-top:1px solid rgba(255,255,255,0.2);padding-top:16px;">
-                        <i class="fas fa-smile"></i> 我们赚的是牙齿矫正的钱，因为那让您更自信
-                    </p>
-                    <a href="knowledge.html" class="hero-btn" style="margin-top:8px;"><i class="fas fa-book-open"></i>&nbsp; 学习口腔科普</a>
-                </div>
-            </div>
-
-            <!-- Slide 3: 80岁20颗牙 -->
-            <div class="swiper-slide">
-                <div class="hero-overlay"></div>
-                <div style="position:absolute;inset:0;background:linear-gradient(135deg,#003054 0%,#00508a 50%,#0070b0 100%);"></div>
-                <!-- Decorative elements -->
-                <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.06;pointer-events:none;" viewBox="0 0 1920 600" preserveAspectRatio="none">
-                    <path d="M-100,500 Q300,300 700,450 Q1100,600 1500,350 Q1800,200 2020,300" stroke="#fff" stroke-width="2" fill="none"/>
-                    <path d="M-100,550 Q300,350 700,500 Q1100,650 1500,400 Q1800,250 2020,350" stroke="#fff" stroke-width="1" fill="none"/>
-                    <circle cx="300" cy="150" r="80" fill="none" stroke="#fff" stroke-width="1"/>
-                    <circle cx="300" cy="150" r="120" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.5"/>
-                    <circle cx="1600" cy="450" r="60" fill="none" stroke="#fff" stroke-width="1"/>
-                    <circle cx="1600" cy="450" r="100" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.5"/>
-                </svg>
-                <div class="hero-content">
-                    <span class="mission-badge"><i class="fas fa-flag"></i> 我们的使命</span>
-                    <h1 style="font-size:38px;">
-                        希望每个人到八十岁<br>还能保有二十颗牙齿
-                    </h1>
-                    <p style="font-size:18px;max-width:550px;margin:0 auto;">
-                        世界卫生组织"8020"计划——惠尔口腔与您一起努力
-                    </p>
-                    <p style="font-size:15px;opacity:0.85;margin-top:16px;max-width:500px;margin-left:auto;margin-right:auto;">
-                        从今天开始，关注口腔健康，让每一颗牙齿陪伴您更久
-                    </p>
-                    <a href="contact.html" class="hero-btn" style="margin-top:8px;"><i class="fas fa-calendar-check"></i>&nbsp; 预约口腔检查</a>
-                </div>
-            </div>
-
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+<!-- ===================== HERO BANNER ===================== -->
+<section class="hero" id="heroBanner">
+    <div class="hero-bg">
+        <img src="images/32_case_02.jpg" alt="">
     </div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        
+        <p class="hero-title">预防胜于一切的治疗</p>
+        <p class="hero-subtitle">惠州惠尔口腔 · 全生命周期口腔健康管理</p>
+       
+    </div>
+
+    
 </section>
 
 <!-- ===================== 理念与使命 ===================== -->
@@ -391,7 +284,7 @@
                 </p>
             </div>
             <div class="philosophy-image fade-in">
-                <i class="fas fa-tooth big-icon"></i>
+                <img src="images\8020.png" alt="">
                 <div class="goal-text">
                     <strong><i class="fas fa-flag-checkered"></i> 80岁 · 20颗牙</strong>
                     <span>世界卫生组织"8020"计划 —— 惠尔口腔与您同行</span>
@@ -703,22 +596,7 @@
 </div>
 
 <!-- ===================== SCRIPTS ===================== -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="js/main.js"></script>
-<script>
-    const heroSwiper = new Swiper('.swiper-hero', {
-        loop: true,
-        autoplay: { delay: 5000, disableOnInteraction: false },
-        pagination: { el: '.swiper-pagination', clickable: true },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        effect: 'fade',
-        fadeEffect: { crossFade: true },
-        speed: 800,
-    });
-</script>
 
 </body>
 </html>
