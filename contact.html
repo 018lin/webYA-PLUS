@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惠尔口腔 - 联系我们</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="header" id="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">B</div>
+            <div class="logo-text">惠尔口腔 <span>HuiEr Dental</span></div>
+        </a>
+        <nav class="nav" id="nav">
+            <a href="index.html">首页</a>
+            <a href="about.html">集团介绍</a>
+            <a href="team.html">专家团队</a>
+            <a href="specialties.html">特色专科</a>
+            <a href="knowledge.html">相关科普</a>
+            <a href="contact.html" class="active">联系我们</a>
+            <a href="contact.html" class="nav-cta"><i class="fas fa-phone-alt"></i>&nbsp; 预约咨询</a>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</header>
+
+<!-- ===================== PAGE BANNER ===================== -->
+<section class="page-banner">
+    <div class="container">
+        <h1>联系我们</h1>
+        <p>用心服务 · 从齿开始</p>
+    </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="section">
+    <div class="container">
+        <div class="contact-grid">
+            <div>
+                <div class="contact-info-card fade-in">
+                    <h3>联系方式</h3>
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <p><strong>咨询热线</strong></p>
+                            <p>400-xxx-xxxx</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <p><strong>电子邮箱</strong></p>
+                            <p>（这里写联系邮箱）</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <p><strong>诊所地址</strong></p>
+                            <p>惠州市惠城区***</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <p><strong>营业时间</strong></p>
+                            <p>周一至周日 8:30 - 20:00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-map fade-in">
+                    <div style="text-align:center;padding:20px;">
+                        <i class="fas fa-map-marked-alt" style="font-size:48px;margin-bottom:10px;display:block;"></i>
+                        <p>地图位置展示区域</p>
+                        <p style="font-size:12px;opacity:0.7;">（可嵌入百度地图/高德地图）</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form-card fade-in">
+                <h3>在线预约</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" placeholder="请输入您的姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">手机号码</label>
+                        <input type="tel" id="phone" placeholder="请输入您的手机号">
+                    </div>
+                    <div class="form-group">
+                        <label for="type">预约项目</label>
+                        <select id="type">
+                            <option value="">请选择预约项目</option>
+                            <option>牙齿矫正</option>
+                            <option>牙齿种植</option>
+                            <option>牙齿修复</option>
+                            <option>儿童牙科</option>
+                            <option>牙周治疗</option>
+                            <option>牙齿美容</option>
+                            <option>微创拔牙</option>
+                            <option>牙齿全科</option>
+                            <option>牙体牙髓</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">期望就诊日期</label>
+                        <input type="date" id="date">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">备注</label>
+                        <textarea id="message" placeholder="如有特殊需求请在此说明"></textarea>
+                    </div>
+                    <button type="button" class="submit-btn">提交预约</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="logo-text" style="font-size:18px;color:#fff;font-weight:700;margin-bottom:12px;">
+                    惠尔口腔 <span style="color:rgba(255,255,255,0.5);font-weight:400;font-size:13px;">HuiEr Dental</span>
+                </div>
+                <p>
+                    惠尔口腔集团旗下口腔医疗连锁品牌，以"保险+医疗"创新模式，
+                    致力于为全民提供全生命周期口腔健康管理服务。
+                </p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-weibo"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-qq"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>快速链接</h5>
+                <a href="index.html">首页</a>
+                <a href="about.html">集团介绍</a>
+                <a href="team.html">专家团队</a>
+                <a href="specialties.html">特色专科</a>
+                <a href="knowledge.html">相关科普</a>
+                <a href="contact.html">联系我们</a>
+            </div>
+            <div class="footer-col">
+                <h5>特色专科</h5>
+                <a href="specialties.html">牙齿矫正</a>
+                <a href="specialties.html">牙齿种植</a>
+                <a href="specialties.html">牙齿修复</a>
+                <a href="specialties.html">儿童牙科</a>
+                <a href="specialties.html">牙周治疗</a>
+            </div>
+            <div class="footer-col">
+                <h5>联系我们</h5>
+                <a href="contact.html"><i class="fas fa-phone-alt"></i>&nbsp; 400-xxx-xxxx</a>
+                <a href="contact.html"><i class="fas fa-envelope"></i>&nbsp; （联系邮箱）</a>
+                <a href="contact.html"><i class="fas fa-map-marker-alt"></i>&nbsp; 惠州市惠城区***</a>
+                <a href="contact.html"><i class="fas fa-clock"></i>&nbsp; 周一至周日 8:30 - 20:00</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 惠尔口腔集团 版权所有 &nbsp;|&nbsp;
+            <a href="https://beian.miit.gov.cn/" target="_blank">（备案号）</a>&nbsp;|&nbsp;
+            <a href="#">隐私政策</a>&nbsp;|&nbsp;
+            <a href="#">网站地图</a>
+        </div>
+    </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<div class="mobile-float">
+    <a href="index.html"><i class="fas fa-home"></i>首页</a>
+    <a href="team.html"><i class="fas fa-user-md"></i>专家</a>
+    <a href="specialties.html"><i class="fas fa-tooth"></i>专科</a>
+    <a href="knowledge.html"><i class="fas fa-book-medical"></i>科普</a>
+    <a href="contact.html" class="active"><i class="fas fa-phone-alt"></i>电话</a>
+    <a href="contact.html"><i class="fas fa-calendar-check"></i>预约</a>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

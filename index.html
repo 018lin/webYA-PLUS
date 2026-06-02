@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惠尔口腔 - 预防胜于一切的治疗</title>
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ========== Homepage-specific Styles ========== */
+        .mission-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .hero-quote {
+            font-size: 15px;
+            opacity: 0.9;
+            margin-top: 16px;
+            font-style: italic;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 16px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .philosophy-text h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a2a3a;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        .philosophy-text h2 em {
+            color: #005BAC;
+            font-style: normal;
+        }
+        .philosophy-text p {
+            font-size: 15px;
+            color: #666;
+            line-height: 2;
+            margin-bottom: 14px;
+        }
+        .philosophy-text .highlight {
+            background: linear-gradient(135deg, #e8f4ff, #d0eaff);
+            padding: 20px 24px;
+            border-radius: 10px;
+            border-left: 4px solid #005BAC;
+            margin: 20px 0;
+        }
+        .philosophy-text .highlight p {
+            margin-bottom: 0;
+            color: #005BAC;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        .philosophy-image {
+            border-radius: 12px;
+            overflow: hidden;
+            height: 420px;
+            background: linear-gradient(135deg, #e8f4ff, #c5dfff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .philosophy-image .big-icon {
+            font-size: 100px;
+            color: #005BAC;
+            opacity: 0.25;
+        }
+        .philosophy-image .goal-text {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            background: rgba(0,91,172,0.9);
+            color: #fff;
+            padding: 20px 24px;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(4px);
+        }
+        .philosophy-image .goal-text strong {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .philosophy-image .goal-text span {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* ========== Knowledge/Prevention Section ========== */
+        .prevention-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .prevention-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+        .prevention-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0,91,172,0.12);
+        }
+        .prevention-icon {
+            height: 140px;
+            background: linear-gradient(135deg, #e8f4ff, #c5dfff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 52px;
+            color: #005BAC;
+            transition: transform 0.5s;
+        }
+        .prevention-card:hover .prevention-icon { transform: scale(1.05); }
+        .prevention-body {
+            padding: 24px;
+        }
+        .prevention-body h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1a2a3a;
+            margin-bottom: 10px;
+        }
+        .prevention-body p {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.8;
+        }
+        .prevention-body ul {
+            margin-top: 10px;
+            padding: 0;
+        }
+        .prevention-body ul li {
+            font-size: 13px;
+            color: #666;
+            padding: 4px 0 4px 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+        .prevention-body ul li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #005BAC;
+            font-size: 11px;
+        }
+
+        .brushing-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .brushing-step {
+            text-align: center;
+            padding: 16px 10px;
+            background: #f7f9fc;
+            border-radius: 8px;
+        }
+        .brushing-step .step-num {
+            width: 28px;
+            height: 28px;
+            background: #005BAC;
+            color: #fff;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .brushing-step p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .age-timeline {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 24px;
+        }
+        .age-group {
+            background: #f7f9fc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border-top: 4px solid #005BAC;
+        }
+        .age-group .age-range {
+            font-size: 20px;
+            font-weight: 700;
+            color: #005BAC;
+            margin-bottom: 10px;
+        }
+        .age-group p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        @media (max-width: 992px) {
+            .philosophy-grid { grid-template-columns: 1fr; }
+            .philosophy-image { height: 300px; }
+            .prevention-grid { grid-template-columns: repeat(2, 1fr); }
+            .brushing-steps { grid-template-columns: repeat(2, 1fr); }
+            .age-timeline { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .prevention-grid { grid-template-columns: 1fr; }
+            .brushing-steps { grid-template-columns: repeat(2, 1fr); }
+            .age-timeline { grid-template-columns: 1fr; }
+        }
+
+        /* Slogan highlight in hero */
+        .slogan-em {
+            display: block;
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #80d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        @media (max-width: 768px) {
+            .slogan-em { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="header" id="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">B</div>
+            <div class="logo-text">惠尔口腔 <span>HuiEr Dental</span></div>
+        </a>
+        <nav class="nav" id="nav">
+            <a href="index.html" class="active">首页</a>
+            <a href="about.html">集团介绍</a>
+            <a href="team.html">专家团队</a>
+            <a href="specialties.html">特色专科</a>
+            <a href="knowledge.html">相关科普</a>
+            <a href="contact.html">联系我们</a>
+            <a href="contact.html" class="nav-cta"><i class="fas fa-phone-alt"></i>&nbsp; 预约咨询</a>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</header>
+
+<!-- ===================== HERO SWIPER ===================== -->
+<section class="hero">
+    <div class="swiper swiper-hero">
+        <div class="swiper-wrapper">
+
+            <!-- Slide 1: 核心Slogan + 医生团队 -->
+            <div class="swiper-slide">
+                <div class="hero-overlay" style="background:linear-gradient(135deg,rgba(0,45,90,0.4) 0%,rgba(0,91,172,0.25) 100%);"></div>
+                <div style="position:absolute;inset:0;background:linear-gradient(135deg,#002d5a 0%,#005BAC 50%,#0072C6 100%);display:flex;align-items:center;justify-content:center;">
+                    <img src="images/18_nav_doctors.jpg" alt="惠尔口腔团队" style="width:80%;height:100%;object-fit:cover;">
+                </div>
+                <div class="hero-content">
+                    <span class="mission-badge"><i class="fas fa-heart"></i> 自2009年 · 坚守至今</span>
+                    <span class="slogan-em">预防胜于一切的治疗</span>
+                    <p style="font-size:20px;font-weight:500;max-width:600px;margin:0 auto;">
+                        惠州惠尔口腔自2009年成立以来，始终坚持的核心医疗理念
+                    </p>
+                    <p style="font-size:15px;opacity:0.85;margin-top:12px;text-shadow:0 1px 4px rgba(0,0,0,0.3);">
+                        比起治疗已出现的口腔疾病，更鼓励您注重日常预防、维持口腔卫生和定期检查
+                    </p>
+                    <a href="about.html" class="hero-btn" style="margin-top:8px;"><i class="fas fa-heart"></i>&nbsp; 了解我们的理念</a>
+                </div>
+            </div>
+
+            <!-- Slide 2: 我们的立场 -->
+            <div class="swiper-slide">
+                <div class="hero-overlay"></div>
+                <div style="position:absolute;inset:0;background:linear-gradient(135deg,#003d6b 0%,#00609c 50%,#0080c0 100%);"></div>
+                <!-- Decorative tooth pattern -->
+                <div style="position:absolute;right:80px;bottom:40px;font-size:200px;color:rgba(255,255,255,0.04);font-family:serif;">🦷</div>
+                <div style="position:absolute;left:80px;top:60px;font-size:100px;color:rgba(255,255,255,0.03);">🦷</div>
+                <div class="hero-content">
+                    <span class="mission-badge"><i class="fas fa-quote-left"></i> 我们的心里话</span>
+                    <h1 style="font-size:36px;">
+                        我们不想赚你<br>补牙、镶牙、种牙的钱
+                    </h1>
+                    <p style="font-size:18px;max-width:600px;margin:0 auto;">
+                        我们只做预防——认真教您刷牙，帮您养成良好的口腔习惯
+                    </p>
+                    <p style="font-size:16px;opacity:0.85;margin-top:16px;max-width:500px;margin-left:auto;margin-right:auto;border-top:1px solid rgba(255,255,255,0.2);padding-top:16px;">
+                        <i class="fas fa-smile"></i> 我们赚的是牙齿矫正的钱，因为那让您更自信
+                    </p>
+                    <a href="knowledge.html" class="hero-btn" style="margin-top:8px;"><i class="fas fa-book-open"></i>&nbsp; 学习口腔科普</a>
+                </div>
+            </div>
+
+            <!-- Slide 3: 80岁20颗牙 -->
+            <div class="swiper-slide">
+                <div class="hero-overlay"></div>
+                <div style="position:absolute;inset:0;background:linear-gradient(135deg,#003054 0%,#00508a 50%,#0070b0 100%);"></div>
+                <!-- Decorative elements -->
+                <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.06;pointer-events:none;" viewBox="0 0 1920 600" preserveAspectRatio="none">
+                    <path d="M-100,500 Q300,300 700,450 Q1100,600 1500,350 Q1800,200 2020,300" stroke="#fff" stroke-width="2" fill="none"/>
+                    <path d="M-100,550 Q300,350 700,500 Q1100,650 1500,400 Q1800,250 2020,350" stroke="#fff" stroke-width="1" fill="none"/>
+                    <circle cx="300" cy="150" r="80" fill="none" stroke="#fff" stroke-width="1"/>
+                    <circle cx="300" cy="150" r="120" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.5"/>
+                    <circle cx="1600" cy="450" r="60" fill="none" stroke="#fff" stroke-width="1"/>
+                    <circle cx="1600" cy="450" r="100" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.5"/>
+                </svg>
+                <div class="hero-content">
+                    <span class="mission-badge"><i class="fas fa-flag"></i> 我们的使命</span>
+                    <h1 style="font-size:38px;">
+                        希望每个人到八十岁<br>还能保有二十颗牙齿
+                    </h1>
+                    <p style="font-size:18px;max-width:550px;margin:0 auto;">
+                        世界卫生组织"8020"计划——惠尔口腔与您一起努力
+                    </p>
+                    <p style="font-size:15px;opacity:0.85;margin-top:16px;max-width:500px;margin-left:auto;margin-right:auto;">
+                        从今天开始，关注口腔健康，让每一颗牙齿陪伴您更久
+                    </p>
+                    <a href="contact.html" class="hero-btn" style="margin-top:8px;"><i class="fas fa-calendar-check"></i>&nbsp; 预约口腔检查</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
+<!-- ===================== 理念与使命 ===================== -->
+<section class="section" id="philosophy">
+    <div class="container">
+        <div class="philosophy-grid">
+            <div class="philosophy-text fade-in">
+                <h2>我们的真心话<br><em>预防胜于一切的治疗</em></h2>
+                <p>
+                    惠州惠尔口腔自<strong>2009年</strong>成立以来，一直坚持一个朴素而坚定的理念：
+                    <strong>预防胜于一切的治疗</strong>。
+                </p>
+                <p>
+                    我们相信，比起等牙齿出了问题再来补牙、镶牙、种牙，<br>
+                    更重要的是教会您如何保护好自己的牙齿，让问题根本不会发生。
+                </p>
+                <div class="highlight">
+                    <p><i class="fas fa-quote-left"></i>&nbsp; 我们不想赚补牙、镶牙、种牙的钱——我们就想做预防，我们赚的是牙齿矫正的钱。</p>
+                </div>
+                <p>
+                    每一位来到惠尔口腔的顾客，医护人员在治疗的同时，都会积极提供预防保健指导，
+                    帮助您掌握正确的刷牙方法，养成良好的口腔卫生习惯。
+                    因为我们真心希望：<strong>您和您的牙齿，能相伴更久</strong>。
+                </p>
+            </div>
+            <div class="philosophy-image fade-in">
+                <i class="fas fa-tooth big-icon"></i>
+                <div class="goal-text">
+                    <strong><i class="fas fa-flag-checkered"></i> 80岁 · 20颗牙</strong>
+                    <span>世界卫生组织"8020"计划 —— 惠尔口腔与您同行</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== 科普：正确刷牙 ===================== -->
+<section class="section bg-light" id="prevention">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>从今天开始，学会保护牙齿</h2>
+            <p>预防的第一步，从正确刷牙开始</p>
+        </div>
+
+        <!-- 正确刷牙 -->
+        <div class="prevention-card fade-in" style="margin-bottom:30px;">
+            <div class="prevention-icon" style="height:100px;font-size:40px;"><i class="fas fa-toothbrush"></i></div>
+            <div class="prevention-body">
+                <h4>巴氏刷牙法 —— 最科学的刷牙方式</h4>
+                <p style="margin-bottom:12px;">每天早晚各刷一次，每次至少2分钟，牙刷与牙面呈45度角，轻轻颤动。</p>
+                <div class="brushing-steps">
+                    <div class="brushing-step">
+                        <div class="step-num">1</div>
+                        <p><strong>刷外侧面</strong><br>牙刷与牙龈呈45°，小幅度水平颤动，每次2-3颗牙</p>
+                    </div>
+                    <div class="brushing-step">
+                        <div class="step-num">2</div>
+                        <p><strong>刷内侧面</strong><br>同样45°倾斜，刷毛指向牙龈，轻轻颤动清洁</p>
+                    </div>
+                    <div class="brushing-step">
+                        <div class="step-num">3</div>
+                        <p><strong>刷咬合面</strong><br>刷毛垂直对准咬合面，前后短距离来回刷</p>
+                    </div>
+                    <div class="brushing-step">
+                        <div class="step-num">4</div>
+                        <p><strong>刷舌苔</strong><br>轻轻刷洗舌苔表面，去除细菌，清新口气</p>
+                    </div>
+                </div>
+                <div style="margin-top:12px;text-align:center;">
+                    <p style="font-size:13px;color:#999;">
+                        <i class="fas fa-check-circle" style="color:#005BAC;"></i> 记得每3个月更换一次牙刷 &nbsp;·&nbsp;
+                        <i class="fas fa-check-circle" style="color:#005BAC;"></i> 配合牙线使用效果更佳 &nbsp;·&nbsp;
+                        <i class="fas fa-check-circle" style="color:#005BAC;"></i> 每年至少做一次口腔检查
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 各年龄段注意事项 -->
+        <div class="fade-in">
+            <h4 style="text-align:center;font-size:20px;font-weight:600;color:#1a2a3a;margin-bottom:6px;">不同年龄段，口腔关注重点不同</h4>
+            <p style="text-align:center;font-size:14px;color:#888;margin-bottom:8px;">全生命周期口腔健康管理——惠尔口腔为您全程守护</p>
+        </div>
+        <div class="age-timeline fade-in">
+            <div class="age-group">
+                <div class="age-range"><i class="fas fa-baby"></i> 0-6岁</div>
+                <p><strong>乳牙期</strong><br>乳牙萌出后即开始刷牙，每3-6个月涂氟，窝沟封闭防龋。<br>培养良好饮食习惯，避免奶瓶龋。</p>
+            </div>
+            <div class="age-group">
+                <div class="age-range"><i class="fas fa-child"></i> 7-12岁</div>
+                <p><strong>换牙期</strong><br>关注恒牙萌出情况，早期矫治评估。<br>加强口腔卫生教育，预防龋病，做好窝沟封闭。</p>
+            </div>
+            <div class="age-group">
+                <div class="age-range"><i class="fas fa-user-graduate"></i> 13-18岁</div>
+                <p><strong>青少年期</strong><br>矫正牙齿的黄金期。<br>注意青春期牙龈炎防治，保持良好口腔卫生习惯。</p>
+            </div>
+            <div class="age-group">
+                <div class="age-range"><i class="fas fa-user-tie"></i> 19-40岁</div>
+                <p><strong>成年期</strong><br>定期洁牙，关注牙周健康。<br>孕前做好口腔检查，孕期注意牙龈问题。</p>
+            </div>
+            <div class="age-group">
+                <div class="age-range"><i class="fas fa-user"></i> 41-59岁</div>
+                <p><strong>中年期</strong><br>牙周疾病高发期，定期牙周维护。<br>关注牙齿磨损、敏感问题，及时修复缺失牙。</p>
+            </div>
+            <div class="age-group">
+                <div class="age-range"><i class="fas fa-user-plus"></i> 60岁+</div>
+                <p><strong>老年期</strong><br>目标：80岁拥有20颗功能牙。<br>定期检查、积极治疗，义齿也需要专业维护。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== 特色专科 ===================== -->
+<section class="section" id="specialties">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>我们的专科</h2>
+            <p>全学科覆盖 · 为您和家人的口腔健康保驾护航</p>
+        </div>
+        <div class="specialties-grid">
+
+            <div class="specialty-card fade-in">
+                <div class="specialty-img"><img src="images/05_icon_orthodontics.png" alt="牙齿矫正"></div>
+                <div class="specialty-body">
+                    <h4>牙齿矫正</h4>
+                    <div class="doc-name">正畸专家团队</div>
+                    <p>传统托槽矫正、隐形矫正、儿童早期矫治等全年龄段正畸方案。</p>
+                    <div class="tag-group">
+                        <span class="tag">隐形矫正</span>
+                        <span class="tag">早期矫治</span>
+                        <span class="tag">固定矫正</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="specialty-card fade-in">
+                <div class="specialty-img"><img src="images/06_icon_implant.png" alt="牙齿种植"></div>
+                <div class="specialty-body">
+                    <h4>牙齿种植</h4>
+                    <div class="doc-name">种植专家团队</div>
+                    <p>数字化导板种植、即刻种植，精准修复缺失牙。</p>
+                    <div class="tag-group">
+                        <span class="tag">数字化导板</span>
+                        <span class="tag">即刻种植</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="specialty-card fade-in">
+                <div class="specialty-img"><img src="images/07_icon_restoration.png" alt="牙齿修复"></div>
+                <div class="specialty-body">
+                    <h4>牙齿修复</h4>
+                    <div class="doc-name">修复专家团队</div>
+                    <p>全瓷冠、瓷贴面、嵌体修复等美学修复技术，恢复牙齿形态与功能。</p>
+                    <div class="tag-group">
+                        <span class="tag">全瓷冠</span>
+                        <span class="tag">瓷贴面</span>
+                        <span class="tag">嵌体修复</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="specialty-card fade-in">
+                <div class="specialty-img"><img src="images/08_icon_pediatric.png" alt="儿童牙科"></div>
+                <div class="specialty-body">
+                    <h4>儿童牙科</h4>
+                    <div class="doc-name">儿童专属诊疗区</div>
+                    <p>儿童龋病防治、窝沟封闭、涂氟、乳牙拔除、早期矫治评估。</p>
+                    <div class="tag-group">
+                        <span class="tag">窝沟封闭</span>
+                        <span class="tag">涂氟防龋</span>
+                        <span class="tag">儿童矫正</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="specialty-card fade-in">
+                <div class="specialty-img"><img src="images/09_icon_periodontal.png" alt="牙周治疗"></div>
+                <div class="specialty-body">
+                    <h4>牙周治疗</h4>
+                    <div class="doc-name">牙周专家团队</div>
+                    <p>牙周基础治疗、牙周手术、种植体周围炎防治，维护口腔健康根基。</p>
+                    <div class="tag-group">
+                        <span class="tag">牙周刮治</span>
+                        <span class="tag">龈下治疗</span>
+                        <span class="tag">种植维护</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="specialty-card fade-in">
+                <div class="specialty-img"><img src="images/10_icon_cosmetic.png" alt="牙齿美容"></div>
+                <div class="specialty-body">
+                    <h4>牙齿美容</h4>
+                    <div class="doc-name">美学设计团队</div>
+                    <p>前牙美学修复、牙齿美白、微笑设计，打造专属自信笑容。</p>
+                    <div class="tag-group">
+                        <span class="tag">牙齿美白</span>
+                        <span class="tag">微笑设计</span>
+                        <span class="tag">美学修复</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="specialty-card fade-in">
+                <div class="specialty-img"><img src="images/11_icon_extraction.png" alt="微创拔牙"></div>
+                <div class="specialty-body">
+                    <h4>微创拔牙</h4>
+                    <div class="doc-name">外科专家团队</div>
+                    <p>微创拔牙技术，包括复杂智齿拔除，创伤小、恢复快。</p>
+                    <div class="tag-group">
+                        <span class="tag">微创拔牙</span>
+                        <span class="tag">智齿拔除</span>
+                        <span class="tag">舒适治疗</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="specialty-card fade-in">
+                <div class="specialty-img"><img src="images/12_icon_general.png" alt="牙齿全科"></div>
+                <div class="specialty-body">
+                    <h4>牙齿全科</h4>
+                    <div class="doc-name">全科诊疗团队</div>
+                    <p>口腔综合诊疗，涵盖补牙、洗牙、检查等全方位口腔基础医疗服务。</p>
+                    <div class="tag-group">
+                        <span class="tag">补牙</span>
+                        <span class="tag">洗牙</span>
+                        <span class="tag">口腔检查</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="specialty-card fade-in">
+                <div class="specialty-img"><img src="images/13_icon_comprehensive.png" alt="牙体牙髓"></div>
+                <div class="specialty-body">
+                    <h4>牙体牙髓</h4>
+                    <div class="doc-name">牙体牙髓团队</div>
+                    <p>龋病治疗、根管治疗、牙体缺损修复，保留天然牙的最后一关。</p>
+                    <div class="tag-group">
+                        <span class="tag">根管治疗</span>
+                        <span class="tag">龋病治疗</span>
+                        <span class="tag">牙体修复</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div style="text-align:center;margin-top:32px;">
+            <a href="specialties.html" class="submit-btn" style="display:inline-block;">查看全部专科 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="section bg-blue">
+    <div class="container" style="text-align:center;">
+        <div class="fade-in">
+            <h2 style="font-size:32px;font-weight:700;margin-bottom:14px;">守护牙齿，从今天开始</h2>
+            <p style="font-size:16px;opacity:0.85;margin-bottom:30px;max-width:600px;margin-left:auto;margin-right:auto;">
+                预约一次口腔检查，让我们帮您了解牙齿的真实状况<br>
+                预防永远比治疗更简单、更省钱、更不痛苦
+            </p>
+            <a href="contact.html" class="hero-btn" style="background:#fff;color:#005BAC;padding:14px 48px;border-radius:6px;font-size:16px;font-weight:600;display:inline-block;transition:0.3s;">
+                <i class="fas fa-phone-alt"></i>&nbsp; 预约口腔检查
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer" id="footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="logo-text" style="font-size:18px;color:#fff;font-weight:700;margin-bottom:12px;">
+                    惠尔口腔 <span style="color:rgba(255,255,255,0.5);font-weight:400;font-size:13px;">HuiEr Dental</span>
+                </div>
+                <p>
+                    惠尔口腔自2009年成立，始终秉承"预防胜于一切的治疗"核心理念，
+                    致力于为全民提供全生命周期口腔健康管理服务。
+                </p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-weibo"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-qq"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>快速链接</h5>
+                <a href="index.html">首页</a>
+                <a href="about.html">集团介绍</a>
+                <a href="team.html">专家团队</a>
+                <a href="specialties.html">特色专科</a>
+                <a href="knowledge.html">相关科普</a>
+                <a href="contact.html">联系我们</a>
+            </div>
+            <div class="footer-col">
+                <h5>特色专科</h5>
+                <a href="specialties.html">牙齿矫正</a>
+                <a href="specialties.html">牙齿种植</a>
+                <a href="specialties.html">牙齿修复</a>
+                <a href="specialties.html">儿童牙科</a>
+                <a href="specialties.html">牙周治疗</a>
+            </div>
+            <div class="footer-col">
+                <h5>联系我们</h5>
+                <a href="contact.html"><i class="fas fa-phone-alt"></i>&nbsp; 400-xxx-xxxx</a>
+                <a href="contact.html"><i class="fas fa-envelope"></i>&nbsp; （联系邮箱）</a>
+                <a href="contact.html"><i class="fas fa-map-marker-alt"></i>&nbsp; 惠州市惠城区***</a>
+                <a href="contact.html"><i class="fas fa-clock"></i>&nbsp; 周一至周日 8:30 - 20:00</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 惠尔口腔 版权所有 &nbsp;|&nbsp;
+            <a href="https://beian.miit.gov.cn/" target="_blank">（备案号）</a>&nbsp;|&nbsp;
+            <a href="#">隐私政策</a>&nbsp;|&nbsp;
+            <a href="#">网站地图</a>
+        </div>
+    </div>
+</footer>
+
+<!-- ===================== BACK TO TOP ===================== -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- ===================== MOBILE FLOAT BAR ===================== -->
+<div class="mobile-float">
+    <a href="index.html" class="active"><i class="fas fa-home"></i>首页</a>
+    <a href="team.html"><i class="fas fa-user-md"></i>专家</a>
+    <a href="specialties.html"><i class="fas fa-tooth"></i>专科</a>
+    <a href="knowledge.html"><i class="fas fa-book-medical"></i>科普</a>
+    <a href="contact.html"><i class="fas fa-phone-alt"></i>电话</a>
+    <a href="contact.html"><i class="fas fa-calendar-check"></i>预约</a>
+</div>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+    const heroSwiper = new Swiper('.swiper-hero', {
+        loop: true,
+        autoplay: { delay: 5000, disableOnInteraction: false },
+        pagination: { el: '.swiper-pagination', clickable: true },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        effect: 'fade',
+        fadeEffect: { crossFade: true },
+        speed: 800,
+    });
+</script>
+
+</body>
+</html>
