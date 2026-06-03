@@ -603,15 +603,61 @@
 </section>
 
 <!-- ===================== CTA ===================== -->
-<section class="section bg-blue">
-    <div class="container" style="text-align:center;">
+<section style="
+    position: relative;
+    padding: 100px 0;
+    background: #F8FAFC;
+    overflow: hidden;
+">
+    <!-- 超大品牌蓝圆形光晕 -->
+    <div style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(0,91,172,0.07) 0%, rgba(0,91,172,0.04) 40%, transparent 70%);
+        pointer-events: none;
+    "></div>
+    <!-- 额外小光晕增加层次 -->
+    <div style="
+        position: absolute;
+        top: 20%;
+        right: 8%;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(0,91,172,0.05) 0%, transparent 60%);
+        pointer-events: none;
+    "></div>
+    <div style="
+        position: absolute;
+        bottom: 10%;
+        left: 5%;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(0,91,172,0.04) 0%, transparent 60%);
+        pointer-events: none;
+    "></div>
+
+    <div class="container" style="text-align:center;position:relative;z-index:2;">
         <div class="fade-in">
-            <h2 style="font-size:32px;font-weight:700;margin-bottom:14px;">守护牙齿，从今天开始</h2>
-            <p style="font-size:16px;opacity:0.85;margin-bottom:30px;max-width:600px;margin-left:auto;margin-right:auto;">
+            <p style="font-size:13px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#005BAC;margin-bottom:16px;opacity:0.7;">MAKE AN APPOINTMENT</p>
+            <h2 style="font-size:34px;font-weight:700;color:#1a2a3a;margin-bottom:16px;letter-spacing:-0.3px;">守护牙齿，从今天开始</h2>
+            <p style="font-size:16px;color:#6b7a8a;margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7;">
                 预约一次口腔检查，让我们帮您了解牙齿的真实状况<br>
                 预防永远比治疗更简单、更省钱、更不痛苦
             </p>
-            <a href="contact.html" class="hero-btn" style="background:#fff;color:#005BAC;padding:14px 48px;border-radius:6px;font-size:16px;font-weight:600;display:inline-block;transition:0.3s;">
+            <a href="contact.html" style="
+                display:inline-flex;align-items:center;gap:8px;
+                background:#005BAC;color:#fff;padding:14px 44px;
+                border-radius:8px;font-size:15px;font-weight:600;
+                text-decoration:none;transition:all 0.3s ease;
+                box-shadow:0 4px 14px rgba(0,91,172,0.25);
+            " onmouseover="this.style.background='#004A8D';this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 20px rgba(0,91,172,0.35)';" onmouseout="this.style.background='#005BAC';this.style.transform='';this.style.boxShadow='0 4px 14px rgba(0,91,172,0.25)';">
                 <i class="fas fa-phone-alt"></i>&nbsp; 预约口腔检查
             </a>
         </div>
