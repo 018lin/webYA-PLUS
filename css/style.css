@@ -299,10 +299,12 @@ img { max-width: 100%; display: block; }
         min-height: auto;
         max-height: none;
         display: block;
+        padding-top: 70px;
     }
     .hero-bg {
         position: relative;
         overflow: hidden;
+        top: 0;
     }
     .hero-bg img {
         width: 100%;
