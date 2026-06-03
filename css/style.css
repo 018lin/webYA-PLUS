@@ -582,11 +582,8 @@ img { max-width: 100%; display: block; }
 .contact-map {
     border-radius: 12px;
     overflow: hidden;
-    height: 350px;
+    height: 360px;
     background: #e8f4ff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: #005BAC;
     font-size: 14px;
 }

@@ -7,6 +7,12 @@
     <link rel="icon" href="images/01_logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <script>
+        window._AMapSecurityConfig = {
+            securityJsCode: '796d57f1534c5e73603ad1555e678c0a',
+        };
+    </script>
+    <script src="https://webapi.amap.com/maps?v=2.0&key=4937beb99328133525aeccf94a8fe0e0"></script>
 </head>
 <body>
 
@@ -74,11 +80,7 @@
                     </div>
                 </div>
                 <div class="contact-map fade-in">
-                    <div style="text-align:center;padding:20px;">
-                        <i class="fas fa-map-marked-alt" style="font-size:48px;margin-bottom:10px;display:block;"></i>
-                        <p>地图位置展示区域</p>
-                        <p style="font-size:12px;opacity:0.7;">（可嵌入百度地图/高德地图）</p>
-                    </div>
+                    <div id="amap-container" style="width:100%;height:360px;border-radius:10px;"></div>
                 </div>
             </div>
             <div class="contact-form-card fade-in">
@@ -172,6 +174,31 @@
 </div>
 
 <script src="js/main.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var map = new AMap.Map('amap-container', {
+            zoom: 16,
+            center: [114.409602, 23.06347],
+        });
+        var svgIcon = '<svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">' +
+            '<circle cx="18" cy="18" r="16" fill="#1A73E8" stroke="white" stroke-width="2"/>' +
+            '<circle cx="18" cy="14" r="4" fill="white"/>' +
+            '<text x="18" y="30" text-anchor="middle" font-size="10" fill="white" font-weight="bold">⚕</text>' +
+        '</svg>';
+        var marker = new AMap.Marker({
+            position: [114.409602, 23.06347],
+            map: map,
+            title: '惠尔口腔',
+            content: svgIcon,
+            offset: new AMap.Pixel(-18, -18),
+            label: {
+                content: '<span style="color:#1A73E8;font-weight:bold;font-size:14px;background:white;padding:2px 8px;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,0.15);white-space:nowrap;">惠尔口腔</span>',
+                direction: 'right',
+                offset: new AMap.Pixel(8, 0),
+            },
+        });
+    });
+</script>
 </body>
 </html>
 
