@@ -73,3 +73,13 @@ if (sections.length > 0) {
         });
     });
 }
+
+// ======================== Preview mode (hide other page links) ========================
+if (location.search.includes('preview')) {
+    document.querySelectorAll('.nav a:not([href="index.html"])').forEach(el => {
+        el.style.display = 'none';
+    });
+    document.querySelectorAll('.mobile-float a:not([href="index.html"])').forEach(el => {
+        el.style.display = 'none';
+    });
+}
