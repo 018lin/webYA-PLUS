@@ -7,6 +7,38 @@
     <link rel="icon" href="images/01_logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .gallery-item { cursor: pointer; }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+        .lightbox.show { display: flex; }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+            object-fit: contain;
+        }
+        .lightbox .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 36px;
+            color: #fff;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+        .lightbox .close-btn:hover { opacity: 1; }
+    </style>
 </head>
 <body>
 
@@ -69,33 +101,87 @@
             <p style="color:#666;margin-top:6px;">杨远洋院长临床风采与学术荣誉</p>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;">
-            <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <img src="images/杨医生图片.jpg" alt="杨远洋" style="width:100%;height:200px;object-fit:cover;display:block;">
             </div>
-            <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <img src="images/杨医生图片1.jpg" alt="杨远洋" style="width:100%;height:200px;object-fit:cover;display:block;">
             </div>
-            <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <img src="images/杨医生图片2.jpg" alt="杨远洋" style="width:100%;height:200px;object-fit:cover;display:block;">
             </div>
-            <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <img src="images/杨医生相关报道1.jpg" alt="相关报道" style="width:100%;height:200px;object-fit:cover;display:block;">
             </div>
-            <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <img src="images/杨医生获奖名单.jpg" alt="获奖名单" style="width:100%;height:200px;object-fit:cover;display:block;">
             </div>
-            <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <img src="images/杨医生获奖名单2.jpg" alt="获奖名单" style="width:100%;height:200px;object-fit:cover;display:block;">
             </div>
-            <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <img src="images/杨医生邀请函.jpg" alt="邀请函" style="width:100%;height:200px;object-fit:cover;display:block;">
             </div>
-            <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                 <img src="images/杨医生邀请函1.jpg" alt="邀请函" style="width:100%;height:200px;object-fit:cover;display:block;">
             </div>
         </div>
     </div>
 </section>
+
+<!-- ===================== RELATED REPORTS ===================== -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="fade-in" style="text-align:center;margin-bottom:40px;">
+            <h2 style="font-size:28px;font-weight:700;color:#00204a;">相关报道</h2>
+            <p style="color:#666;margin-top:6px;">媒体聚焦 · 杨远洋院长学术与临床贡献</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;">
+            <a href="https://static.nfapp.southcn.com/content/201809/28/c1532773.html?colID=76&from=groupmessage&isappinstalled=0&layer=2&share_token=" target="_blank" rel="noopener noreferrer" class="knowledge-card fade-in" style="text-decoration:none;color:inherit;">
+                <div class="knowledge-img" style="height:180px;background-image:url('https://pic.nfapp.southcn.com/nfplus/ossfs/pic/xy/201809/28/bcf8e54e-71fe-480c-8063-e37191098074.png?x-oss-process=style/w640');background-size:cover;background-position:center;">
+                    <span style="font-size:12px;color:#fff;background:rgba(0,0,0,0.55);padding:3px 12px;border-radius:20px;margin-top:auto;margin-bottom:10px;">南方+</span>
+                </div>
+                <div class="knowledge-body">
+                    <h4>厉害了！口腔正畸全国赛，这名专家夺冠</h4>
+                    <p style="font-size:13px;color:#666;margin-top:6px;">2018-09-28 · 南方+客户端</p>
+                </div>
+            </a>
+            <a href="https://mp.weixin.qq.com/s/RUI2O7S_3Ki5d2ffRoV_Vg" target="_blank" rel="noopener noreferrer" class="knowledge-card fade-in" style="text-decoration:none;color:inherit;">
+                <div class="knowledge-img" style="height:180px;background-image:url('http://mmbiz.qpic.cn/mmbiz_jpg/pDc4qv2Uhe4OvYHKxtXGiaWaHdjPCVTrS1ibMicQjiaVnQhxHtVias3pfF2DiaN1EywvB4d8FNODwtSkVfbVWbpNUKeQ/0?wx_fmt=jpeg');background-size:cover;background-position:center;">
+                    <span style="font-size:12px;color:#fff;background:rgba(7,193,96,0.75);padding:3px 12px;border-radius:20px;margin-top:auto;margin-bottom:10px;">微信公众号</span>
+                </div>
+                <div class="knowledge-body">
+                    <h4>惠尔口腔：保险+医疗的创新实践</h4>
+                    <p style="font-size:13px;color:#666;margin-top:6px;">惠尔口腔官方公众号</p>
+                </div>
+            </a>
+            <a href="https://c.m.163.com/news/a/IIAB33CB055642BW.html?spss=newsapp&spsnuid=&spsdevid=F29A6082-67C6-4109-AE80-B32CF6006FC7&spsvid=&spsshare=wx&spsts=1698662898765&spstoken=PYv1nTt1G814GQN2X1eUD4aN9CtgQcbrPD%2BXuEtt3NfWx7A%2Bty%2BZo6thO5n7GjJe&spssid=cc646b2659db3a17826d77ee68568439&spsw=3&isFromH5Share=article" target="_blank" rel="noopener noreferrer" class="knowledge-card fade-in" style="text-decoration:none;color:inherit;">
+                <div class="knowledge-img" style="height:180px;background-image:url('http://dingyue.ws.126.net/2023/1030/b175502bj00s3bz7p006dd0018g00u0p.jpg');background-size:cover;background-position:center;">
+                    <span style="font-size:12px;color:#fff;background:rgba(211,33,44,0.75);padding:3px 12px;border-radius:20px;margin-top:auto;margin-bottom:10px;">网易新闻</span>
+                </div>
+                <div class="knowledge-body">
+                    <h4>惠州口腔正畸医生再获国家级殊荣</h4>
+                    <p style="font-size:13px;color:#666;margin-top:6px;">2023-10-30 · 网易新闻</p>
+                </div>
+            </a>
+            <a href="https://mp.weixin.qq.com/s/021TFen2vbQn1RK6clWZ0Q" target="_blank" rel="noopener noreferrer" class="knowledge-card fade-in" style="text-decoration:none;color:inherit;">
+                <div class="knowledge-img" style="height:180px;background-image:url('https://mmbiz.qpic.cn/mmbiz_jpg/WEVMBxEia63UJzex0Q911fHWRrvib9OsUYlTg0qrTYE0oibXozjzOIvfcnklvklIianKsuAvpjh0xTMo3o5rh2rKPw/0?wx_fmt=jpeg');background-size:cover;background-position:center;">
+                    <span style="font-size:12px;color:#fff;background:rgba(7,193,96,0.75);padding:3px 12px;border-radius:20px;margin-top:auto;margin-bottom:10px;">微信公众号</span>
+                </div>
+                <div class="knowledge-body">
+                    <h4>数字化正畸：杨远洋院长的专业分享</h4>
+                    <p style="font-size:13px;color:#666;margin-top:6px;">惠尔口腔官方公众号</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== LIGHTBOX ===================== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="close-btn">&times;</span>
+    <img id="lightbox-img" src="">
+</div>
 
 <!-- ===================== CTA ===================== -->
 <section class="section bg-blue">
@@ -162,5 +248,17 @@
 </div>
 
 <script src="js/main.js"></script>
+<script>
+    function openLightbox(el) {
+        var img = el.querySelector('img');
+        document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+</script>
 </body>
 </html>
