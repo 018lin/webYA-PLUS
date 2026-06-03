@@ -80,6 +80,25 @@
             font-weight: 500;
             font-size: 16px;
         }
+        .goal-intro {
+            background: #ffffff;
+            border: 1px solid #e8f0f8;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin: 20px auto 0;
+            max-width: 600px;
+            text-align: left;
+        }
+        .goal-intro p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.9;
+            margin: 0;
+        }
+        .goal-intro strong {
+            color: #005BAC;
+            font-weight: 600;
+        }
         .philosophy-image {
             border-radius: 12px;
             overflow: hidden;
@@ -266,12 +285,18 @@
             margin: 0;
         }
 
+        /* 缩短理念模块与刷牙模块之间的垂直间距 */
+        #philosophy { padding-bottom: 20px; }
+        #prevention { padding-top: 60px; }
+
         @media (max-width: 992px) {
             .philosophy-grid { grid-template-columns: 1fr; }
             .philosophy-image { height: 300px; }
             .prevention-grid { grid-template-columns: repeat(2, 1fr); }
             .brushing-steps { grid-template-columns: repeat(2, 1fr); }
             .age-timeline { grid-template-columns: repeat(2, 1fr); }
+            #philosophy { padding-bottom: 10px; }
+            #prevention { padding-top: 50px; }
         }
         @media (max-width: 768px) {
             .prevention-grid { grid-template-columns: 1fr; }
@@ -328,7 +353,7 @@
             <div class="philosophy-text fade-in">
                 <div class="title-wrapper">
                     <span class="title-line"></span>
-                    <span class="title-text">我们的真心话<br><em>预防胜于一切的治疗</em></span>
+                    <span class="title-text">我们的理念<br><em>预防胜于一切的治疗</em></span>
                     <span class="title-line"></span>
                 </div>
                 
@@ -342,6 +367,12 @@
                     帮助您掌握正确的刷牙方法，养成良好的口腔卫生习惯。
                     因为我们真心希望：<strong>您和您的牙齿，能相伴更久</strong>。
                 </p>
+                <div class="goal-intro">
+                    <p>世界卫生组织（WHO）曾提出"8020"目标——<strong>到 80 岁时，依然拥有 20 颗功能良好的天然牙齿</strong>。这不是少数人的幸运，而是每个人都可以通过科学护理一步步接近的结果。刷牙、使用牙线、定期检查、及时洁治……每一项看似简单的日常，都是在为十年后、数十年后的牙齿健康积蓄。预防不是一次性的选择，而是与生活相伴的方式。</p>
+                </div>
+            </div>
+            <div class="philosophy-image fade-in">
+                <img src="images/8020.png" alt="8020 口腔健康目标" style="width:100%;height:100%;object-fit:contain;">
             </div>
         </div>
     </div>
