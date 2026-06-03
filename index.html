@@ -260,50 +260,93 @@
         }
 
         .age-timeline {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
             margin-top: 24px;
         }
         .age-group {
             border-radius: 12px;
-            padding: 28px 22px 24px;
-            text-align: center;
-            border-top: 4px solid var(--accent);
-            background: var(--bg-light);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            background: #f5f6f8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: box-shadow 0.3s ease;
         }
         .age-group:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.10);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        .age-group.active {
+            box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+        }
+        .age-group-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
         .age-group .age-icon {
-            font-size: 28px;
+            font-size: 22px;
             color: var(--accent);
-            margin-bottom: 10px;
+            flex-shrink: 0;
+            width: 32px;
+            text-align: center;
         }
         .age-group .age-range {
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 700;
             color: var(--accent);
-            margin-bottom: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
-        .age-group p {
+        .age-group .stage-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a2a3a;
+        }
+        .age-group-toggle {
+            margin-left: auto;
+            font-size: 13px;
+            color: var(--accent);
+            transition: transform 0.35s ease;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+        .age-group.active .age-group-toggle {
+            transform: rotate(180deg);
+        }
+        .age-group-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.2s ease;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .age-group.active .age-group-content {
+            opacity: 1;
+            padding: 0 20px 20px;
+        }
+        .age-group-content p {
+            padding-left: 44px; /* aligns with header stage-name (icon 32px + gap 12px) */
             font-size: 13px;
             color: #555;
             line-height: 1.8;
             margin: 0;
         }
-        .age-group p strong {
+        .age-group-content p strong {
             color: #1a2a3a;
         }
-        /* 各年龄段色彩体系 */
-        .age-group[data-age="0-6"]   { --accent: #4FC3F7; --bg-light: rgba(79,195,247,0.08); }
-        .age-group[data-age="7-12"]  { --accent: #26A69A; --bg-light: rgba(38,166,154,0.08); }
-        .age-group[data-age="13-18"] { --accent: #7E57C2; --bg-light: rgba(126,87,194,0.08); }
-        .age-group[data-age="19-40"] { --accent: #1E88E5; --bg-light: rgba(30,136,229,0.08); }
-        .age-group[data-age="41-59"] { --accent: #FB8C00; --bg-light: rgba(251,140,0,0.08); }
-        .age-group[data-age="60+"]   { --accent: #C9A84C; --bg-light: rgba(201,168,76,0.09); }
+        /* 各年龄段——仅保留低饱和辅色，用于图标/文字点缀 */
+        .age-group[data-age="0-6"]   { --accent: #5B9BD5; }
+        .age-group[data-age="7-12"]  { --accent: #5B9BD5; }
+        .age-group[data-age="13-18"] { --accent: #7B8FBF; }
+        .age-group[data-age="19-40"] { --accent: #4A7FB5; }
+        .age-group[data-age="41-59"] { --accent: #C4913B; }
+        .age-group[data-age="60+"]   { --accent: #A8893C; }
 
         /* 缩短理念模块与刷牙模块之间的垂直间距 */
         #philosophy { padding-bottom: 20px; }
@@ -314,14 +357,18 @@
             .philosophy-image { height: 300px; }
             .prevention-grid { grid-template-columns: repeat(2, 1fr); }
             .brushing-steps { grid-template-columns: repeat(2, 1fr); }
-            .age-timeline { grid-template-columns: repeat(2, 1fr); }
             #philosophy { padding-bottom: 10px; }
             #prevention { padding-top: 50px; }
         }
         @media (max-width: 768px) {
             .prevention-grid { grid-template-columns: 1fr; }
             .brushing-steps { grid-template-columns: repeat(2, 1fr); }
-            .age-timeline { grid-template-columns: 1fr; }
+            /* accordion: maintain comfortable padding on mobile */
+            .age-group-header { padding: 14px 16px; }
+            .age-group .age-range { font-size: 15px; }
+            .age-group-content { padding: 0 16px; }
+            .age-group.active .age-group-content { padding: 0 16px 16px; }
+            .age-group-content p { padding-left: 44px; }
         }
     </style>
 </head>
@@ -446,34 +493,70 @@
         </div>
         <div class="age-timeline fade-in">
             <div class="age-group" data-age="0-6">
-                <div class="age-icon"><i class="fas fa-baby"></i></div>
-                <div class="age-range">0-6岁</div>
-                <p><strong>乳牙期</strong><br>乳牙萌出后即开始刷牙，每3-6个月涂氟，窝沟封闭防龋。<br>培养良好饮食习惯，避免奶瓶龋。</p>
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-baby"></i></div>
+                    <div class="age-range">0-6岁</div>
+                    <span class="stage-name">乳牙期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>乳牙萌出后即开始刷牙，每3-6个月涂氟，窝沟封闭防龋。<br>培养良好饮食习惯，避免奶瓶龋。</p>
+                </div>
             </div>
             <div class="age-group" data-age="7-12">
-                <div class="age-icon"><i class="fas fa-child"></i></div>
-                <div class="age-range">7-12岁</div>
-                <p><strong>换牙期</strong><br>关注恒牙萌出情况，早期矫治评估。<br>加强口腔卫生教育，预防龋病，做好窝沟封闭。</p>
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-child"></i></div>
+                    <div class="age-range">7-12岁</div>
+                    <span class="stage-name">换牙期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>关注恒牙萌出情况，早期矫治评估。<br>加强口腔卫生教育，预防龋病，做好窝沟封闭。</p>
+                </div>
             </div>
             <div class="age-group" data-age="13-18">
-                <div class="age-icon"><i class="fas fa-user-graduate"></i></div>
-                <div class="age-range">13-18岁</div>
-                <p><strong>青少年期</strong><br>矫正牙齿的黄金期。<br>注意青春期牙龈炎防治，保持良好口腔卫生习惯。</p>
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-user-graduate"></i></div>
+                    <div class="age-range">13-18岁</div>
+                    <span class="stage-name">青少年期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>矫正牙齿的黄金期。<br>注意青春期牙龈炎防治，保持良好口腔卫生习惯。</p>
+                </div>
             </div>
             <div class="age-group" data-age="19-40">
-                <div class="age-icon"><i class="fas fa-user-tie"></i></div>
-                <div class="age-range">19-40岁</div>
-                <p><strong>成年期</strong><br>定期洁牙，关注牙周健康。<br>孕前做好口腔检查，孕期注意牙龈问题。</p>
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-user-tie"></i></div>
+                    <div class="age-range">19-40岁</div>
+                    <span class="stage-name">成年期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>定期洁牙，关注牙周健康。<br>孕前做好口腔检查，孕期注意牙龈问题。</p>
+                </div>
             </div>
             <div class="age-group" data-age="41-59">
-                <div class="age-icon"><i class="fas fa-user"></i></div>
-                <div class="age-range">41-59岁</div>
-                <p><strong>中年期</strong><br>牙周疾病高发期，定期牙周维护。<br>关注牙齿磨损、敏感问题，及时修复缺失牙。</p>
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-user"></i></div>
+                    <div class="age-range">41-59岁</div>
+                    <span class="stage-name">中年期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>牙周疾病高发期，定期牙周维护。<br>关注牙齿磨损、敏感问题，及时修复缺失牙。</p>
+                </div>
             </div>
             <div class="age-group" data-age="60+">
-                <div class="age-icon"><i class="fas fa-user-plus"></i></div>
-                <div class="age-range">60岁+</div>
-                <p><strong>老年期</strong><br>目标：80岁拥有20颗功能牙。<br>定期检查、积极治疗，义齿也需要专业维护。</p>
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="age-range">60岁+</div>
+                    <span class="stage-name">老年期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>目标：80岁拥有20颗功能牙。<br>定期检查、积极治疗，义齿也需要专业维护。</p>
+                </div>
             </div>
         </div>
     </div>
@@ -605,7 +688,7 @@
 <!-- ===================== CTA ===================== -->
 <section style="
     position: relative;
-    padding: 100px 0;
+    padding: 45px 0;
     background: #ffffff;
     overflow: hidden;
 ">
@@ -678,6 +761,65 @@
 
 <!-- ===================== SCRIPTS ===================== -->
 <script src="js/main.js"></script>
+<script>
+/* ---- 年龄段手风琴交互 ---- */
+(function() {
+    const groups = document.querySelectorAll('.age-group');
+    groups.forEach(group => {
+        const header = group.querySelector('.age-group-header');
+        const content = group.querySelector('.age-group-content');
+
+        function open(target) {
+            const c = target.querySelector('.age-group-content');
+            // clear inline styles so we can measure real scrollHeight
+            c.style.maxHeight = '';
+            // flush and measure
+            const h = c.scrollHeight;
+            c.style.maxHeight = '0';       // reset to closed first
+            // force layout so the 0 takes effect
+            void c.offsetHeight;
+            // now animate to real height
+            c.style.maxHeight = h + 'px';
+            target.classList.add('active');
+        }
+
+        function close(target) {
+            const c = target.querySelector('.age-group-content');
+            // lock to current scrollHeight before animating to 0
+            // (handles resize while open)
+            c.style.maxHeight = c.scrollHeight + 'px';
+            void c.offsetHeight;
+            c.style.maxHeight = '0';
+            target.classList.remove('active');
+        }
+
+        header.addEventListener('click', function(e) {
+            const isActive = group.classList.contains('active');
+
+            // close all others
+            groups.forEach(g => {
+                if (g !== group && g.classList.contains('active')) {
+                    close(g);
+                }
+            });
+
+            if (isActive) {
+                close(group);
+            } else {
+                open(group);
+            }
+        });
+
+        // keyboard support
+        header.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                header.click();
+            }
+        });
+    });
+})();
+</script>
 
 </body>
 </html>
