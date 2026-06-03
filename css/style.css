@@ -891,44 +891,65 @@ img { max-width: 100%; display: block; }
     .specialties-grid .specialty-body .tag-group { gap: 4px; margin-top: 8px; }
     .specialties-grid .specialty-body .tag { font-size: 11px; padding: 2px 8px; }
 
-    /* ========== Mobile: team card refinements ========== */
+    /* ========== Mobile: team card refined — horizontal layout ========== */
+    .team-card-link,
+    .team-card {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+    }
     .team-card-link .team-photo,
     .team-card .team-photo {
-        height: 200px;
+        width: 115px;
+        min-width: 115px;
+        height: auto;
+        border-radius: 12px 0 0 12px;
+    }
+    .team-card-link .team-photo img,
+    .team-card .team-photo img {
+        object-fit: contain;
+        object-position: center center;
     }
     .team-card-link .team-body,
     .team-card .team-body {
-        padding: 14px 18px 18px;
+        padding: 10px 12px 12px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+        min-width: 0;
     }
     .team-card-link .team-body h4,
     .team-card .team-body h4 {
-        font-size: 16px;
-        margin-bottom: 2px;
+        font-size: 15px;
+        margin-bottom: 1px;
     }
     .team-card-link .team-body .team-title,
     .team-card .team-body .team-title {
-        font-size: 12px;
-        margin-bottom: 8px;
+        font-size: 11px;
+        margin-bottom: 5px;
     }
     .team-card-link .team-body p,
     .team-card .team-body p {
         display: -webkit-box;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        line-height: 1.5;
-        font-size: 13px;
+        line-height: 1.4;
+        font-size: 12px;
         margin-bottom: 0;
     }
     .team-card-link .team-body .team-tags,
     .team-card .team-body .team-tags {
-        margin-top: 8px;
-        gap: 4px;
+        margin-top: 5px;
+        gap: 3px;
+        justify-content: flex-start;
     }
     .team-card-link .team-body .team-tags span,
     .team-card .team-body .team-tags span {
-        font-size: 11px;
-        padding: 2px 8px;
+        font-size: 10px;
+        padding: 1px 6px;
     }
 
     .knowledge-grid { grid-template-columns: 1fr; }
