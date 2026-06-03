@@ -118,22 +118,6 @@ img { max-width: 100%; display: block; }
     box-shadow: 0 4px 15px rgba(0,91,172,0.35);
 }
 
-/* Hamburger (mobile) */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    padding: 4px;
-}
-.hamburger span {
-    width: 26px;
-    height: 3px;
-    background: #fff;
-    border-radius: 2px;
-    transition: background 0.3s;
-}
-.header.scrolled .hamburger span { background: #005BAC; }
 
 /* ========== Page Banner ========== */
 .page-banner {
@@ -802,7 +786,6 @@ img { max-width: 100%; display: block; }
         -webkit-overflow-scrolling: touch;
     }
     .nav.open { transform: translateX(0); }
-    .hamburger { display: flex; z-index: 1000; }
     /* Drawer nav links */
     .nav a {
         display: block;

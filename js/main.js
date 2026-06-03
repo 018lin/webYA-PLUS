@@ -1,24 +1,12 @@
 // ======================== Mobile Nav Toggle (side drawer) ========================
 function toggleNav() {
     const nav = document.getElementById('nav');
-    const overlay = document.getElementById('navOverlay');
-    const hamburger = document.getElementById('hamburger');
     const isOpen = nav.classList.toggle('open');
-    if (overlay) {
-        overlay.classList.toggle('visible', isOpen);
-    }
-    if (hamburger) {
-        hamburger.style.zIndex = isOpen ? '1001' : '1000';
-    }
     document.body.style.overflow = isOpen ? 'hidden' : '';
 }
 document.querySelectorAll('.nav a').forEach(link => {
     link.addEventListener('click', () => {
         document.getElementById('nav').classList.remove('open');
-        const overlay = document.getElementById('navOverlay');
-        if (overlay) overlay.classList.remove('visible');
-        const hamburger = document.getElementById('hamburger');
-        if (hamburger) hamburger.style.zIndex = '1000';
         document.body.style.overflow = '';
     });
 });
