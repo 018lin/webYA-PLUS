@@ -885,6 +885,52 @@ img { max-width: 100%; display: block; }
     .specialties-grid { grid-template-columns: 1fr; }
     .insurance-grid { grid-template-columns: 1fr; }
     .team-grid { grid-template-columns: 1fr; }
+    .specialties-grid .specialty-img { height: 160px; }
+    .specialties-grid .specialty-body { padding: 14px 16px; }
+    .specialties-grid .specialty-body p { font-size: 13px; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .specialties-grid .specialty-body .tag-group { gap: 4px; margin-top: 8px; }
+    .specialties-grid .specialty-body .tag { font-size: 11px; padding: 2px 8px; }
+
+    /* ========== Mobile: team card refinements ========== */
+    .team-card-link .team-photo,
+    .team-card .team-photo {
+        height: 200px;
+    }
+    .team-card-link .team-body,
+    .team-card .team-body {
+        padding: 14px 18px 18px;
+    }
+    .team-card-link .team-body h4,
+    .team-card .team-body h4 {
+        font-size: 16px;
+        margin-bottom: 2px;
+    }
+    .team-card-link .team-body .team-title,
+    .team-card .team-body .team-title {
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+    .team-card-link .team-body p,
+    .team-card .team-body p {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.5;
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+    .team-card-link .team-body .team-tags,
+    .team-card .team-body .team-tags {
+        margin-top: 8px;
+        gap: 4px;
+    }
+    .team-card-link .team-body .team-tags span,
+    .team-card .team-body .team-tags span {
+        font-size: 11px;
+        padding: 2px 8px;
+    }
+
     .knowledge-grid { grid-template-columns: 1fr; }
     .footer-top { grid-template-columns: 1fr; gap: 24px; }
     .mobile-float { display: flex; }
