@@ -299,6 +299,7 @@ img { max-width: 100%; display: block; }
         min-height: auto;
         max-height: none;
         display: block;
+        padding-top: 70px;
     }
     .hero-bg {
         position: relative;
