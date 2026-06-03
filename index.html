@@ -266,24 +266,44 @@
             margin-top: 24px;
         }
         .age-group {
-            background: #f7f9fc;
-            border-radius: 10px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 28px 22px 24px;
             text-align: center;
-            border-top: 4px solid #005BAC;
+            border-top: 4px solid var(--accent);
+            background: var(--bg-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .age-group:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.10);
+        }
+        .age-group .age-icon {
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 10px;
         }
         .age-group .age-range {
             font-size: 20px;
             font-weight: 700;
-            color: #005BAC;
+            color: var(--accent);
             margin-bottom: 10px;
         }
         .age-group p {
             font-size: 13px;
-            color: #666;
-            line-height: 1.7;
+            color: #555;
+            line-height: 1.8;
             margin: 0;
         }
+        .age-group p strong {
+            color: #1a2a3a;
+        }
+        /* 各年龄段色彩体系 */
+        .age-group[data-age="0-6"]   { --accent: #4FC3F7; --bg-light: rgba(79,195,247,0.08); }
+        .age-group[data-age="7-12"]  { --accent: #26A69A; --bg-light: rgba(38,166,154,0.08); }
+        .age-group[data-age="13-18"] { --accent: #7E57C2; --bg-light: rgba(126,87,194,0.08); }
+        .age-group[data-age="19-40"] { --accent: #1E88E5; --bg-light: rgba(30,136,229,0.08); }
+        .age-group[data-age="41-59"] { --accent: #FB8C00; --bg-light: rgba(251,140,0,0.08); }
+        .age-group[data-age="60+"]   { --accent: #C9A84C; --bg-light: rgba(201,168,76,0.09); }
 
         /* 缩短理念模块与刷牙模块之间的垂直间距 */
         #philosophy { padding-bottom: 20px; }
@@ -425,28 +445,34 @@
             <p style="text-align:center;font-size:14px;color:#888;margin-bottom:8px;">全生命周期口腔健康管理——惠尔口腔为您全程守护</p>
         </div>
         <div class="age-timeline fade-in">
-            <div class="age-group">
-                <div class="age-range"><i class="fas fa-baby"></i> 0-6岁</div>
+            <div class="age-group" data-age="0-6">
+                <div class="age-icon"><i class="fas fa-baby"></i></div>
+                <div class="age-range">0-6岁</div>
                 <p><strong>乳牙期</strong><br>乳牙萌出后即开始刷牙，每3-6个月涂氟，窝沟封闭防龋。<br>培养良好饮食习惯，避免奶瓶龋。</p>
             </div>
-            <div class="age-group">
-                <div class="age-range"><i class="fas fa-child"></i> 7-12岁</div>
+            <div class="age-group" data-age="7-12">
+                <div class="age-icon"><i class="fas fa-child"></i></div>
+                <div class="age-range">7-12岁</div>
                 <p><strong>换牙期</strong><br>关注恒牙萌出情况，早期矫治评估。<br>加强口腔卫生教育，预防龋病，做好窝沟封闭。</p>
             </div>
-            <div class="age-group">
-                <div class="age-range"><i class="fas fa-user-graduate"></i> 13-18岁</div>
+            <div class="age-group" data-age="13-18">
+                <div class="age-icon"><i class="fas fa-user-graduate"></i></div>
+                <div class="age-range">13-18岁</div>
                 <p><strong>青少年期</strong><br>矫正牙齿的黄金期。<br>注意青春期牙龈炎防治，保持良好口腔卫生习惯。</p>
             </div>
-            <div class="age-group">
-                <div class="age-range"><i class="fas fa-user-tie"></i> 19-40岁</div>
+            <div class="age-group" data-age="19-40">
+                <div class="age-icon"><i class="fas fa-user-tie"></i></div>
+                <div class="age-range">19-40岁</div>
                 <p><strong>成年期</strong><br>定期洁牙，关注牙周健康。<br>孕前做好口腔检查，孕期注意牙龈问题。</p>
             </div>
-            <div class="age-group">
-                <div class="age-range"><i class="fas fa-user"></i> 41-59岁</div>
+            <div class="age-group" data-age="41-59">
+                <div class="age-icon"><i class="fas fa-user"></i></div>
+                <div class="age-range">41-59岁</div>
                 <p><strong>中年期</strong><br>牙周疾病高发期，定期牙周维护。<br>关注牙齿磨损、敏感问题，及时修复缺失牙。</p>
             </div>
-            <div class="age-group">
-                <div class="age-range"><i class="fas fa-user-plus"></i> 60岁+</div>
+            <div class="age-group" data-age="60+">
+                <div class="age-icon"><i class="fas fa-user-plus"></i></div>
+                <div class="age-range">60岁+</div>
                 <p><strong>老年期</strong><br>目标：80岁拥有20颗功能牙。<br>定期检查、积极治疗，义齿也需要专业维护。</p>
             </div>
         </div>
