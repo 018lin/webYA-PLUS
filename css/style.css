@@ -238,6 +238,18 @@ img { max-width: 100%; display: block; }
     box-shadow: 0 8px 30px rgba(0,0,0,0.15);
 }
 
+/* Blue strip on top matching navbar height */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: #005BAC;
+    z-index: 1;
+}
+
 /* Scroll indicator */
 .hero-scroll {
     position: absolute;
@@ -313,6 +325,48 @@ img { max-width: 100%; display: block; }
     .hero-btn { padding: 13px 32px; font-size: 15px; }
     .hero-badge { font-size: 12px; padding: 5px 16px; margin-bottom: 24px; }
     .hero-scroll { display: none; }
+}
+
+/* ========== Page Hero (full-screen image banner, same as homepage) ========== */
+.page-hero .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0;
+}
+@media (max-width: 768px) {
+    .page-hero .hero-content h1 { font-size: 26px; }
+}
+.page-hero .hero-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0;
+}
+.page-hero .hero-content h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.30);
+}
+.page-hero .hero-content p {
+    font-size: 16px;
+    opacity: 0.92;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.25);
+}
+@media (max-width: 768px) {
+    .page-hero {
+        height: auto;
+        min-height: auto;
+        max-height: none;
+    }
+    .page-hero .hero-content h1 {
+        font-size: 26px;
+    }
 }
 
 /* ========== Section Common ========== */
@@ -1001,4 +1055,171 @@ img { max-width: 100%; display: block; }
 .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* ========== Doctor Detail Page ========== */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #005BAC;
+    margin-bottom: 30px;
+    transition: color 0.3s;
+}
+.back-link:hover {
+    color: #003d7a;
+}
+.doctor-detail {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 50px;
+    align-items: start;
+}
+.doctor-photo-frame {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+    background: linear-gradient(135deg, #e8f4ff, #d0eaff);
+}
+.doctor-photo-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+.doctor-info-col h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a2a3a;
+    margin-bottom: 8px;
+}
+.doctor-title-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #005BAC, #0072C6);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+.doctor-bio p {
+    font-size: 15px;
+    color: #555;
+    line-height: 2;
+    margin-bottom: 16px;
+}
+.doctor-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 28px;
+}
+.doctor-tags span {
+    background: #e8f4ff;
+    color: #005BAC;
+    font-size: 13px;
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+.doctor-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #005BAC, #0072C6);
+    color: #fff;
+    padding: 13px 36px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(0,91,172,0.25);
+}
+.doctor-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,91,172,0.35);
+    color: #fff;
+}
+@media (max-width: 992px) {
+    .doctor-detail { grid-template-columns: 300px 1fr; gap: 30px; }
+}
+@media (max-width: 768px) {
+    .doctor-detail { grid-template-columns: 1fr; gap: 30px; }
+    .doctor-photo-frame { max-width: 300px; margin: 0 auto; }
+    .doctor-info-col h2 { font-size: 26px; text-align: center; }
+    .doctor-title-tag { text-align: center; display: table; margin-left: auto; margin-right: auto; }
+    .doctor-tags { justify-content: center; }
+    .doctor-cta-btn { display: flex; justify-content: center; }
+}
+
+/* ========== Team Card as Clickable Link ========== */
+.team-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    transition: transform 0.4s, box-shadow 0.4s;
+    background: #fff;
+}
+.team-card-link:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0,91,172,0.12);
+    text-decoration: none;
+    color: inherit;
+}
+.team-card-link .team-photo {
+    height: 280px;
+    background: linear-gradient(135deg, #e8f4ff, #d0eaff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.team-card-link .team-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+.team-card-link .team-body {
+    padding: 24px;
+    text-align: center;
+}
+.team-card-link .team-body h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a2a3a;
+    margin-bottom: 4px;
+}
+.team-card-link .team-body .team-title {
+    font-size: 13px;
+    color: #005BAC;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+.team-card-link .team-body p {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.8;
+    text-align: left;
+}
+.team-card-link .team-body .team-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+    justify-content: center;
+}
+.team-card-link .team-body .team-tags span {
+    background: #e8f4ff;
+    color: #005BAC;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 4px;
 }
