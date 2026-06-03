@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惠尔口腔 - 联系我们</title>
+    <link rel="icon" href="images/01_logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        window._AMapSecurityConfig = {
+            securityJsCode: '796d57f1534c5e73603ad1555e678c0a',
+        };
+    </script>
+    <script src="https://webapi.amap.com/maps?v=2.0&key=4937beb99328133525aeccf94a8fe0e0"></script>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="header" id="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="images/01_logo.png" alt="惠尔口腔" style="height:42px;width:auto;">
+            <div class="logo-text">惠尔口腔 <span>Here Dental</span></div>
+        </a>
+        <nav class="nav" id="nav">
+            <a href="index.html">首页</a>
+            <a href="about.html">机构介绍</a>
+            <a href="team.html">专家团队</a>
+            <a href="specialties.html">特色专科</a>
+            <a href="knowledge.html">相关科普</a>
+            <a href="contact.html" class="active">联系我们</a>
+            <a href="contact.html" class="nav-cta"><i class="fas fa-phone-alt"></i>&nbsp; 预约咨询</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ===================== PAGE BANNER ===================== -->
+<section class="page-banner">
+    <div class="container">
+        <h1>联系我们</h1>
+        <p>用心服务 · 从齿开始</p>
+    </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="section">
+    <div class="container">
+        <div class="contact-grid">
+            <div>
+                <div class="contact-info-card fade-in">
+                    <h3>联系方式</h3>
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <p><strong>咨询热线</strong></p>
+                            <p>0752-7820202</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <p><strong>电子邮箱</strong></p>
+                            <p>hcjkqmz@163.com</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <p><strong>诊所地址</strong></p>
+                            <p>惠州市惠城区麦地东二路鸿润花园A栋102-106铺</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <p><strong>营业时间</strong></p>
+                            <p>周一至周四09：00--20：00 周五至周日09：00--18：00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-map fade-in">
+                    <div id="amap-container" style="width:100%;height:360px;border-radius:10px;"></div>
+                </div>
+            </div>
+            <div class="contact-form-card fade-in">
+                <h3>在线预约</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" placeholder="请输入您的姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">手机号码</label>
+                        <input type="tel" id="phone" placeholder="请输入您的手机号">
+                    </div>
+                    <div class="form-group">
+                        <label for="type">预约项目</label>
+                        <select id="type">
+                            <option value="">请选择预约项目</option>
+                            <option>牙齿矫正</option>
+                            <option>牙齿种植</option>
+                            <option>牙齿修复</option>
+                            <option>儿童牙科</option>
+                            <option>牙周治疗</option>
+                            <option>牙齿美容</option>
+                            <option>微创拔牙</option>
+                            <option>牙齿全科</option>
+                            <option>牙体牙髓</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">期望就诊日期</label>
+                        <input type="date" id="date">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">备注</label>
+                        <textarea id="message" placeholder="如有特殊需求请在此说明"></textarea>
+                    </div>
+                    <button type="button" class="submit-btn">提交预约</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="logo-text" style="font-size:18px;color:#fff;font-weight:700;margin-bottom:12px;">
+                    惠尔口腔 <span style="color:rgba(255,255,255,0.5);font-weight:400;font-size:13px;">Here Dental</span>
+                </div>
+                <p>
+                    惠尔口腔集团旗下口腔医疗连锁品牌，以"保险+医疗"创新模式，
+                    致力于为全民提供全生命周期口腔健康管理服务。
+                </p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-weibo"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-qq"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>联系我们</h5>
+                <a href="contact.html"><i class="fas fa-phone-alt"></i>&nbsp; 0752-7820202</a>
+                <a href="contact.html"><i class="fas fa-envelope"></i>&nbsp; hcjkqmz@163.com</a>
+                <a href="contact.html"><i class="fas fa-map-marker-alt"></i>&nbsp; 惠州市惠城区麦地东二路鸿润花园A栋102-106铺</a>
+                <a href="contact.html"><i class="fas fa-clock"></i>&nbsp; 周一至周四09：00--20：00 周五至周日09：00--18：00</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 惠尔口腔集团 版权所有 &nbsp;|&nbsp;
+            <a href="https://beian.miit.gov.cn/" target="_blank">（备案号）</a>&nbsp;|&nbsp;
+            <a href="#">隐私政策</a>&nbsp;|&nbsp;
+            <a href="#">网站地图</a>
+        </div>
+    </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<div class="mobile-float">
+    <a href="index.html"><i class="fas fa-home"></i>首页</a>
+    <a href="team.html"><i class="fas fa-user-md"></i>专家</a>
+    <a href="specialties.html"><i class="fas fa-tooth"></i>专科</a>
+    <a href="knowledge.html"><i class="fas fa-book-medical"></i>科普</a>
+    <a href="contact.html" class="active"><i class="fas fa-phone-alt"></i>电话</a>
+    <a href="contact.html"><i class="fas fa-calendar-check"></i>预约</a>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var map = new AMap.Map('amap-container', {
+            zoom: 16,
+            center: [114.409602, 23.06347],
+        });
+        var svgIcon = '<svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">' +
+            '<circle cx="18" cy="18" r="16" fill="#1A73E8" stroke="white" stroke-width="2"/>' +
+            '<circle cx="18" cy="14" r="4" fill="white"/>' +
+            '<text x="18" y="30" text-anchor="middle" font-size="10" fill="white" font-weight="bold">⚕</text>' +
+        '</svg>';
+        var marker = new AMap.Marker({
+            position: [114.409602, 23.06347],
+            map: map,
+            title: '惠尔口腔',
+            content: svgIcon,
+            offset: new AMap.Pixel(-18, -18),
+            label: {
+                content: '<span style="color:#1A73E8;font-weight:bold;font-size:14px;background:white;padding:2px 8px;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,0.15);white-space:nowrap;">惠尔口腔</span>',
+                direction: 'right',
+                offset: new AMap.Pixel(8, 0),
+            },
+        });
+    });
+</script>
+</body>
+</html>
+
+

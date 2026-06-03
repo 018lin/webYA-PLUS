@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杨远洋 - 惠尔口腔专家团队</title>
+    <link rel="icon" href="images/01_logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .gallery-item { cursor: pointer; }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+        .lightbox.show { display: flex; }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+            object-fit: contain;
+        }
+        .lightbox .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 36px;
+            color: #fff;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+        .lightbox .close-btn:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="header" id="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="images/01_logo.png" alt="惠尔口腔" style="height:42px;width:auto;">
+            <div class="logo-text">惠尔口腔 <span>Here Dental</span></div>
+        </a>
+        <nav class="nav" id="nav">
+            <a href="index.html">首页</a>
+            <a href="about.html">机构介绍</a>
+            <a href="team.html" class="active">专家团队</a>
+            <a href="specialties.html">特色专科</a>
+            <a href="knowledge.html">相关科普</a>
+            <a href="contact.html">联系我们</a>
+            <a href="contact.html" class="nav-cta"><i class="fas fa-phone-alt"></i>&nbsp; 预约咨询</a>
+        </nav>
+    </div>
+</header>
+
+
+<!-- ===================== DOCTOR DETAIL ===================== -->
+<section class="section">
+    <div class="container">
+        <a href="team.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回专家团队</a>
+        <div class="doctor-detail">
+            <div class="doctor-photo-col fade-in">
+                <div class="doctor-photo-frame">
+                    <img src="images/杨医生海报.png" alt="杨远洋">
+                </div>
+            </div>
+            <div class="doctor-info-col fade-in">
+                <h2>杨远洋</h2>
+                <div class="doctor-title-tag">正畸院长 / 创始合伙人</div>
+                <div class="doctor-bio">
+                    <p>遵义医科大学毕业（2009年），从事口腔正畸与颜面管理、口腔美学修复十余年，具有丰富的临床经验与扎实的专业功底。</p>
+                    <p>2018年荣获中华口腔医学会口腔正畸专业委员会举办的「COS 全国口腔正畸青年医师优秀病例展评」第一名，其病例报告以严谨的诊疗逻辑与出色的美学效果获得评审专家一致好评。</p>
+                    <p>曾多次受邀担任 KQ88 口腔网校牙医沙龙讲师，致力于口腔正畸技术的推广与青年医师的培养。杨远洋院长秉持"功能与美学并重"的矫治理念，擅长运用数字化正畸技术为患者定制个性化的颜面管理与微笑设计方案。</p>
+                </div>
+                <div class="doctor-tags">
+                    <span>口腔正畸</span>
+                    <span>颜面管理</span>
+                    <span>美学修复</span>
+                    <span>数字化正畸</span>
+                    <span>微笑设计</span>
+                </div>
+                <a href="contact.html" class="doctor-cta-btn"><i class="fas fa-phone-alt"></i> 预约看诊</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== DOCTOR GALLERY ===================== -->
+<section class="section">
+    <div class="container">
+        <div class="fade-in" style="text-align:center;margin-bottom:40px;">
+            <h2 style="font-size:28px;font-weight:700;color:#00204a;">医师风采</h2>
+            <p style="color:#666;margin-top:6px;">杨远洋院长临床风采与学术荣誉</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;">
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <img src="images/杨医生图片.jpg" alt="杨远洋" style="width:100%;height:200px;object-fit:cover;display:block;">
+            </div>
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <img src="images/杨医生图片1.jpg" alt="杨远洋" style="width:100%;height:200px;object-fit:cover;display:block;">
+            </div>
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <img src="images/杨医生图片2.jpg" alt="杨远洋" style="width:100%;height:200px;object-fit:cover;display:block;">
+            </div>
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <img src="images/杨医生相关报道1.jpg" alt="相关报道" style="width:100%;height:200px;object-fit:cover;display:block;">
+            </div>
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <img src="images/杨医生获奖名单.jpg" alt="获奖名单" style="width:100%;height:200px;object-fit:cover;display:block;">
+            </div>
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <img src="images/杨医生获奖名单2.jpg" alt="获奖名单" style="width:100%;height:200px;object-fit:cover;display:block;">
+            </div>
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <img src="images/杨医生邀请函.jpg" alt="邀请函" style="width:100%;height:200px;object-fit:cover;display:block;">
+            </div>
+            <div class="gallery-item" style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:transform 0.3s;" onclick="openLightbox(this)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <img src="images/杨医生邀请函1.jpg" alt="邀请函" style="width:100%;height:200px;object-fit:cover;display:block;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== RELATED REPORTS ===================== -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="fade-in" style="text-align:center;margin-bottom:40px;">
+            <h2 style="font-size:28px;font-weight:700;color:#00204a;">相关报道</h2>
+            <p style="color:#666;margin-top:6px;">媒体聚焦 · 杨远洋院长学术与临床贡献</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;">
+            <a href="https://static.nfapp.southcn.com/content/201809/28/c1532773.html?colID=76&from=groupmessage&isappinstalled=0&layer=2&share_token=" target="_blank" rel="noopener noreferrer" class="knowledge-card fade-in" style="text-decoration:none;color:inherit;">
+                <div class="knowledge-img" style="height:180px;background-image:url('https://pic.nfapp.southcn.com/nfplus/ossfs/pic/xy/201809/28/bcf8e54e-71fe-480c-8063-e37191098074.png?x-oss-process=style/w640');background-size:cover;background-position:center;">
+                    <span style="font-size:12px;color:#fff;background:rgba(0,0,0,0.55);padding:3px 12px;border-radius:20px;margin-top:auto;margin-bottom:10px;">南方+</span>
+                </div>
+                <div class="knowledge-body">
+                    <h4>厉害了！口腔正畸全国赛，这名专家夺冠</h4>
+                    <p style="font-size:13px;color:#666;margin-top:6px;">2018-09-28 · 南方+客户端</p>
+                </div>
+            </a>
+            <a href="https://mp.weixin.qq.com/s/RUI2O7S_3Ki5d2ffRoV_Vg" target="_blank" rel="noopener noreferrer" class="knowledge-card fade-in" style="text-decoration:none;color:inherit;">
+                <div class="knowledge-img" style="height:180px;background-image:url('http://mmbiz.qpic.cn/mmbiz_jpg/pDc4qv2Uhe4OvYHKxtXGiaWaHdjPCVTrS1ibMicQjiaVnQhxHtVias3pfF2DiaN1EywvB4d8FNODwtSkVfbVWbpNUKeQ/0?wx_fmt=jpeg');background-size:cover;background-position:center;">
+                    <span style="font-size:12px;color:#fff;background:rgba(7,193,96,0.75);padding:3px 12px;border-radius:20px;margin-top:auto;margin-bottom:10px;">微信公众号</span>
+                </div>
+                <div class="knowledge-body">
+                    <h4>惠尔口腔：保险+医疗的创新实践</h4>
+                    <p style="font-size:13px;color:#666;margin-top:6px;">惠尔口腔官方公众号</p>
+                </div>
+            </a>
+            <a href="https://c.m.163.com/news/a/IIAB33CB055642BW.html?spss=newsapp&spsnuid=&spsdevid=F29A6082-67C6-4109-AE80-B32CF6006FC7&spsvid=&spsshare=wx&spsts=1698662898765&spstoken=PYv1nTt1G814GQN2X1eUD4aN9CtgQcbrPD%2BXuEtt3NfWx7A%2Bty%2BZo6thO5n7GjJe&spssid=cc646b2659db3a17826d77ee68568439&spsw=3&isFromH5Share=article" target="_blank" rel="noopener noreferrer" class="knowledge-card fade-in" style="text-decoration:none;color:inherit;">
+                <div class="knowledge-img" style="height:180px;background-image:url('http://dingyue.ws.126.net/2023/1030/b175502bj00s3bz7p006dd0018g00u0p.jpg');background-size:cover;background-position:center;">
+                    <span style="font-size:12px;color:#fff;background:rgba(211,33,44,0.75);padding:3px 12px;border-radius:20px;margin-top:auto;margin-bottom:10px;">网易新闻</span>
+                </div>
+                <div class="knowledge-body">
+                    <h4>惠州口腔正畸医生再获国家级殊荣</h4>
+                    <p style="font-size:13px;color:#666;margin-top:6px;">2023-10-30 · 网易新闻</p>
+                </div>
+            </a>
+            <a href="https://mp.weixin.qq.com/s/021TFen2vbQn1RK6clWZ0Q" target="_blank" rel="noopener noreferrer" class="knowledge-card fade-in" style="text-decoration:none;color:inherit;">
+                <div class="knowledge-img" style="height:180px;background-image:url('https://mmbiz.qpic.cn/mmbiz_jpg/WEVMBxEia63UJzex0Q911fHWRrvib9OsUYlTg0qrTYE0oibXozjzOIvfcnklvklIianKsuAvpjh0xTMo3o5rh2rKPw/0?wx_fmt=jpeg');background-size:cover;background-position:center;">
+                    <span style="font-size:12px;color:#fff;background:rgba(7,193,96,0.75);padding:3px 12px;border-radius:20px;margin-top:auto;margin-bottom:10px;">微信公众号</span>
+                </div>
+                <div class="knowledge-body">
+                    <h4>数字化正畸：杨远洋院长的专业分享</h4>
+                    <p style="font-size:13px;color:#666;margin-top:6px;">惠尔口腔官方公众号</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== LIGHTBOX ===================== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="close-btn">&times;</span>
+    <img id="lightbox-img" src="">
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="logo-text" style="font-size:18px;color:#fff;font-weight:700;margin-bottom:12px;">
+                    惠尔口腔 <span style="color:rgba(255,255,255,0.5);font-weight:400;font-size:13px;">Here Dental</span>
+                </div>
+                <p>
+                    惠尔口腔集团旗下口腔医疗连锁品牌，以"保险+医疗"创新模式，
+                    致力于为全民提供全生命周期口腔健康管理服务。
+                </p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-weibo"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-qq"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>联系我们</h5>
+                <a href="contact.html"><i class="fas fa-phone-alt"></i>&nbsp; 0752-7820202</a>
+                <a href="contact.html"><i class="fas fa-envelope"></i>&nbsp; hcjkqmz@163.com</a>
+                <a href="contact.html"><i class="fas fa-map-marker-alt"></i>&nbsp; 惠州市惠城区麦地东二路鸿润花园A栋102-106铺</a>
+                <a href="contact.html"><i class="fas fa-clock"></i>&nbsp; 周一至周四09：00--20：00 周五至周日09：00--18：00</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 惠尔口腔集团 版权所有 &nbsp;|&nbsp;
+            <a href="https://beian.miit.gov.cn/" target="_blank">（备案号）</a>&nbsp;|&nbsp;
+            <a href="#">隐私政策</a>&nbsp;|&nbsp;
+            <a href="#">网站地图</a>
+        </div>
+    </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<div class="mobile-float">
+    <a href="index.html"><i class="fas fa-home"></i>首页</a>
+    <a href="team.html" class="active"><i class="fas fa-user-md"></i>专家</a>
+    <a href="specialties.html"><i class="fas fa-tooth"></i>专科</a>
+    <a href="knowledge.html"><i class="fas fa-book-medical"></i>科普</a>
+    <a href="contact.html"><i class="fas fa-phone-alt"></i>电话</a>
+    <a href="contact.html"><i class="fas fa-calendar-check"></i>预约</a>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+    function openLightbox(el) {
+        var img = el.querySelector('img');
+        document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+</script>
+</body>
+</html>
