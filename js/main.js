@@ -74,12 +74,51 @@ if (sections.length > 0) {
     });
 }
 
-// ======================== Preview mode (hide other page links) ========================
-if (location.search.includes('preview')) {
-    document.querySelectorAll('.nav a:not([href="index.html"])').forEach(el => {
+// ======================== Home-only mode (append ?preview to the URL) ========================
+(function initHomeOnlyMode() {
+    const suffixText = (location.search + location.hash).toLowerCase();
+    const isHomeOnlyMode =
+        suffixText.includes('preview') ||
+        suffixText.includes('homeonly') ||
+        suffixText.includes('home-only');
+
+    if (!isHomeOnlyMode) return;
+
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const isHomePage = currentPage === 'index.html';
+    const modeSuffix = location.search ? location.search + location.hash : (location.hash || '?preview');
+
+    if (!isHomePage) {
+        window.location.replace('index.html' + modeSuffix);
+        return;
+    }
+
+    function getLocalHtmlPage(href) {
+        const rawHref = (href || '').trim();
+        if (!rawHref || rawHref.startsWith('#') || rawHref.startsWith('?')) return '';
+        if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(rawHref)) return '';
+
+        const path = rawHref.split('#')[0].split('?')[0];
+        const page = path.split('/').pop() || 'index.html';
+        return page.endsWith('.html') ? page : '';
+    }
+
+    document.querySelectorAll('a[href]').forEach(link => {
+        const page = getLocalHtmlPage(link.getAttribute('href'));
+        if (!page) return;
+
+        if (page === 'index.html') {
+            link.setAttribute('href', 'index.html' + modeSuffix);
+            return;
+        }
+
+        link.setAttribute('aria-disabled', 'true');
+        link.addEventListener('click', event => {
+            event.preventDefault();
+        });
+    });
+
+    document.querySelectorAll('.nav a[aria-disabled="true"], .mobile-float a[aria-disabled="true"]').forEach(el => {
         el.style.display = 'none';
     });
-    document.querySelectorAll('.mobile-float a:not([href="index.html"])').forEach(el => {
-        el.style.display = 'none';
-    });
-}
+})();
