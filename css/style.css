@@ -592,44 +592,61 @@ img { max-width: 100%; display: block; }
     gap: 24px;
 }
 .about-pillar {
-    background: #fff;
+    position: relative;
+    overflow: hidden;
     border-radius: 16px;
-    padding: 30px 24px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.05);
-    border: 1px solid rgba(0,91,172,0.08);
+    min-height: 320px;
+    padding: 28px 22px;
+    background-color: #0f3d69;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.10);
+    border: 1px solid rgba(255,255,255,0.12);
     transition: transform 0.35s ease, box-shadow 0.35s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 .about-pillar:hover {
     transform: translateY(-8px);
-    box-shadow: 0 18px 42px rgba(0,91,172,0.12);
+    box-shadow: 0 22px 48px rgba(0,0,0,0.18);
 }
-.about-pillar-icon {
-    width: 58px;
-    height: 58px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #005BAC, #00A0E0);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 24px rgba(0,91,172,0.22);
+.about-pillar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8,34,66,0.12) 0%, rgba(8,34,66,0.72) 58%, rgba(8,34,66,0.86) 100%);
+    z-index: 0;
 }
 .about-pillar h4 {
+    position: relative;
+    z-index: 1;
     font-size: 18px;
-    color: #1a2a3a;
+    color: #fff;
     margin-bottom: 10px;
 }
 .about-pillar p {
+    position: relative;
+    z-index: 1;
     font-size: 14px;
-    color: #666;
+    color: rgba(255,255,255,0.88);
     line-height: 1.8;
 }
+.about-pillar-safe {
+    background-image: url('../images/操作安全规范/image_33.jpg');
+}
+.about-pillar-professional {
+    background-image: url('../images/服务项目/微创拔牙/微创拔牙示意.jpg');
+}
+.about-pillar-family {
+    background-image: url('../images/诊所环境/儿童娱乐区.jpg');
+}
+.about-pillar-communication {
+    background-image: url('../images/18_nav_doctors.jpg');
+}
 .about-facility-section {
-    background:
-        radial-gradient(circle at top right, rgba(0,160,224,0.12), transparent 30%),
-        linear-gradient(180deg, #f9fcff 0%, #ffffff 42%);
+    background: #ffffff;
 }
 .facility-hero {
     display: grid;
