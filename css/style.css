@@ -118,42 +118,6 @@ img { max-width: 100%; display: block; }
     box-shadow: 0 4px 15px rgba(0,91,172,0.35);
 }
 
-.about-page .header {
-    background: rgba(255,255,255,0.98);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-}
-.about-page .logo-text {
-    color: #005BAC;
-}
-.about-page .logo-text span {
-    color: #999;
-}
-.about-page .nav a {
-    color: #333;
-}
-.about-page .nav a:hover,
-.about-page .nav .active {
-    color: #005BAC;
-}
-.about-page .nav a::after,
-.about-page .nav .active::after {
-    background: #005BAC;
-}
-.about-page .nav-cta {
-    background: linear-gradient(135deg, #005BAC, #0072C6);
-    border: none;
-    color: #fff !important;
-}
-.about-page .about-banner {
-    background: #fff;
-    color: #1a2a3a;
-}
-.about-page .about-banner p {
-    color: #666;
-    opacity: 1;
-}
-
-
 /* ========== Page Banner ========== */
 .page-banner {
     position: relative;
@@ -909,6 +873,11 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 768px) {
+    .header {
+        background: rgba(0, 91, 172, 0.72);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
     .nav {
         position: fixed;
         top: 0;
@@ -981,7 +950,7 @@ img { max-width: 100%; display: block; }
     .mobile-float { display: flex; }
     body { padding-bottom: 64px; }
     .hero-content .hero-btn { padding: 12px 28px; font-size: 14px; }
-    .page-banner { padding: 50px 0; }
+    .page-banner { padding: 96px 0 44px; }
     .page-banner h1 { font-size: 26px; }
     .contact-grid { grid-template-columns: 1fr; }
 }
@@ -1313,6 +1282,51 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 768px) {
+    .knowledge-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .knowledge-card {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .knowledge-img {
+        flex: 0 0 36%;
+        max-width: 132px;
+        min-width: 112px;
+        height: auto;
+        min-height: 210px;
+        font-size: 40px;
+    }
+
+    .knowledge-card:hover .knowledge-img {
+        transform: none;
+    }
+
+    .knowledge-body {
+        flex: 1 1 auto;
+        padding: 18px 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .knowledge-body h4 {
+        font-size: 17px;
+    }
+
+    .knowledge-body p {
+        font-size: 13px;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .knowledge-body .knowledge-meta {
+        margin-top: 10px;
+    }
+
     .team-grid {
         grid-template-columns: 1fr;
         gap: 18px;
@@ -1327,8 +1341,10 @@ img { max-width: 100%; display: block; }
         flex: 0 0 36%;
         max-width: 132px;
         min-width: 112px;
-        height: 210px;
-        padding: 10px;
+        height: auto;
+        aspect-ratio: 512 / 729;
+        align-self: flex-start;
+        padding: 6px;
     }
 
     .team-card-link .team-photo img {
@@ -1336,6 +1352,7 @@ img { max-width: 100%; display: block; }
         height: 100%;
         object-fit: contain;
         object-position: center top;
+        border-radius: 4px;
     }
 
     .team-card-link .team-body {
