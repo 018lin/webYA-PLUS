@@ -1117,16 +1117,25 @@ img { max-width: 100%; display: block; }
 }
 .footer-top {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 40px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+    gap: clamp(60px, 8vw, 140px);
+    align-items: start;
     padding-bottom: 30px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
 }
+.footer-brand {
+    max-width: 560px;
+}
 .footer-brand .logo-text { color: #fff; margin-bottom: 16px; display: inline-block; }
 .footer-brand p {
-    font-size: 14px;
-    line-height: 1.8;
-    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.9;
+    margin-bottom: 14px;
+    color: rgba(255,255,255,0.72);
+}
+.footer-brand .footer-note {
+    color: rgba(255,255,255,0.58);
+    margin-bottom: 18px;
 }
 .footer-social a {
     display: inline-flex;
@@ -1143,17 +1152,22 @@ img { max-width: 100%; display: block; }
     background: #005BAC;
     color: #fff;
 }
+.footer-col {
+    max-width: 460px;
+    justify-self: end;
+}
 .footer-col h5 {
     color: #fff;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 600;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 .footer-col a {
     display: block;
-    font-size: 14px;
+    font-size: 15px;
     color: rgba(255,255,255,0.6);
-    margin-bottom: 10px;
+    line-height: 1.7;
+    margin-bottom: 12px;
     transition: color 0.3s;
 }
 .footer-col a:hover { color: #fff; }
@@ -1241,7 +1255,9 @@ img { max-width: 100%; display: block; }
     .about-cta-actions { justify-content: flex-start; }
     .specialties-grid { grid-template-columns: repeat(2, 1fr); }
     .insurance-grid { grid-template-columns: repeat(2, 1fr); }
-    .footer-top { grid-template-columns: repeat(2, 1fr); }
+    .footer-top { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+    .footer-brand,
+    .footer-col { max-width: none; justify-self: start; }
     .contact-grid { grid-template-columns: 1fr; }
     .team-grid { grid-template-columns: repeat(2, 1fr); }
     .knowledge-grid { grid-template-columns: repeat(2, 1fr); }
