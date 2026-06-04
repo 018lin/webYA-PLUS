@@ -733,6 +733,11 @@ img { max-width: 100%; display: block; }
     gap: 18px;
     margin-top: 26px;
 }
+.safety-points-gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    align-items: stretch;
+}
 .safety-point {
     display: grid;
     grid-template-columns: 52px 1fr;
@@ -765,6 +770,19 @@ img { max-width: 100%; display: block; }
     font-size: 14px;
     color: #666;
     line-height: 1.8;
+}
+.safety-point-card {
+    margin: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid rgba(0,91,172,0.10);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.07);
+}
+.safety-point-card img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
 }
 .honor-highlight {
     display: grid;
@@ -1331,6 +1349,7 @@ img { max-width: 100%; display: block; }
     .honor-card img { height: 230px; }
     .facility-hero-image { min-height: 260px; }
     .safety-content { padding-right: 0; }
+    .safety-points-gallery { grid-template-columns: 1fr; }
     .safety-point {
         grid-template-columns: 44px 1fr;
         gap: 12px;
