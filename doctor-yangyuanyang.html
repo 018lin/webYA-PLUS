@@ -9,35 +9,6 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
         .gallery-item { cursor: pointer; }
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            inset: 0;
-            background: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-        }
-        .lightbox.show { display: flex; }
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 8px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-            object-fit: contain;
-        }
-        .lightbox .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 36px;
-            color: #fff;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: 0.3s;
-        }
-        .lightbox .close-btn:hover { opacity: 1; }
     </style>
 </head>
 <body>
@@ -129,6 +100,66 @@
     </div>
 </section>
 
+<!-- ===================== DOCTOR HONORS ===================== -->
+<section class="section bg-light doctor-honors-section">
+    <div class="container">
+        <div class="fade-in" style="text-align:center;margin-bottom:40px;">
+            <h2 style="font-size:28px;font-weight:700;color:#00204a;">医师荣誉</h2>
+            <p style="color:#666;margin-top:6px;">杨远洋院长专业荣誉与学术成果</p>
+        </div>
+        <div class="doctor-honor-grid">
+            <div class="doctor-honor-card featured fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/荣誉/杨远洋医生荣誉02.jpg" alt="杨远洋医生荣誉02">
+                </div>
+                <div class="doctor-honor-title">惠州市口腔医学会第一届口腔正畸专业委员会委员</div>
+            </div>
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/荣誉/杨远洋医生荣誉03.jpg" alt="杨远洋医生荣誉03">
+                </div>
+                <div class="doctor-honor-title">2018 COS 全国口腔正畸青年医师优秀病例展评十强优秀病例</div>
+            </div>
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/荣誉/杨远洋医生荣誉04.jpg" alt="杨远洋医生荣誉04">
+                </div>
+                <div class="doctor-honor-title">2018 COS 全国口腔正畸青年医师优秀病例展评优秀病例十强</div>
+            </div>
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/荣誉/杨远洋医生荣誉05.jpg" alt="杨远洋医生荣誉05">
+                </div>
+                <div class="doctor-honor-title">2017 广东省民营口腔医生优秀病例展示竞赛金奖</div>
+            </div>
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/荣誉/杨远洋医生荣誉06.jpg" alt="杨远洋医生荣誉06">
+                </div>
+                <div class="doctor-honor-title">爱迪特杯“绚彩 AT”征文大赛一等奖</div>
+            </div>
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/荣誉/杨远洋医生荣誉07.jpg" alt="杨远洋医生荣誉07">
+                </div>
+                <div class="doctor-honor-title">2019 A-Tech“精准·无限可能”大会参会荣誉</div>
+            </div>
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/荣誉/杨远洋医生荣誉08.jpg" alt="杨远洋医生荣誉08">
+                </div>
+                <div class="doctor-honor-title">第二届“维尔德杯”海峡两岸口腔跨学科病例展评优秀病例奖</div>
+            </div>
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/荣誉/杨远洋医生荣誉09.jpg" alt="杨远洋医生荣誉09">
+                </div>
+                <div class="doctor-honor-title">Invisalign Training Course 结业证书</div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ===================== RELATED REPORTS ===================== -->
 <section class="section bg-light">
     <div class="container">
@@ -181,6 +212,7 @@
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <span class="close-btn">&times;</span>
     <img id="lightbox-img" src="">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
 </div>
 
 <!-- ===================== FOOTER ===================== -->
@@ -236,7 +268,9 @@
 <script>
     function openLightbox(el) {
         var img = el.querySelector('img');
+        var title = el.querySelector('.doctor-honor-title');
         document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox-caption').textContent = title ? title.textContent : img.alt;
         document.getElementById('lightbox').classList.add('show');
         document.body.style.overflow = 'hidden';
     }

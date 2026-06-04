@@ -60,6 +60,37 @@
     </div>
 </section>
 
+<!-- ===================== DOCTOR HONORS ===================== -->
+<section class="section bg-light doctor-honors-section">
+    <div class="container">
+        <div class="fade-in" style="text-align:center;margin-bottom:40px;">
+            <h2 style="font-size:28px;font-weight:700;color:#00204a;">医师荣誉</h2>
+            <p style="color:#666;margin-top:6px;">吴国平医生专业荣誉展示</p>
+        </div>
+        <div class="doctor-honor-grid">
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/荣誉/吴国平医生荣誉01.jpg" alt="吴国平医生荣誉01">
+                </div>
+                <div class="doctor-honor-title">广东省口腔医学会第三届民营口腔医疗分会委员聘书</div>
+            </div>
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/荣誉/吴国平医生荣誉02.jpg" alt="吴国平医生荣誉02">
+                </div>
+                <div class="doctor-honor-title">惠州市青年联合会第八届委员会委员当选证书</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== LIGHTBOX ===================== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="close-btn">&times;</span>
+    <img id="lightbox-img" src="">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
 <!-- ===================== FOOTER ===================== -->
 <footer class="footer">
     <div class="container">
@@ -110,5 +141,19 @@
 </div>
 
 <script src="js/main.js"></script>
+<script>
+    function openLightbox(el) {
+        var img = el.querySelector('img');
+        var title = el.querySelector('.doctor-honor-title');
+        document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox-caption').textContent = title ? title.textContent : img.alt;
+        document.getElementById('lightbox').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+</script>
 </body>
 </html>

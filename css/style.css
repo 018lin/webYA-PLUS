@@ -10,6 +10,50 @@ body {
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 img { max-width: 100%; display: block; }
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+.lightbox.show { display: flex; }
+.lightbox img {
+    max-width: 90%;
+    max-height: 84%;
+    border-radius: 8px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    object-fit: contain;
+}
+.lightbox-caption {
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 26px;
+    transform: translateX(-50%);
+    max-width: min(90vw, 720px);
+    padding: 8px 18px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+}
+.lightbox.show .lightbox-caption { display: block; }
+.lightbox .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 36px;
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+.lightbox .close-btn:hover { opacity: 1; }
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -570,16 +614,21 @@ img { max-width: 100%; display: block; }
     gap: 24px;
 }
 .specialty-card {
+    display: block;
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     transition: transform 0.4s, box-shadow 0.4s;
     cursor: pointer;
+    color: inherit;
+    text-decoration: none;
 }
 .specialty-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 40px rgba(0,91,172,0.12);
+    color: inherit;
+    text-decoration: none;
 }
 .specialty-img {
     height: 200px;
@@ -1201,6 +1250,57 @@ img { max-width: 100%; display: block; }
     box-shadow: 0 6px 20px rgba(0,91,172,0.35);
     color: #fff;
 }
+.doctor-honor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+}
+.doctor-honor-card {
+    min-height: 0;
+    padding: 14px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid rgba(0,91,172,0.12);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.doctor-honor-card.featured {
+    grid-column: span 2;
+}
+.doctor-honor-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.doctor-honor-media {
+    height: 260px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f6f9fc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.doctor-honor-card.featured .doctor-honor-media {
+    height: 320px;
+}
+.doctor-honor-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+}
+.doctor-honor-title {
+    margin-top: 12px;
+    color: #1a2a3a;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: center;
+}
 @media (max-width: 992px) {
     .doctor-detail { grid-template-columns: 300px 1fr; gap: 30px; }
 }
@@ -1211,6 +1311,10 @@ img { max-width: 100%; display: block; }
     .doctor-title-tag { text-align: center; display: table; margin-left: auto; margin-right: auto; }
     .doctor-tags { justify-content: center; }
     .doctor-cta-btn { display: flex; justify-content: center; }
+    .doctor-honor-grid { grid-template-columns: 1fr; }
+    .doctor-honor-card.featured { grid-column: auto; }
+    .doctor-honor-media,
+    .doctor-honor-card.featured .doctor-honor-media { height: 240px; }
 }
 
 /* ========== Team Card as Clickable Link ========== */
