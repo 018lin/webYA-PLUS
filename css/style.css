@@ -170,6 +170,17 @@ img { max-width: 100%; display: block; }
     text-align: center;
     color: #fff;
 }
+.about-banner {
+    padding: 145px 0 105px;
+    background:
+        linear-gradient(rgba(6, 48, 92, 0.58), rgba(6, 48, 92, 0.58)),
+        url('../images/诊所环境/门诊内景.jpg') center center / cover no-repeat;
+}
+.about-banner .container {
+    position: relative;
+    z-index: 1;
+    max-width: 620px;
+}
 .page-banner h1 {
     font-size: 36px;
     font-weight: 700;
@@ -1371,6 +1382,10 @@ img { max-width: 100%; display: block; }
     body { padding-bottom: 64px; }
     .hero-content .hero-btn { padding: 12px 28px; font-size: 14px; }
     .page-banner { padding: 96px 0 44px; }
+    .about-banner {
+        padding: 140px 0 88px;
+        background-position: center 30%;
+    }
     .page-banner h1 { font-size: 26px; }
     .contact-grid { grid-template-columns: 1fr; }
 }
