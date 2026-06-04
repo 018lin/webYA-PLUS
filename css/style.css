@@ -562,6 +562,322 @@ img { max-width: 100%; display: block; }
     color: #888;
     margin-top: 4px;
 }
+.about-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #e8f4ff;
+    color: #005BAC;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+.about-pillars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+.about-pillar {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px 24px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,91,172,0.08);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.about-pillar:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 42px rgba(0,91,172,0.12);
+}
+.about-pillar-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #005BAC, #00A0E0);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 24px rgba(0,91,172,0.22);
+}
+.about-pillar h4 {
+    font-size: 18px;
+    color: #1a2a3a;
+    margin-bottom: 10px;
+}
+.about-pillar p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.8;
+}
+.about-facility-section {
+    background:
+        radial-gradient(circle at top right, rgba(0,160,224,0.12), transparent 30%),
+        linear-gradient(180deg, #f9fcff 0%, #ffffff 42%);
+}
+.facility-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 32px;
+    align-items: center;
+    margin-bottom: 28px;
+}
+.facility-hero-copy h3,
+.safety-content h3,
+.honor-copy h3,
+.about-cta-copy h3 {
+    font-size: 30px;
+    line-height: 1.45;
+    color: #1a2a3a;
+    margin-bottom: 16px;
+}
+.facility-hero-copy p,
+.safety-content p,
+.honor-copy p,
+.about-cta-copy p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.9;
+}
+.about-feature-list {
+    margin-top: 22px;
+    display: grid;
+    gap: 12px;
+}
+.about-feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #375069;
+    font-size: 15px;
+    font-weight: 500;
+}
+.about-feature-list i {
+    color: #005BAC;
+    font-size: 16px;
+}
+.facility-hero-image,
+.safety-poster,
+.honor-card,
+.about-gallery-card {
+    margin: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+}
+.facility-hero-image img,
+.safety-poster img,
+.honor-card img,
+.about-gallery-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.facility-hero-image {
+    min-height: 400px;
+}
+.about-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+.about-gallery-card {
+    background: #fff;
+}
+.about-gallery-card img {
+    height: 250px;
+}
+.about-gallery-card figcaption,
+.honor-card figcaption {
+    padding: 16px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a2a3a;
+    background: #fff;
+}
+.safety-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+    gap: 36px;
+    align-items: center;
+}
+.safety-poster {
+    background: #fff;
+}
+.safety-poster img {
+    object-fit: contain;
+    background: linear-gradient(180deg, #f3f6fb 0%, #ffffff 100%);
+}
+.safety-content {
+    padding-right: 18px;
+}
+.safety-points {
+    display: grid;
+    gap: 18px;
+    margin-top: 26px;
+}
+.safety-point {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 18px 18px 18px 0;
+    border-bottom: 1px solid rgba(0,91,172,0.10);
+}
+.safety-point:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.safety-point i {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: #e8f4ff;
+    color: #005BAC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+.safety-point h4 {
+    font-size: 17px;
+    color: #1a2a3a;
+    margin-bottom: 6px;
+}
+.safety-point p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.8;
+}
+.honor-highlight {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 28px;
+    align-items: stretch;
+    margin-bottom: 28px;
+}
+.honor-meta {
+    display: grid;
+    gap: 18px;
+}
+.honor-badge {
+    border-radius: 18px;
+    padding: 26px 24px;
+    background: linear-gradient(135deg, #005BAC 0%, #007fd0 100%);
+    color: #fff;
+    box-shadow: 0 16px 36px rgba(0,91,172,0.18);
+}
+.honor-badge strong {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+.honor-badge span {
+    display: block;
+    font-size: 14px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.85);
+}
+.honor-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+.honor-card {
+    background: #fff;
+}
+.honor-card img {
+    height: 255px;
+}
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+.process-card {
+    position: relative;
+    border-radius: 18px;
+    padding: 28px 24px 26px;
+    background: #fff;
+    border: 1px solid rgba(0,91,172,0.08);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.04);
+    overflow: hidden;
+}
+.process-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #005BAC, #00A0E0);
+}
+.process-card .step {
+    display: inline-block;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    color: rgba(0,91,172,0.14);
+    margin-bottom: 18px;
+}
+.process-card h4 {
+    font-size: 18px;
+    color: #1a2a3a;
+    margin-bottom: 10px;
+}
+.process-card p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.85;
+}
+.about-cta-section {
+    background: linear-gradient(135deg, #0a4f91 0%, #007fd0 100%);
+}
+.about-cta {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) auto;
+    gap: 28px;
+    align-items: center;
+    padding: 38px 40px;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.10);
+}
+.about-cta .about-tag {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+}
+.about-cta-copy h3,
+.about-cta-copy p {
+    color: #fff;
+}
+.about-cta-copy p {
+    opacity: 0.82;
+}
+.about-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 14px;
+}
+.about-cta-btn {
+    padding: 14px 24px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+.about-cta-btn-secondary {
+    background: rgba(255,255,255,0.14);
+}
+.about-cta-btn-secondary:hover {
+    background: #fff;
+}
 
 /* ========== Insurance Section ========== */
 .insurance-grid {
@@ -913,6 +1229,16 @@ img { max-width: 100%; display: block; }
     .about-stack-card + .about-stack-card {
         margin-left: -40%;
     }
+    .about-pillars { grid-template-columns: repeat(2, 1fr); }
+    .facility-hero,
+    .safety-grid,
+    .honor-highlight,
+    .about-cta { grid-template-columns: 1fr; }
+    .about-gallery,
+    .honor-gallery,
+    .process-grid { grid-template-columns: repeat(2, 1fr); }
+    .facility-hero-image { min-height: 340px; }
+    .about-cta-actions { justify-content: flex-start; }
     .specialties-grid { grid-template-columns: repeat(2, 1fr); }
     .insurance-grid { grid-template-columns: repeat(2, 1fr); }
     .footer-top { grid-template-columns: repeat(2, 1fr); }
@@ -990,6 +1316,35 @@ img { max-width: 100%; display: block; }
     .section { padding: 50px 0; }
     .section-title { margin-bottom: 32px; }
     .section-title h2 { font-size: 24px; }
+    .about-pillars,
+    .about-gallery,
+    .honor-gallery,
+    .process-grid { grid-template-columns: 1fr; }
+    .facility-hero-copy h3,
+    .safety-content h3,
+    .honor-copy h3,
+    .about-cta-copy h3 { font-size: 24px; }
+    .about-gallery-card img,
+    .honor-card img { height: 230px; }
+    .facility-hero-image { min-height: 260px; }
+    .safety-content { padding-right: 0; }
+    .safety-point {
+        grid-template-columns: 44px 1fr;
+        gap: 12px;
+        padding-right: 0;
+    }
+    .safety-point i {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        font-size: 18px;
+    }
+    .about-cta { padding: 28px 22px; }
+    .about-cta-actions { width: 100%; }
+    .about-cta-btn {
+        width: 100%;
+        justify-content: center;
+    }
     .about-stats { grid-template-columns: repeat(2, 1fr); }
     .specialties-grid { grid-template-columns: 1fr; }
     .insurance-grid { grid-template-columns: 1fr; }
