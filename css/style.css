@@ -1,11 +1,16 @@
 /* ========== Reset & Base ========== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
 body {
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
     color: #333;
     background: #ffffff;
     line-height: 1.6;
+    overflow-x: hidden;
 }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
@@ -1243,9 +1248,12 @@ img { max-width: 100%; display: block; }
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex: 1 1 0;
     gap: 4px;
     font-size: 11px;
     color: #888;
+    min-width: 0;
+    line-height: 1.2;
 }
 .mobile-float a i { font-size: 20px; color: #005BAC; }
 .mobile-float a.active { color: #005BAC; font-weight: 600; }

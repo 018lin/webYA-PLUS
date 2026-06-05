@@ -21,6 +21,8 @@
         .philosophy-text {
             text-align: center;
             max-width: 800px;
+            width: 100%;
+            min-width: 0;
         }
         .philosophy-text h2 {
             font-size: 28px;
@@ -38,6 +40,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
+            min-width: 0;
             gap: 24px;
             margin-bottom: 20px;
         }
@@ -49,11 +53,14 @@
             background: #005BAC;
         }
         .philosophy-text .title-wrapper .title-text {
-            white-space: nowrap;
             font-size: 28px;
             font-weight: 700;
             color: #1a2a3a;
             line-height: 1.4;
+            flex: 0 1 auto;
+            min-width: 0;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
         .philosophy-text .title-wrapper .title-text em {
             color: #005BAC;
@@ -73,6 +80,7 @@
             margin: 20px auto;
             text-align: center;
             max-width: 600px;
+            width: 100%;
         }
         .philosophy-text .highlight p {
             margin-bottom: 0;
@@ -87,6 +95,7 @@
             padding: 20px 24px;
             margin: 20px auto 0;
             max-width: 600px;
+            width: 100%;
             text-align: left;
         }
         .goal-intro p {
@@ -361,6 +370,32 @@
             #prevention { padding-top: 50px; }
         }
         @media (max-width: 768px) {
+            .philosophy-text .title-wrapper {
+                gap: 16px;
+                align-items: center;
+            }
+            .philosophy-text .title-wrapper .title-line {
+                max-width: 80px;
+                min-width: 24px;
+            }
+            .philosophy-text .title-wrapper .title-text {
+                font-size: clamp(20px, 6vw, 28px);
+                line-height: 1.35;
+            }
+            .philosophy-text .highlight,
+            .goal-intro {
+                padding: 18px 16px;
+            }
+            .philosophy-text .highlight p {
+                font-size: 15px;
+                line-height: 1.85;
+                overflow-wrap: anywhere;
+            }
+            .goal-intro p,
+            .philosophy-text > p {
+                overflow-wrap: anywhere;
+                word-break: break-word;
+            }
             .prevention-grid { grid-template-columns: 1fr; }
             .brushing-steps { grid-template-columns: repeat(2, 1fr); }
             /* accordion: maintain comfortable padding on mobile */
