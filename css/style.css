@@ -186,6 +186,11 @@ img { max-width: 100%; display: block; }
         linear-gradient(rgba(6, 48, 92, 0.62), rgba(6, 48, 92, 0.62)),
         url('../images/诊所环境/活动培训室.jpg') center center / cover no-repeat;
 }
+.knowledge-banner {
+    background:
+        linear-gradient(rgba(6, 48, 92, 0.62), rgba(6, 48, 92, 0.62)),
+        url('../images/诊所环境/正畸模型展示区.jpg') center center / cover no-repeat;
+}
 .about-banner .container {
     position: relative;
     z-index: 1;
