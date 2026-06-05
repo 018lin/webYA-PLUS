@@ -98,22 +98,6 @@
             color: #005BAC;
             margin-top: 3px;
         }
-        .knowledge-callout {
-            margin-top: 24px;
-            padding: 22px 24px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #eef7ff, #e5f0fb);
-            border-left: 4px solid #005BAC;
-        }
-        .knowledge-callout strong {
-            display: block;
-            color: #1a2a3a;
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-        .knowledge-callout p {
-            margin: 0;
-        }
         @media (max-width: 992px) {
             .knowledge-article-hero {
                 grid-template-columns: 1fr;
@@ -183,10 +167,6 @@
             <h2 id="article-section-title"></h2>
             <div id="article-paragraphs"></div>
             <ul id="article-points"></ul>
-            <div class="knowledge-callout">
-                <strong id="article-callout-title"></strong>
-                <p id="article-callout-text"></p>
-            </div>
         </div>
     </div>
 </section>
@@ -253,9 +233,7 @@
                     "更看重外观与可摘戴体验，同时能保证每日足够佩戴时间的人，通常更适合优先评估隐形矫正。",
                     "咬合问题更复杂、牙齿移动控制要求更高，或者希望医生在治疗中有更强直接控制力时，传统矫正常常更稳妥。",
                     "无论选择哪一种方式，治疗结果都依赖复诊节奏、口腔清洁和保持阶段的长期配合。 "
-                ],
-                calloutTitle: "实用建议",
-                calloutText: "先让医生判断你的牙列和咬合复杂度，再比较方案，而不是先选“隐形还是钢牙”。顺序反了，方案就容易失真。"
+                ]
             },
             implant: {
                 category: "牙齿种植",
@@ -273,9 +251,7 @@
                     "术前评估越充分，种植体位置、骨支持和后期修复设计越稳定，长期风险越低。",
                     "每天认真清洁、按时复查和必要时做专业维护，是延长种植牙寿命的关键动作。",
                     "有夜磨牙、吸烟习惯或牙周炎病史的人，更要把后期管理当成种植治疗的一部分。 "
-                ],
-                calloutTitle: "实用建议",
-                calloutText: "别把“能不能用一辈子”理解成一个销售口号，更应该问的是：我这个口腔条件下，怎样做才能尽量让它用得更久。"
+                ]
             },
             restoration: {
                 category: "牙齿修复",
@@ -293,9 +269,7 @@
                     "前牙美学要求高、笑线明显、牙龈边缘表现重要时，通常优先考虑全瓷修复。",
                     "后牙区域如果更关注功能恢复和预算平衡，可让医生评估不同材料的性价比。",
                     "材料只是修复的一部分，预备是否合理、边缘是否密合、后期清洁是否到位，同样决定修复效果。 "
-                ],
-                calloutTitle: "实用建议",
-                calloutText: "不要只问“哪种冠更好”，更应该问“我的这颗牙，放在这个位置、承受这样的咬合，哪种修复更合适”。"
+                ]
             },
             pediatric: {
                 category: "儿童牙科",
@@ -313,9 +287,7 @@
                     "第一颗乳牙萌出后就应开始清洁，不要等“牙长多了再说”。",
                     "家长需要在相当长一段时间里参与刷牙监督，而不是过早把责任完全交给孩子。",
                     "窝沟封闭、涂氟和定期检查，是儿童龋病预防里非常实用的工具。 "
-                ],
-                calloutTitle: "实用建议",
-                calloutText: "儿童护牙最有效的方式不是临时补救，而是把刷牙、饮食和检查做成一种家庭规律。"
+                ]
             },
             periodontal: {
                 category: "牙周治疗",
@@ -333,9 +305,7 @@
                     "刷牙出血、牙龈红肿和口臭持续存在时，应尽快做牙周检查，而不是单靠换牙膏解决。",
                     "洁牙只是基础步骤，是否需要进一步龈下治疗，应由牙周评估结果决定。",
                     "牙周稳定后仍需要长期复查维护，否则炎症很容易再次活跃。 "
-                ],
-                calloutTitle: "实用建议",
-                calloutText: "越早处理牙周问题，越有机会保住天然牙的支持组织。真正危险的不是出血本身，而是长期不处理。"
+                ]
             },
             cosmetic: {
                 category: "牙齿美容",
@@ -353,9 +323,7 @@
                     "先判断牙齿变黄是外源性色素、年龄相关变化，还是深层颜色问题。",
                     "美白前先处理龋坏、牙龈炎症和明显敏感问题，结果通常更稳定。",
                     "对颜色和形态都有要求时，不一定是“多做一次美白”就能解决，可能需要联合修复思路。 "
-                ],
-                calloutTitle: "实用建议",
-                calloutText: "真正自然的美白不是把牙做成统一冷白色，而是让颜色、透明感和整体笑容看起来更协调。"
+                ]
             },
             extraction: {
                 category: "微创拔牙",
@@ -373,9 +341,7 @@
                     "智齿是否需要拔除，要看位置、清洁难度、是否反复发炎以及对邻牙的影响，不是“长了就一定拔”。",
                     "复杂阻生牙更应重视术前影像评估，尤其是与邻牙或重要解剖结构关系密切时。",
                     "术后恢复质量，往往一半取决于手术方式，一半取决于护理执行。 "
-                ],
-                calloutTitle: "实用建议",
-                calloutText: "真正让人后悔的往往不是拔得太早，而是反复发炎、邻牙受损之后才处理。"
+                ]
             },
             general: {
                 category: "牙齿全科",
@@ -393,9 +359,7 @@
                     "没有明显疼痛，并不等于口腔状态稳定；很多问题在早期并不靠疼痛提醒你。",
                     "检查频率应结合你的龋齿风险、牙周情况、修复体数量和日常清洁习惯来调整。",
                     "如果长期不检查，往往会把本来能小处理的问题拖成系统性修复。 "
-                ],
-                calloutTitle: "实用建议",
-                calloutText: "把口腔检查当成常规保养，而不是“疼了才去”。多数人真正节省时间和费用的方式，就是更早发现。"
+                ]
             },
             endodontics: {
                 category: "牙体牙髓",
@@ -413,9 +377,7 @@
                     "根管治疗不是“神经一抽就好”，而是包括清理、消毒、封闭和冠部保护在内的完整过程。",
                     "拖得越久，感染越复杂、治疗次数和难度通常也越高。",
                     "治疗后尽快完成修复，是保住这颗牙的重要一环。 "
-                ],
-                calloutTitle: "实用建议",
-                calloutText: "如果医生告诉你这颗牙还有保留价值，根管治疗往往是在“保住天然牙”和“直接拔掉”之间更值得认真考虑的方案。"
+                ]
             }
         };
 
@@ -427,9 +389,6 @@
         document.getElementById("article-title").textContent = article.title;
         document.getElementById("article-summary").textContent = article.summary;
         document.getElementById("article-section-title").textContent = article.sectionTitle;
-        document.getElementById("article-callout-title").textContent = article.calloutTitle;
-        document.getElementById("article-callout-text").textContent = article.calloutText;
-
         const image = document.getElementById("article-image");
         image.src = article.image;
         image.alt = article.imageAlt;
