@@ -1555,6 +1555,9 @@ img { max-width: 100%; display: block; }
 .knowledge-page .knowledge-img {
     display: none;
 }
+.knowledge-page .knowledge-meta {
+    display: none;
+}
 
 /* ========== Mobile Nav Overlay ========== */
 .nav-overlay {
