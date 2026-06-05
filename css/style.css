@@ -1790,6 +1790,23 @@ img { max-width: 100%; display: block; }
     padding: 3px 10px;
     border-radius: 4px;
 }
+.team-honor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+.team-honor-media {
+    height: 280px;
+    padding: 16px;
+    background: #f7f9fc;
+    overflow: hidden;
+}
+.team-honor-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
 
 @media (max-width: 768px) {
     .knowledge-grid {
@@ -1835,6 +1852,26 @@ img { max-width: 100%; display: block; }
 
     .knowledge-body .knowledge-meta {
         margin-top: 10px;
+    }
+
+    .team-honor-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .team-honor-card {
+        display: block;
+    }
+
+    .team-honor-media {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        min-height: 0;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        flex: none;
+        font-size: inherit;
     }
 
     .team-grid {
