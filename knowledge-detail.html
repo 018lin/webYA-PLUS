@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>口腔健康科普 - 惠尔口腔</title>
+    <link rel="icon" href="images/01_logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .knowledge-article-wrap {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+        .knowledge-article-hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+            gap: 40px;
+            align-items: stretch;
+        }
+        .knowledge-article-media {
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 38px rgba(0,0,0,0.10);
+            background: #eef5fc;
+            min-height: 420px;
+        }
+        .knowledge-article-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .knowledge-article-panel {
+            background: #fff;
+            border-radius: 18px;
+            padding: 34px 32px;
+            box-shadow: 0 14px 32px rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,91,172,0.08);
+        }
+        .knowledge-article-label {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: #e8f4ff;
+            color: #005BAC;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+        .knowledge-article-panel h1 {
+            font-size: 34px;
+            line-height: 1.25;
+            color: #1a2a3a;
+            margin-bottom: 14px;
+        }
+        .knowledge-article-summary {
+            font-size: 16px;
+            line-height: 1.9;
+            color: #5f6d7c;
+            margin-bottom: 0;
+        }
+        .knowledge-article-body {
+            margin-top: 34px;
+            padding: 34px 36px;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 14px 32px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,91,172,0.08);
+        }
+        .knowledge-article-body h2 {
+            font-size: 24px;
+            color: #1a2a3a;
+            margin-bottom: 14px;
+        }
+        .knowledge-article-body p {
+            font-size: 15px;
+            color: #555;
+            line-height: 2;
+            margin-bottom: 16px;
+        }
+        .knowledge-article-body ul {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .knowledge-article-body li {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 14px;
+            color: #375069;
+            line-height: 1.8;
+        }
+        .knowledge-article-body li i {
+            color: #005BAC;
+            margin-top: 3px;
+        }
+        .knowledge-callout {
+            margin-top: 24px;
+            padding: 22px 24px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #eef7ff, #e5f0fb);
+            border-left: 4px solid #005BAC;
+        }
+        .knowledge-callout strong {
+            display: block;
+            color: #1a2a3a;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .knowledge-callout p {
+            margin: 0;
+        }
+        @media (max-width: 992px) {
+            .knowledge-article-hero {
+                grid-template-columns: 1fr;
+            }
+            .knowledge-article-media {
+                min-height: 320px;
+            }
+        }
+        @media (max-width: 768px) {
+            .knowledge-article-panel {
+                padding: 26px 20px;
+            }
+            .knowledge-article-panel h1 {
+                font-size: 28px;
+            }
+            .knowledge-article-body {
+                padding: 24px 20px;
+            }
+            .knowledge-article-body h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body class="knowledge-page">
+
+<header class="header" id="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="images/01_logo.png" alt="惠尔口腔" style="height:42px;width:auto;">
+            <div class="logo-text">惠尔口腔 <span>Here Dental</span></div>
+        </a>
+        <nav class="nav" id="nav">
+            <a href="index.html">首页</a>
+            <a href="about.html">机构介绍</a>
+            <a href="team.html">专家团队</a>
+            <a href="specialties.html">特色专科</a>
+            <a href="knowledge.html" class="active">相关科普</a>
+            <a href="contact.html">联系我们</a>
+            <a href="contact.html" class="nav-cta"><i class="fas fa-phone-alt"></i>&nbsp; 预约咨询</a>
+        </nav>
+    </div>
+</header>
+
+<section class="page-banner knowledge-banner">
+    <div class="container">
+        <h1>口腔健康科普</h1>
+        <p>把复杂问题讲清楚，让日常护牙更有依据</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container knowledge-article-wrap">
+        <a href="knowledge.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回科普列表</a>
+        <div class="knowledge-article-hero">
+            <figure class="knowledge-article-media fade-in">
+                <img id="article-image" src="" alt="">
+            </figure>
+            <div class="knowledge-article-panel fade-in">
+                <span class="knowledge-article-label" id="article-category"></span>
+                <h1 id="article-title"></h1>
+                <p class="knowledge-article-summary" id="article-summary"></p>
+            </div>
+        </div>
+
+        <div class="knowledge-article-body fade-in">
+            <h2 id="article-section-title"></h2>
+            <div id="article-paragraphs"></div>
+            <ul id="article-points"></ul>
+            <div class="knowledge-callout">
+                <strong id="article-callout-title"></strong>
+                <p id="article-callout-text"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="logo-text" style="font-size:18px;color:#fff;font-weight:700;margin-bottom:12px;">
+                    惠尔口腔 <span style="color:rgba(255,255,255,0.5);font-weight:400;font-size:13px;">Here Dental</span>
+                </div>
+                <p>惠尔口腔集团旗下口腔医疗连锁品牌，以"保险+医疗"创新模式，致力于为全民提供全生命周期口腔健康管理服务。</p>
+                <p class="footer-note">扎根惠州麦地东二路，围绕预防保健、儿童齿科、正畸修复、种植维护等需求，提供规范、连续、安心的家庭口腔诊疗体验。</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-weibo"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-qq"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>联系我们</h5>
+                <a href="contact.html"><i class="fas fa-phone-alt"></i>&nbsp; 0752-7820202</a>
+                <a href="contact.html"><i class="fas fa-envelope"></i>&nbsp; hcjkqmz@163.com</a>
+                <a href="contact.html"><i class="fas fa-map-marker-alt"></i>&nbsp; 惠州市惠城区麦地东二路鸿润花园A栋102-106铺</a>
+                <a href="contact.html"><i class="fas fa-clock"></i>&nbsp; 周一至周四09：00--20：00 周五至周日09：00--18：00</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 惠尔口腔集团 版权所有 &nbsp;|&nbsp;
+            <a href="https://beian.miit.gov.cn/" target="_blank">（备案号）</a>&nbsp;|&nbsp;
+            <a href="#">隐私政策</a>&nbsp;|&nbsp;
+            <a href="#">网站地图</a>
+        </div>
+    </div>
+</footer>
+
+<div class="mobile-float">
+    <a href="index.html"><i class="fas fa-home"></i>首页</a>
+    <a href="team.html"><i class="fas fa-user-md"></i>专家</a>
+    <a href="specialties.html"><i class="fas fa-tooth"></i>专科</a>
+    <a href="knowledge.html" class="active"><i class="fas fa-book-medical"></i>科普</a>
+    <a href="about.html"><i class="fas fa-hospital"></i>机构</a>
+    <a href="contact.html"><i class="fas fa-calendar-check"></i>预约</a>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+    (function initKnowledgeDetail() {
+        const articles = {
+            orthodontics: {
+                category: "牙齿矫正",
+                title: "隐形矫正 vs 传统矫正：该如何选择？",
+                summary: "隐形矫正和传统固定矫正并不是简单的“谁更高级”，而是各有适合的人群、配合要求和治疗重点。选择之前，先把目标和口腔条件看清楚。",
+                sectionTitle: "先看清楚：你更在意什么？",
+                image: "images/knowledge/orthodontics-model-display.jpg",
+                imageAlt: "正畸模型展示区",
+                paragraphs: [
+                    "隐形矫正最大的优势通常在于美观、可摘戴和日常社交体验更自然。对需要频繁沟通、拍照，或者对口腔清洁要求更高的人来说，它的体验往往更友好。但它也更依赖患者自律，佩戴时间不够、摘戴频繁或复诊配合不足，都会直接影响效果。",
+                    "传统固定矫正的优势在于适应范围广、控制力更稳定，尤其在牙齿扭转明显、咬合问题复杂或需要更强牵引控制时，医生可发挥的空间更大。缺点通常是清洁难度更高，且初期异物感更明显。",
+                    "真正决定方案的，不只是预算或外观偏好，而是牙列拥挤程度、拔牙与否、面型诉求、咬合关系、牙周基础以及日常配合能力。很多患者适合隐形矫正，但并不是所有复杂病例都能仅凭“更隐形”获得理想结果。"
+                ],
+                points: [
+                    "更看重外观与可摘戴体验，同时能保证每日足够佩戴时间的人，通常更适合优先评估隐形矫正。",
+                    "咬合问题更复杂、牙齿移动控制要求更高，或者希望医生在治疗中有更强直接控制力时，传统矫正常常更稳妥。",
+                    "无论选择哪一种方式，治疗结果都依赖复诊节奏、口腔清洁和保持阶段的长期配合。 "
+                ],
+                calloutTitle: "实用建议",
+                calloutText: "先让医生判断你的牙列和咬合复杂度，再比较方案，而不是先选“隐形还是钢牙”。顺序反了，方案就容易失真。"
+            },
+            implant: {
+                category: "牙齿种植",
+                title: "种植牙能用一辈子吗？",
+                summary: "种植牙没有一个对所有人都成立的固定寿命。它能用多久，核心不只是材料本身，而是手术条件、咬合设计、牙周环境和你后期维护得如何。",
+                sectionTitle: "决定寿命的，往往不是“种上去”那一刻",
+                image: "images/knowledge/implant-crown-placement.png",
+                imageAlt: "种植牙冠修复示意",
+                paragraphs: [
+                    "很多人以为种植牙一旦完成，就可以像天然牙一样“忘掉它”。实际上，种植体虽然不龋坏，但周围软组织和骨组织仍然可能因为清洁不到位、咬合受力过大或长期炎症而受到影响。",
+                    "影响种植牙长期使用的因素很多，包括术前骨条件是否合适、种植体植入位置是否准确、上部牙冠设计是否便于清洁、夜间磨牙是否得到控制、是否按时复查维护等。种植体做得再好，如果长期牙菌斑堆积，仍然可能出现种植体周围炎。",
+                    "如果把种植牙看作一个长期合作项目，医生负责把基础打稳，患者负责把维护做好，寿命自然会更理想。反过来，如果种完后很少复查、长期不洁牙、吸烟或咬硬物过多，使用年限就会被明显拉低。"
+                ],
+                points: [
+                    "术前评估越充分，种植体位置、骨支持和后期修复设计越稳定，长期风险越低。",
+                    "每天认真清洁、按时复查和必要时做专业维护，是延长种植牙寿命的关键动作。",
+                    "有夜磨牙、吸烟习惯或牙周炎病史的人，更要把后期管理当成种植治疗的一部分。 "
+                ],
+                calloutTitle: "实用建议",
+                calloutText: "别把“能不能用一辈子”理解成一个销售口号，更应该问的是：我这个口腔条件下，怎样做才能尽量让它用得更久。"
+            },
+            restoration: {
+                category: "牙齿修复",
+                title: "全瓷冠 vs 烤瓷冠：哪个更值得选？",
+                summary: "全瓷冠和烤瓷冠都能恢复牙齿形态与功能，但它们的优势点并不完全一样。真正的区别，在于美观要求、边缘表现、咬合条件和预算承受范围。",
+                sectionTitle: "先明确修复目标，再谈材料选择",
+                image: "images/knowledge/restoration-ceramic-inlay.png",
+                imageAlt: "牙齿修复材料展示",
+                paragraphs: [
+                    "全瓷冠最大的特点通常是通透感更自然、颜色更接近真牙，且不含金属，对前牙美学要求高的人更有优势。对于笑线明显、牙龈边缘暴露较多的患者，全瓷冠往往更容易做出自然协调的视觉效果。",
+                    "烤瓷冠则通常在成本和适应场景上更灵活，一些后牙区域对极致美观要求不高、但更关注实用性和预算控制时，仍可能是可考虑的方案。不过它因内层有金属支撑，在某些情况下可能出现边缘发暗或透光感不足的问题。",
+                    "真正的选择逻辑不是“哪种一定更高级”，而是要结合修复位置、剩余牙体量、咬合力量、牙龈条件和个人预期。前牙更强调通透和色泽统一，后牙则往往更强调受力和耐用。"
+                ],
+                points: [
+                    "前牙美学要求高、笑线明显、牙龈边缘表现重要时，通常优先考虑全瓷修复。",
+                    "后牙区域如果更关注功能恢复和预算平衡，可让医生评估不同材料的性价比。",
+                    "材料只是修复的一部分，预备是否合理、边缘是否密合、后期清洁是否到位，同样决定修复效果。 "
+                ],
+                calloutTitle: "实用建议",
+                calloutText: "不要只问“哪种冠更好”，更应该问“我的这颗牙，放在这个位置、承受这样的咬合，哪种修复更合适”。"
+            },
+            pediatric: {
+                category: "儿童牙科",
+                title: "孩子几岁开始刷牙？儿童护牙全攻略",
+                summary: "孩子护牙不是等“牙都长齐了”再开始。实际上，从第一颗乳牙萌出起，清洁和饮食管理就应该进入家庭日常。",
+                sectionTitle: "儿童护牙的起点，比很多家长想得更早",
+                image: "images/knowledge/pediatric-clinic-room.jpg",
+                imageAlt: "儿童诊室",
+                paragraphs: [
+                    "乳牙萌出后，如果口腔清洁和喂养习惯没有及时跟上，龋坏风险会很快出现。很多家长会把“乳牙反正会换”当成可以晚点管的理由，但乳牙一旦早期龋坏，不仅影响吃饭、发音和睡眠，也可能影响恒牙萌出和牙列发育。",
+                    "不同年龄段的重点并不一样。乳牙初萌时，重点是家长代为清洁；到了学龄前后，重点是培养刷牙习惯并建立定期检查意识；进入换牙期后，则要在清洁基础上多关注牙列排列、六龄齿保护和咬合发育。",
+                    "儿童护牙最怕的不是偶尔一次甜食，而是高频率吃甜、奶睡、刷牙不彻底和长期缺少检查。越早建立家庭护牙节奏，后面越轻松。"
+                ],
+                points: [
+                    "第一颗乳牙萌出后就应开始清洁，不要等“牙长多了再说”。",
+                    "家长需要在相当长一段时间里参与刷牙监督，而不是过早把责任完全交给孩子。",
+                    "窝沟封闭、涂氟和定期检查，是儿童龋病预防里非常实用的工具。 "
+                ],
+                calloutTitle: "实用建议",
+                calloutText: "儿童护牙最有效的方式不是临时补救，而是把刷牙、饮食和检查做成一种家庭规律。"
+            },
+            periodontal: {
+                category: "牙周治疗",
+                title: "刷牙出血？警惕牙周炎的早期信号",
+                summary: "刷牙出血并不只是“上火”这么简单。更常见的原因，是牙菌斑和牙石长期刺激导致牙龈处于慢性炎症状态。",
+                sectionTitle: "别把出血当小事，牙周问题常常是慢慢发展的",
+                image: "images/knowledge/periodontal-gum-changes.png",
+                imageAlt: "牙周治疗后牙龈变化",
+                paragraphs: [
+                    "牙周炎早期最容易被忽视，因为它常常不剧烈疼痛，更多表现为刷牙出血、牙龈红肿、口臭、牙缝变大或咀嚼时不舒服。很多人能忍很久，结果等到牙齿松动时，支持组织已经受损较重。",
+                    "真正让牙周问题进展的，往往不是偶发刺激，而是长期清洁不到位、牙石堆积、吸烟、全身代谢因素以及缺乏定期洁治。牙周炎不是一两次漱口能逆转的问题，需要系统评估和处理。",
+                    "如果治疗只停留在“表面洗一洗”，而没有根据牙周袋深度、炎症程度和骨支持情况制定后续维护计划，问题往往会反复。牙周治疗的重点在于控制炎症并长期维持稳定。"
+                ],
+                points: [
+                    "刷牙出血、牙龈红肿和口臭持续存在时，应尽快做牙周检查，而不是单靠换牙膏解决。",
+                    "洁牙只是基础步骤，是否需要进一步龈下治疗，应由牙周评估结果决定。",
+                    "牙周稳定后仍需要长期复查维护，否则炎症很容易再次活跃。 "
+                ],
+                calloutTitle: "实用建议",
+                calloutText: "越早处理牙周问题，越有机会保住天然牙的支持组织。真正危险的不是出血本身，而是长期不处理。"
+            },
+            cosmetic: {
+                category: "牙齿美容",
+                title: "牙齿美白的方法与注意事项",
+                summary: "牙齿美白不是“越白越好”，而是要在安全、自然和可维护之间找到平衡。适合别人的方式，不一定适合你的牙齿基础。",
+                sectionTitle: "先分清着色类型，再谈美白方式",
+                image: "images/knowledge/cosmetic-smile-case.jpg",
+                imageAlt: "牙齿美容案例",
+                paragraphs: [
+                    "牙齿颜色问题大致可以分成外源性着色和内源性改变。咖啡、茶、烟渍等导致的外源性色素，很多时候通过洁牙和规范美白就能改善；如果是发育因素、药物影响或牙体结构问题造成的深层颜色改变，则未必适合单靠美白解决。",
+                    "常见的方式包括门诊冷光美白、家庭美白套装以及贴面类修复。冷光美白更适合希望在较短时间内改善颜色的人；家庭美白更依赖持续配合；而贴面并不只是美白，它更偏向颜色和形态同时重塑。",
+                    "真正需要注意的，是不要在牙龈炎症、龋坏未处理或牙齿敏感明显时急着做美白。基础问题没处理好，美白体验和结果都会受影响。"
+                ],
+                points: [
+                    "先判断牙齿变黄是外源性色素、年龄相关变化，还是深层颜色问题。",
+                    "美白前先处理龋坏、牙龈炎症和明显敏感问题，结果通常更稳定。",
+                    "对颜色和形态都有要求时，不一定是“多做一次美白”就能解决，可能需要联合修复思路。 "
+                ],
+                calloutTitle: "实用建议",
+                calloutText: "真正自然的美白不是把牙做成统一冷白色，而是让颜色、透明感和整体笑容看起来更协调。"
+            },
+            extraction: {
+                category: "微创拔牙",
+                title: "拔智齿疼吗？微创拔牙技术科普",
+                summary: "很多人怕拔智齿，不是怕拔本身，而是怕过程不舒服、术后肿得厉害或者恢复拖很久。其实更关键的是术前评估和操作方式是否合适。",
+                sectionTitle: "疼不疼，不只取决于“牙难不难拔”",
+                image: "images/knowledge/extraction-minimally-invasive.jpg",
+                imageAlt: "微创拔牙示意",
+                paragraphs: [
+                    "智齿拔除的体验差异很大，主要与牙齿位置、阻生程度、牙根形态、周围软硬组织关系以及术前影像判断是否充分有关。不是所有智齿都复杂，但复杂智齿确实更需要规范评估和更细致的操作策略。",
+                    "微创拔牙强调在安全前提下减少不必要的翻瓣、骨损伤和组织牵拉，让拔除路径更清楚、局部创伤更可控。它并不意味着“完全没有感觉”，而是尽量让治疗过程和术后反应更可控、更平稳。",
+                    "术后肿胀、张口受限和短期不适并不罕见，但很多恢复问题与术后护理执行有关。如果止血、冷敷、饮食、口腔清洁和复诊都能按要求配合，恢复通常会更顺利。"
+                ],
+                points: [
+                    "智齿是否需要拔除，要看位置、清洁难度、是否反复发炎以及对邻牙的影响，不是“长了就一定拔”。",
+                    "复杂阻生牙更应重视术前影像评估，尤其是与邻牙或重要解剖结构关系密切时。",
+                    "术后恢复质量，往往一半取决于手术方式，一半取决于护理执行。 "
+                ],
+                calloutTitle: "实用建议",
+                calloutText: "真正让人后悔的往往不是拔得太早，而是反复发炎、邻牙受损之后才处理。"
+            },
+            general: {
+                category: "牙齿全科",
+                title: "每年一次口腔检查，到底查什么？",
+                summary: "很多人把口腔检查理解成“看看有没有蛀牙”，但一次规范检查通常远不止这一项。它更像一次全口状态盘点。",
+                sectionTitle: "检查的价值，在于发现你自己还没感觉到的问题",
+                image: "images/knowledge/general-exam-room.jpg",
+                imageAlt: "初诊检查室",
+                paragraphs: [
+                    "口腔问题早期常常不明显。龋坏初期可能不疼，牙周炎也未必剧烈不适，咬合磨耗和隐裂更容易被忽略。等到症状很明显时，处理难度和成本往往都会上升。",
+                    "一次口腔检查通常会关注龋齿风险、旧修复体状态、牙龈与牙周情况、牙结石堆积、缺牙情况、黏膜状态、磨牙习惯以及咬合关系。必要时还可能结合影像检查，帮助发现肉眼难以直接判断的问题。",
+                    "定期检查的真正意义，不是每次都一定发现严重问题，而是尽量把问题留在“还容易处理”的阶段。"
+                ],
+                points: [
+                    "没有明显疼痛，并不等于口腔状态稳定；很多问题在早期并不靠疼痛提醒你。",
+                    "检查频率应结合你的龋齿风险、牙周情况、修复体数量和日常清洁习惯来调整。",
+                    "如果长期不检查，往往会把本来能小处理的问题拖成系统性修复。 "
+                ],
+                calloutTitle: "实用建议",
+                calloutText: "把口腔检查当成常规保养，而不是“疼了才去”。多数人真正节省时间和费用的方式，就是更早发现。"
+            },
+            endodontics: {
+                category: "牙体牙髓",
+                title: "根管治疗很痛吗？了解根管治疗全过程",
+                summary: "很多人一听到根管治疗就紧张，主要是把旧印象和现代治疗混在了一起。现在更需要关注的问题，其实不是“会不会特别痛”，而是这颗牙有没有保留价值。",
+                sectionTitle: "根管治疗的核心，是尽量保住原本还能使用的牙",
+                image: "images/knowledge/endodontics-treatment-room.png",
+                imageAlt: "综合治疗室",
+                paragraphs: [
+                    "根管治疗通常用于牙髓感染、严重龋坏、反复自发痛或根尖炎症等情况。它的目标是去除感染组织、清理根管系统并完成严密封闭，让牙齿在后续修复后继续发挥功能。",
+                    "现代麻醉和器械条件下，大多数患者更常见的感受是“治疗前已经很痛，治疗过程反而没有想象中难受”。真正影响体验的，常常是感染程度、牙齿解剖复杂度以及患者拖延治疗的时间长短。",
+                    "根管治疗完成并不意味着整件事结束。很多牙齿在牙髓处理后会更脆，需要尽快进行冠部保护或后续修复，否则即便感染控制住了，也可能因劈裂而失去保留价值。"
+                ],
+                points: [
+                    "根管治疗不是“神经一抽就好”，而是包括清理、消毒、封闭和冠部保护在内的完整过程。",
+                    "拖得越久，感染越复杂、治疗次数和难度通常也越高。",
+                    "治疗后尽快完成修复，是保住这颗牙的重要一环。 "
+                ],
+                calloutTitle: "实用建议",
+                calloutText: "如果医生告诉你这颗牙还有保留价值，根管治疗往往是在“保住天然牙”和“直接拔掉”之间更值得认真考虑的方案。"
+            }
+        };
+
+        const topic = new URLSearchParams(window.location.search).get("topic") || "orthodontics";
+        const article = articles[topic] || articles.orthodontics;
+
+        document.title = article.title + " - 惠尔口腔科普";
+        document.getElementById("article-category").textContent = article.category;
+        document.getElementById("article-title").textContent = article.title;
+        document.getElementById("article-summary").textContent = article.summary;
+        document.getElementById("article-section-title").textContent = article.sectionTitle;
+        document.getElementById("article-callout-title").textContent = article.calloutTitle;
+        document.getElementById("article-callout-text").textContent = article.calloutText;
+
+        const image = document.getElementById("article-image");
+        image.src = article.image;
+        image.alt = article.imageAlt;
+
+        const paragraphs = document.getElementById("article-paragraphs");
+        article.paragraphs.forEach(text => {
+            const p = document.createElement("p");
+            p.textContent = text;
+            paragraphs.appendChild(p);
+        });
+
+        const points = document.getElementById("article-points");
+        article.points.forEach(text => {
+            const li = document.createElement("li");
+            li.innerHTML = '<i class="fas fa-check-circle"></i><span></span>';
+            li.querySelector("span").textContent = text;
+            points.appendChild(li);
+        });
+    })();
+</script>
+</body>
+</html>

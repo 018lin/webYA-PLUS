@@ -1511,16 +1511,21 @@ img { max-width: 100%; display: block; }
     gap: 24px;
 }
 .knowledge-card {
+    display: block;
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     transition: transform 0.4s, box-shadow 0.4s;
     cursor: pointer;
+    color: inherit;
+    text-decoration: none;
 }
 .knowledge-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 40px rgba(0,91,172,0.12);
+    color: inherit;
+    text-decoration: none;
 }
 .knowledge-img {
     height: 200px;
