@@ -191,6 +191,11 @@ img { max-width: 100%; display: block; }
         linear-gradient(rgba(6, 48, 92, 0.62), rgba(6, 48, 92, 0.62)),
         url('../images/诊所环境/正畸模型展示区.jpg') center center / cover no-repeat;
 }
+.contact-banner {
+    background:
+        linear-gradient(rgba(6, 48, 92, 0.62), rgba(6, 48, 92, 0.62)),
+        url('../images/诊所环境/候诊大厅.jpg') center center / cover no-repeat;
+}
 .about-banner .container {
     position: relative;
     z-index: 1;
