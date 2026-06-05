@@ -275,6 +275,7 @@
             margin-top: 24px;
         }
         .age-group {
+            --accent: #5B9BD5;
             border-radius: 12px;
             overflow: hidden;
             background: #f5f6f8;
@@ -288,9 +289,10 @@
             box-shadow: 0 6px 24px rgba(0,0,0,0.10);
         }
         .age-group-header {
-            display: flex;
+            display: grid;
+            grid-template-columns: 36px 78px minmax(0, 1fr) 20px;
             align-items: center;
-            gap: 12px;
+            column-gap: 12px;
             padding: 16px 20px;
             cursor: pointer;
             user-select: none;
@@ -300,8 +302,10 @@
             font-size: 22px;
             color: var(--accent);
             flex-shrink: 0;
-            width: 32px;
-            text-align: center;
+            width: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .age-group .age-range {
             font-size: 17px;
@@ -309,19 +313,27 @@
             color: var(--accent);
             white-space: nowrap;
             flex-shrink: 0;
+            width: 78px;
+            text-align: left;
         }
         .age-group .stage-name {
             font-size: 14px;
             font-weight: 600;
             color: #1a2a3a;
+            min-width: 0;
+            white-space: nowrap;
         }
         .age-group-toggle {
-            margin-left: auto;
             font-size: 13px;
             color: var(--accent);
             transition: transform 0.35s ease;
             flex-shrink: 0;
             opacity: 0.6;
+            width: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            justify-self: end;
         }
         .age-group.active .age-group-toggle {
             transform: rotate(180deg);
@@ -349,14 +361,6 @@
         .age-group-content p strong {
             color: #1a2a3a;
         }
-        /* 各年龄段——仅保留低饱和辅色，用于图标/文字点缀 */
-        .age-group[data-age="0-6"]   { --accent: #5B9BD5; }
-        .age-group[data-age="7-12"]  { --accent: #5B9BD5; }
-        .age-group[data-age="13-18"] { --accent: #7B8FBF; }
-        .age-group[data-age="19-40"] { --accent: #4A7FB5; }
-        .age-group[data-age="41-59"] { --accent: #C4913B; }
-        .age-group[data-age="60+"]   { --accent: #A8893C; }
-
         /* 缩短理念模块与刷牙模块之间的垂直间距 */
         #philosophy { padding-bottom: 20px; }
         #prevention { padding-top: 60px; }
@@ -399,8 +403,23 @@
             .prevention-grid { grid-template-columns: 1fr; }
             .brushing-steps { grid-template-columns: repeat(2, 1fr); }
             /* accordion: maintain comfortable padding on mobile */
-            .age-group-header { padding: 14px 16px; }
-            .age-group .age-range { font-size: 15px; }
+            .age-group-header {
+                grid-template-columns: 32px 70px minmax(0, 1fr) 18px;
+                column-gap: 10px;
+                padding: 14px 16px;
+            }
+            .age-group .age-icon {
+                width: 32px;
+                font-size: 20px;
+            }
+            .age-group .age-range {
+                width: 70px;
+                font-size: 15px;
+            }
+            .age-group-toggle {
+                width: 18px;
+                font-size: 12px;
+            }
             .age-group-content { padding: 0 16px; }
             .age-group.active .age-group-content { padding: 0 16px 16px; }
             .age-group-content p { padding-left: 44px; }
