@@ -1552,6 +1552,9 @@ img { max-width: 100%; display: block; }
     color: #bbb;
     margin-top: 12px;
 }
+.knowledge-page .knowledge-img {
+    display: none;
+}
 
 /* ========== Mobile Nav Overlay ========== */
 .nav-overlay {
@@ -1823,6 +1826,15 @@ img { max-width: 100%; display: block; }
     .knowledge-grid {
         grid-template-columns: 1fr;
         gap: 18px;
+    }
+
+    .knowledge-page .knowledge-card {
+        display: block;
+    }
+
+    .knowledge-page .knowledge-body {
+        padding: 22px 20px;
+        display: block;
     }
 
     .knowledge-card {
