@@ -1016,6 +1016,12 @@ img { max-width: 100%; display: block; }
     opacity: 1;
     filter: none;
 }
+.specialty-img img.specialty-img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+}
 .specialty-card:hover .specialty-img { transform: scale(1.05); }
 .specialty-body {
     padding: 24px;
