@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日常口腔护理指南 - 惠尔口腔</title>
+    <link rel="icon" href="images/01_logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ---- Guide Hero / Banner ---- */
+        .guide-banner {
+            padding: 140px 0 80px;
+            background: linear-gradient(135deg, #005BAC 0%, #0072C6 100%);
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .guide-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+        .guide-banner h1 {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .guide-banner p {
+            font-size: 17px;
+            opacity: 0.88;
+            max-width: 620px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            line-height: 1.7;
+        }
+        .guide-banner .banner-icon {
+            font-size: 56px;
+            margin-bottom: 18px;
+            opacity: 0.3;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---- Section styling ---- */
+        .guide-section {
+            padding: 60px 0;
+        }
+        .guide-section.bg-soft {
+            background: #f8fafc;
+        }
+        .guide-section .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 14px;
+            border-radius: 999px;
+            background: #e8f4ff;
+            color: #005BAC;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+        .guide-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a2a3a;
+            margin-bottom: 24px;
+        }
+        .guide-section h2 em {
+            color: #005BAC;
+            font-style: normal;
+        }
+        .guide-section h2::after {
+            content: '';
+            display: block;
+            width: 44px;
+            height: 3px;
+            background: linear-gradient(90deg, #005BAC, #00A0E0);
+            margin-top: 12px;
+            border-radius: 2px;
+        }
+        .guide-section.centered h2::after {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ---- Tip Cards ---- */
+        .tip-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .tip-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 32px 26px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,91,172,0.06);
+            transition: transform 0.35s, box-shadow 0.35s;
+        }
+        .tip-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,91,172,0.08);
+        }
+        .tip-card .tip-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #e8f4ff, #d0eaff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #005BAC;
+            margin-bottom: 18px;
+        }
+        .tip-card h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1a2a3a;
+            margin-bottom: 10px;
+        }
+        .tip-card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.8;
+        }
+        .tip-card ul {
+            margin-top: 10px;
+        }
+        .tip-card ul li {
+            font-size: 14px;
+            color: #555;
+            padding: 5px 0 5px 22px;
+            position: relative;
+            line-height: 1.6;
+        }
+        .tip-card ul li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #005BAC;
+            font-size: 11px;
+        }
+
+        /* ---- Steps / Timeline ---- */
+        .guide-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .guide-step {
+            text-align: center;
+            padding: 24px 16px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,91,172,0.06);
+        }
+        .guide-step .step-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #005BAC;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+        .guide-step h5 {
+            font-size: 15px;
+            color: #1a2a3a;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .guide-step p {
+            font-size: 13px;
+            color: #777;
+            line-height: 1.7;
+        }
+
+        /* ---- Food grid ---- */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+        }
+        .food-col h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .food-col h4 i { font-size: 20px; }
+        .food-col.good h4 { color: #2e7d32; }
+        .food-col.bad h4 { color: #c62828; }
+        .food-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .food-tags span {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .food-col.good .food-tags span {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .food-col.bad .food-tags span {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* ---- Checkup timeline ---- */
+        .checkup-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .checkup-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 24px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            align-items: center;
+        }
+        .checkup-item:last-child { border-bottom: none; }
+        .checkup-freq {
+            font-size: 15px;
+            font-weight: 700;
+            color: #005BAC;
+            text-align: center;
+            padding: 8px 12px;
+            background: #e8f4ff;
+            border-radius: 8px;
+        }
+        .checkup-desc p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.7;
+        }
+        .checkup-desc p strong { color: #1a2a3a; }
+
+        /* ---- CTA block ---- */
+        .guide-cta {
+            background: linear-gradient(135deg, #005BAC, #0072C6);
+            border-radius: 16px;
+            padding: 48px;
+            text-align: center;
+            color: #fff;
+            margin-top: 20px;
+        }
+        .guide-cta h3 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .guide-cta p {
+            font-size: 15px;
+            opacity: 0.85;
+            max-width: 500px;
+            margin: 0 auto 28px;
+            line-height: 1.7;
+        }
+        .guide-cta .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            color: #005BAC;
+            padding: 14px 40px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .guide-cta .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 992px) {
+            .tip-grid { grid-template-columns: repeat(2, 1fr); }
+            .guide-steps { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .guide-banner h1 { font-size: 26px; }
+            .guide-section { padding: 40px 0; }
+            .guide-section h2 { font-size: 22px; }
+            .tip-grid { grid-template-columns: 1fr; }
+            .guide-steps { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .food-grid { grid-template-columns: 1fr; gap: 20px; }
+            .checkup-item { grid-template-columns: 1fr; gap: 8px; }
+            .checkup-freq { text-align: left; }
+            .guide-cta { padding: 32px 24px; }
+            .guide-cta h3 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="header" id="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="images/01_logo.png" alt="惠尔口腔" style="height:42px;width:auto;">
+            <div class="logo-text">惠尔口腔 <span>Here Dental</span></div>
+        </a>
+        <nav class="nav" id="nav">
+            <a href="index.html">首页</a>
+            <a href="about.html">机构介绍</a>
+            <a href="team.html">医生团队</a>
+            <a href="specialties.html">特色专科</a>
+            <a href="knowledge.html">相关科普</a>
+            <a href="contact.html">联系我们</a>
+            <a href="contact.html" class="nav-cta"><i class="fas fa-phone-alt"></i>&nbsp; 预约咨询</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ===================== BANNER ===================== -->
+<section class="guide-banner">
+    <div class="container">
+        <div class="banner-icon"><i class="fas fa-shield-heart"></i></div>
+        <h1>日常口腔护理指南</h1>
+        <p>预防胜于一切的治疗 —— 从今天开始，用科学的方法守护您的每一颗牙齿，让牙疼永远不会发生。</p>
+    </div>
+</section>
+
+<!-- ===================== 1. 正确刷牙 ===================== -->
+<section class="guide-section">
+    <div class="container">
+        <div class="section-label"><i class="fas fa-toothbrush"></i> 基础护理</div>
+        <h2>正确刷牙 —— 口腔健康的<em>第一道防线</em></h2>
+        <p style="font-size:15px;color:#666;margin-bottom:28px;max-width:720px;line-height:1.8;">
+            绝大多数口腔问题都源于清洁不到位。学会正确的刷牙方法，比任何治疗都更重要。
+        </p>
+
+        <!-- 4 steps -->
+        <div class="guide-steps fade-in">
+            <div class="guide-step">
+                <div class="step-badge">1</div>
+                <h5>刷外侧面</h5>
+                <p>牙刷与牙龈呈45°，小幅度水平颤动，每次覆盖2-3颗牙，从后往前有序移动。</p>
+            </div>
+            <div class="guide-step">
+                <div class="step-badge">2</div>
+                <h5>刷内侧面</h5>
+                <p>同样45°倾斜，刷毛指向牙龈，轻轻颤动清洁。下牙内侧容易遗漏，需格外留意。</p>
+            </div>
+            <div class="guide-step">
+                <div class="step-badge">3</div>
+                <h5>刷咬合面</h5>
+                <p>刷毛垂直对准咬合面沟隙，前后短距离来回刷，清除窝沟内食物残渣。</p>
+            </div>
+            <div class="guide-step">
+                <div class="step-badge">4</div>
+                <h5>刷舌苔</h5>
+                <p>轻轻刷洗舌苔表面，可去除大量细菌，有效改善口气，让口腔更清爽。</p>
+            </div>
+        </div>
+
+        <div style="margin-top:24px;padding:18px 22px;background:#e8f4ff;border-radius:10px;max-width:720px;">
+            <p style="font-size:14px;color:#005BAC;line-height:1.8;">
+                <i class="fas fa-check-circle"></i> <strong>每天早晚各刷一次，每次至少2分钟</strong><br>
+                <i class="fas fa-check-circle"></i> 每3个月更换一次牙刷，刷毛变形立即更换<br>
+                <i class="fas fa-check-circle"></i> 使用含氟牙膏，每次用量约一颗豌豆大小
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== 2. 牙线与辅助工具 ===================== -->
+<section class="guide-section bg-soft">
+    <div class="container">
+        <div class="section-label"><i class="fas fa-tools"></i> 辅助清洁</div>
+        <h2>牙线与辅助工具 —— 刷牙<em>刷不到的地方</em></h2>
+        <p style="font-size:15px;color:#666;margin-bottom:28px;max-width:720px;line-height:1.8;">
+            刷牙只能清洁约60%的牙面，牙缝中的细菌是龋齿和牙周炎的主要来源。
+        </p>
+
+        <div class="tip-grid">
+            <div class="tip-card fade-in">
+                <div class="tip-icon"><i class="fas fa-thread"></i></div>
+                <h4>牙线</h4>
+                <p>每天至少使用一次牙线，清除牙缝中的食物残渣和牙菌斑。正确使用牙线不会让牙缝变大——牙缝变大是牙周炎的后果，而非牙线的错。</p>
+            </div>
+            <div class="tip-card fade-in">
+                <div class="tip-icon"><i class="fas fa-water"></i></div>
+                <h4>冲牙器</h4>
+                <p>适合牙缝较大、佩戴矫正器或有牙周炎的患者。高压水流可冲走食物残渣，按摩牙龈。但不能替代牙线的机械摩擦清洁。</p>
+            </div>
+            <div class="tip-card fade-in">
+                <div class="tip-icon"><i class="fas fa-syringe"></i></div>
+                <h4>牙缝刷</h4>
+                <p>当牙缝较大时，牙缝刷比牙线更高效。选择合适尺寸的牙缝刷，轻柔地前后移动，清洁每个牙邻面。正畸患者尤其推荐使用。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== 3. 饮食建议 ===================== -->
+<section class="guide-section">
+    <div class="container">
+        <div class="section-label"><i class="fas fa-apple-alt"></i> 饮食护齿</div>
+        <h2>吃对食物，牙齿更健康 —— <em>饮食与口腔</em></h2>
+        <p style="font-size:15px;color:#666;margin-bottom:28px;max-width:720px;line-height:1.8;">
+            牙齿的健康不仅取决于清洁，也与日常饮食息息相关。不同食物对牙齿的影响差异巨大。
+        </p>
+
+        <div class="food-grid fade-in">
+            <div class="food-col good">
+                <h4><i class="fas fa-check-circle"></i> 对牙齿有益的食物</h4>
+                <div class="food-tags">
+                    <span>🥛 牛奶、奶酪（高钙）</span>
+                    <span>🥕 胡萝卜、芹菜（清洁牙面）</span>
+                    <span>🍎 苹果（刺激唾液分泌）</span>
+                    <span>🍵 绿茶（含氟、抑菌）</span>
+                    <span>🥚 鸡蛋（优质蛋白）</span>
+                    <span>🐟 深海鱼（维生素D）</span>
+                    <span>🥬 绿叶蔬菜（维生素）</span>
+                    <span>🌰 坚果（矿物质）</span>
+                </div>
+            </div>
+            <div class="food-col bad">
+                <h4><i class="fas fa-times-circle"></i> 对牙齿有害的食物</h4>
+                <div class="food-tags">
+                    <span>🍬 糖果、粘性甜食</span>
+                    <span>🥤 碳酸饮料（酸蚀牙釉质）</span>
+                    <span>🧊 冰块（咬裂牙齿风险）</span>
+                    <span>☕ 浓茶、咖啡（色素沉着）</span>
+                    <span>🍷 红酒（色素、酸性）</span>
+                    <span>🍋 柠檬（高酸性）</span>
+                    <span>🍪 饼干（残渣易发酵）</span>
+                    <span>🍟 薯片（易卡牙缝）</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top:24px;padding:18px 22px;background:#fff8e1;border-radius:10px;">
+            <p style="font-size:14px;color:#8d6e00;line-height:1.8;">
+                <i class="fas fa-lightbulb"></i> <strong>小贴士：</strong> 吃完酸性食物或饮料后，最好等待30分钟再刷牙。因为酸会软化牙釉质，立即刷牙反而会磨损牙齿。先用清水漱口，待唾液中和酸性后再刷牙。
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== 4. 定期检查 ===================== -->
+<section class="guide-section bg-soft">
+    <div class="container">
+        <div class="section-label"><i class="fas fa-calendar-check"></i> 定期检查</div>
+        <h2>定期口腔检查 —— <em>花小钱，省大钱</em></h2>
+        <p style="font-size:15px;color:#666;margin-bottom:28px;max-width:720px;line-height:1.8;">
+            口腔疾病早期往往没有明显症状，等到疼痛时已经发展到中晚期。定期检查是发现问题的关键。
+        </p>
+
+        <div class="checkup-timeline fade-in">
+            <div class="checkup-item">
+                <div class="checkup-freq">每 3-6 个月</div>
+                <div class="checkup-desc">
+                    <p><strong>常规口腔检查 + 洁牙（洗牙）</strong><br>清除牙结石和牙菌斑，检查有无早期龋齿、牙龈炎等问题。高危人群（吸烟、糖尿病患者）建议缩短间隔。</p>
+                </div>
+            </div>
+            <div class="checkup-item">
+                <div class="checkup-freq">每年 1 次</div>
+                <div class="checkup-desc">
+                    <p><strong>全面口腔健康评估</strong><br>包括龋病筛查、牙周检查、咬合评估、口腔癌筛查、修复体检查等。拍摄全景X光片，发现肉眼看不到的问题。</p>
+                </div>
+            </div>
+            <div class="checkup-item">
+                <div class="checkup-freq">儿童：每 3-6 个月</div>
+                <div class="checkup-desc">
+                    <p><strong>儿童口腔检查 + 涂氟/窝沟封闭</strong><br>儿童龋齿进展快，定期检查可及早发现。窝沟封闭可有效预防恒磨牙龋齿，涂氟可增强牙釉质抗酸能力。</p>
+                </div>
+            </div>
+            <div class="checkup-item">
+                <div class="checkup-freq">正畸期间</div>
+                <div class="checkup-desc">
+                    <p><strong>遵医嘱定期复诊</strong><br>矫正期间口腔清洁难度增加，需更频繁的专业清洁和检查，确保牙周健康和矫正效果。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== 5. 各年龄段预防重点 ===================== -->
+<section class="guide-section">
+    <div class="container">
+        <div class="section-label"><i class="fas fa-users"></i> 全生命周期</div>
+        <h2>不同年龄段，<em>预防重点不同</em></h2>
+        <p style="font-size:15px;color:#666;margin-bottom:28px;max-width:720px;line-height:1.8;">
+            口腔健康管理贯穿一生，每个阶段都有独特的关注重点。
+        </p>
+
+        <div class="age-timeline fade-in">
+            <div class="age-group" data-age="0-6">
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-baby"></i></div>
+                    <div class="age-range">0-6岁</div>
+                    <span class="stage-name">乳牙期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>保持口腔清洁，每天两次含氟牙膏刷牙；避免奶睡和频繁摄入甜食、含糖饮料，预防龋齿；定期口腔检查；关注吮指、口呼吸等不良习惯及颌面发育情况，发现异常及时干预。建议首次口腔检查在1岁前完成。</p>
+                </div>
+            </div>
+            <div class="age-group" data-age="7-12">
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-child"></i></div>
+                    <div class="age-range">7-12岁</div>
+                    <span class="stage-name">换牙期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>每天两次使用含氟牙膏刷牙，重点预防恒牙龋齿；关注"六龄齿"的保护，及时进行窝沟封闭和局部涂氟；定期口腔检查；关注牙齿排列、咬合关系及颌面发育，发现牙列不齐、地包天等问题及时进行正畸评估。</p>
+                </div>
+            </div>
+            <div class="age-group" data-age="13-18">
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-user-graduate"></i></div>
+                    <div class="age-range">13-18岁</div>
+                    <span class="stage-name">青少年期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>坚持每天两次含氟牙膏刷牙，预防龋齿和牙龈炎；定期口腔检查及洁牙；关注智齿萌出情况；重视牙齿排列、咬合及正畸治疗效果；避免吸烟、含糖饮料等不良习惯。</p>
+                </div>
+            </div>
+            <div class="age-group" data-age="19-40">
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-user-tie"></i></div>
+                    <div class="age-range">19-40岁</div>
+                    <span class="stage-name">成年期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>坚持每天刷牙和使用牙线，预防龋齿及牙周疾病；定期口腔检查和洁牙；及时修复龋坏及缺损牙齿；关注智齿、牙齿磨耗及牙龈出血等问题；避免吸烟、槟榔及高糖饮食。</p>
+                </div>
+            </div>
+            <div class="age-group" data-age="41-59">
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-user"></i></div>
+                    <div class="age-range">41-59岁</div>
+                    <span class="stage-name">中年期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p>正确刷牙并使用牙线或牙间刷，定期口腔检查和洁牙；关注牙龈出血、牙齿松动、牙龈退缩等牙周问题；及时修复缺失牙，维持良好咀嚼功能；戒烟限糖，预防牙周疾病和根面龋。</p>
+                </div>
+            </div>
+            <div class="age-group" data-age="60+">
+                <div class="age-group-header" role="button" tabindex="0">
+                    <div class="age-icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="age-range">60岁+</div>
+                    <span class="stage-name">老年期</span>
+                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="age-group-content">
+                    <p><strong>目标：80岁拥有20颗功能牙。</strong>坚持口腔清洁和定期检查，预防根面龋和牙周病；关注牙齿松动、口干及口腔黏膜问题；及时修复缺失牙，维护咀嚼功能；做好义齿清洁与维护，提高生活质量。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== 6. CTA ===================== -->
+<section class="guide-section bg-soft">
+    <div class="container">
+        <div class="guide-cta fade-in">
+            <h3>给牙齿一次专业的"体检"</h3>
+            <p>预约惠尔口腔专业检查，我们为您全面评估口腔健康状况，制定个性化预防方案。</p>
+            <a href="contact.html" class="btn"><i class="fas fa-phone-alt"></i> 立即预约检查</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="logo-text" style="font-size:18px;color:#fff;font-weight:700;margin-bottom:12px;">
+                    惠尔口腔 <span style="color:rgba(255,255,255,0.5);font-weight:400;font-size:13px;">Here Dental</span>
+                </div>
+                <p>惠尔口腔自2009年成立，始终秉承"预防胜于一切的治疗"核心理念，致力于为全民提供全生命周期口腔健康管理服务。</p>
+                <p class="footer-note">扎根惠州麦地东二路，围绕预防保健、儿童齿科、正畸修复、种植维护等需求，提供规范、连续、安心的家庭口腔诊疗体验。</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-weibo"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-qq"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>联系我们</h5>
+                <a href="contact.html"><i class="fas fa-phone-alt"></i>&nbsp; 0752-7820202</a>
+                <a href="contact.html"><i class="fas fa-envelope"></i>&nbsp; hcjkqmz@163.com</a>
+                <a href="contact.html"><i class="fas fa-map-marker-alt"></i>&nbsp; 惠州市惠城区麦地东二路鸿润花园A栋102-106铺</a>
+                <a href="contact.html"><i class="fas fa-clock"></i>&nbsp; 周一至周四09：00--20：00 周五至周日09：00--18：00</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 惠尔口腔 版权所有 &nbsp;|&nbsp;
+            <a href="#">网站地图</a>
+        </div>
+    </div>
+</footer>
+
+<!-- ===================== MOBILE FLOAT ===================== -->
+<div class="mobile-float">
+    <a href="index.html"><i class="fas fa-home"></i>首页</a>
+    <a href="team.html"><i class="fas fa-user-md"></i>专家</a>
+    <a href="specialties.html"><i class="fas fa-tooth"></i>专科</a>
+    <a href="knowledge.html"><i class="fas fa-book-medical"></i>科普</a>
+    <a href="about.html"><i class="fas fa-hospital"></i>机构</a>
+    <a href="contact.html"><i class="fas fa-calendar-check"></i>预约</a>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+    /* ---- 手风琴交互（复用首页逻辑） ---- */
+    (function() {
+        const groups = document.querySelectorAll('.age-group');
+        groups.forEach(group => {
+            const header = group.querySelector('.age-group-header');
+            const content = group.querySelector('.age-group-content');
+            function open(target) {
+                const c = target.querySelector('.age-group-content');
+                c.style.maxHeight = '';
+                const h = c.scrollHeight;
+                c.style.maxHeight = '0';
+                void c.offsetHeight;
+                c.style.maxHeight = h + 'px';
+                target.classList.add('active');
+            }
+            function close(target) {
+                const c = target.querySelector('.age-group-content');
+                c.style.maxHeight = c.scrollHeight + 'px';
+                void c.offsetHeight;
+                c.style.maxHeight = '0';
+                target.classList.remove('active');
+            }
+            header.addEventListener('click', function(e) {
+                const isActive = group.classList.contains('active');
+                groups.forEach(g => {
+                    if (g !== group && g.classList.contains('active')) close(g);
+                });
+                if (isActive) close(group); else open(group);
+            });
+            header.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); header.click(); }
+            });
+        });
+    })();
+</script>
+
+</body>
+</html>

@@ -475,7 +475,219 @@
     </div>
 </section>
 
-<!-- ===================== 科普：正确刷牙 ===================== -->
+<!-- ===================== 引导卡片：预防 vs 解决 ===================== -->
+<section class="section" style="padding:50px 0 20px;">
+    <div class="container">
+        <div class="guide-cards fade-in">
+            <a href="prevention-guide.html" class="guide-card guide-card-prevent">
+                <div class="guide-card-icon">
+                    <i class="fas fa-shield-heart"></i>
+                </div>
+                <div class="guide-card-body">
+                    <h3>我的牙齿没问题，我该怎么预防？</h3>
+                    <p>了解巴氏刷牙法、饮食护齿、定期检查等日常口腔护理知识，让牙疼永远不会发生。预防就是最好的治疗。</p>
+                    <span class="guide-card-link">查看日常护理指南 <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </a>
+            <a href="problem-solution.html" class="guide-card guide-card-solve">
+                <div class="guide-card-icon">
+                    <i class="fas fa-hand-holding-medical"></i>
+                </div>
+                <div class="guide-card-body">
+                    <h3>我的牙齿有问题，我应该怎么解决？</h3>
+                    <p>牙疼、蛀牙、缺牙、牙齿矫正……选择您的症状，了解可能的原因、推荐的专业医生和相关治疗案例。</p>
+                    <span class="guide-card-link">查看解决方案 <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+/* ======== Guide Cards ======== */
+.guide-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+.guide-card {
+    display: flex;
+    gap: 20px;
+    padding: 28px 26px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    border: 1.5px solid rgba(0,91,172,0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+.guide-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,91,172,0.10);
+    color: inherit;
+    text-decoration: none;
+}
+.guide-card-prevent:hover {
+    border-color: #2e7d32;
+    box-shadow: 0 16px 40px rgba(46,125,50,0.10);
+}
+.guide-card-solve:hover {
+    border-color: #005BAC;
+    box-shadow: 0 16px 40px rgba(0,91,172,0.12);
+}
+.guide-card-icon {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+.guide-card-prevent .guide-card-icon {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+.guide-card-solve .guide-card-icon {
+    background: #e8f4ff;
+    color: #005BAC;
+}
+.guide-card-body h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a2a3a;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+.guide-card-body p {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+.guide-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: gap 0.3s;
+}
+.guide-card-prevent .guide-card-link { color: #2e7d32; }
+.guide-card-solve .guide-card-link { color: #005BAC; }
+.guide-card:hover .guide-card-link { gap: 10px; }
+.guide-card-link i { font-size: 12px; }
+
+@media (max-width: 768px) {
+    .guide-cards { grid-template-columns: 1fr; gap: 16px; }
+    .guide-card { padding: 22px 20px; }
+    .guide-card-icon { width: 52px; height: 52px; font-size: 22px; }
+    .guide-card-body h3 { font-size: 16px; }
+}
+</style>
+
+<!-- ===================== 团队风采 ===================== -->
+<section class="section" id="specialties">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>我们的团队</h2>
+            <p>全学科覆盖 · 为您和家人的口腔健康保驾护航</p>
+        </div>
+        <div class="specialties-grid">
+
+            <a href="doctor-yangyuanyang.html" class="specialty-card fade-in">
+                <div class="specialty-img" style="background:#e8f4ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <img src="images/杨医生海报.png" alt="杨远洋" style="width:100% !important;height:100% !important;object-fit:cover !important;">
+                </div>
+                <div class="specialty-body">
+                    <h4>杨远洋</h4>
+                    <div class="doc-name">正畸院长 / 创始合伙人</div>
+                    <p>遵义医科大学毕业，从事口腔正畸临床工作多年，擅长口腔正畸与颜面管理、口腔美学修复。</p>
+                    <div class="tag-group">
+                        <span class="tag">口腔正畸</span>
+                        <span class="tag">颜面管理</span>
+                        <span class="tag">美学修复</span>
+                    </div>
+                </div>
+            </a>
+
+
+
+            <a href="doctor-wuguoping.html" class="specialty-card fade-in">
+                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <img src="images/吴医生海报.png" alt="吴国平" style="width:100% !important;height:100% !important;object-fit:cover !important;">
+                </div>
+                <div class="specialty-body">
+                    <h4>吴国平</h4>
+                    <div class="doc-name">医生</div>
+                    <p>擅长全科综合治疗与口腔预防保健，为患者提供全面的口腔健康管理服务。</p>
+                    <div class="tag-group">
+                        <span class="tag">全科治疗</span>
+                        <span class="tag">口腔预防</span>
+                        <span class="tag">口腔保健</span>
+                    </div>
+                </div>
+            </a>
+
+
+
+            <a href="doctor-linxuemei.html" class="specialty-card fade-in">
+                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <img src="images/林医生海报.png" alt="林雪梅" style="width:100% !important;height:100% !important;object-fit:cover !important;">
+                </div>
+                <div class="specialty-body">
+                    <h4>林雪梅</h4>
+                    <div class="doc-name">医生</div>
+                    <p>擅长儿童早期矫治，致力于儿童口腔健康管理与颌面发育引导。</p>
+                    <div class="tag-group">
+                        <span class="tag">儿童矫治</span>
+                        <span class="tag">早期干预</span>
+                        <span class="tag">颜面发育</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="doctor-fanyubo.html" class="specialty-card fade-in">
+                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <img src="images/范医生海报.png" alt="范宇波" style="width:100% !important;height:100% !important;object-fit:cover !important;">
+                </div>
+                <div class="specialty-body">
+                    <h4>范宇波</h4>
+                    <div class="doc-name">医生</div>
+                    <p>擅长种植修复与牙周治疗，注重牙周健康与种植体长期稳定。</p>
+                    <div class="tag-group">
+                        <span class="tag">种植修复</span>
+                        <span class="tag">牙周治疗</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="doctor-songzhenfang.html" class="specialty-card fade-in">
+                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <img src="images/宋医生海报.png" alt="宋镇芳" style="width:100% !important;height:100% !important;object-fit:cover !important;">
+                </div>
+                <div class="specialty-body">
+                    <h4>宋镇芳</h4>
+                    <div class="doc-name">医生</div>
+                    <p>擅长儿童口腔、口腔内科、修复治疗及综合治疗，在口腔修复领域经验丰富。</p>
+                    <div class="tag-group">
+                        <span class="tag">儿童口腔</span>
+                        <span class="tag">口腔内科</span>
+                        <span class="tag">修复治疗</span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===================== 口腔护理科普 ===================== -->
 <section class="section bg-light" id="prevention">
     <div class="container">
         <div class="section-title fade-in">
@@ -554,7 +766,7 @@
                     <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
                 </div>
                 <div class="age-group-content">
-                    <p>7–12岁是替牙期，口腔健康重点包括：保持每天两次使用含氟牙膏刷牙，重点预防恒牙龋齿；关注“六龄齿”等新萌出恒牙的保护，必要时进行窝沟封闭和局部涂氟；定期口腔检查，及时发现和治疗龋齿；关注牙齿排列、咬合关系及颌面发育情况，发现牙列不齐、地包天、龅牙等问题及时进行正畸评估；同时保持均衡饮食，减少高糖食物和饮料摄入。
+                    <p>7–12岁是替牙期，口腔健康重点包括：保持每天两次使用含氟牙膏刷牙，重点预防恒牙龋齿；关注"六龄齿"等新萌出恒牙的保护，必要时进行窝沟封闭和局部涂氟；定期口腔检查，及时发现和治疗龋齿；关注牙齿排列、咬合关系及颌面发育情况，发现牙列不齐、地包天、龅牙等问题及时进行正畸评估；同时保持均衡饮食，减少高糖食物和饮料摄入。
 </p>
                 </div>
             </div>
@@ -605,102 +817,6 @@
 </p>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-
-<!-- ===================== 团队风采 ===================== -->
-<section class="section" id="specialties">
-    <div class="container">
-        <div class="section-title fade-in">
-            <h2>我们的团队</h2>
-            <p>全学科覆盖 · 为您和家人的口腔健康保驾护航</p>
-        </div>
-        <div class="specialties-grid">
-
-            <a href="doctor-yangyuanyang.html" class="specialty-card fade-in">
-                <div class="specialty-img" style="background:#e8f4ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-                    <img src="images/杨医生海报.png" alt="杨远洋" style="width:100% !important;height:100% !important;object-fit:cover !important;">
-                </div>
-                <div class="specialty-body">
-                    <h4>杨远洋</h4>
-                    <div class="doc-name">正畸院长 / 创始合伙人</div>
-                    <p>遵义医科大学毕业，从事口腔正畸临床工作多年，擅长口腔正畸与颜面管理、口腔美学修复。</p>
-                    <div class="tag-group">
-                        <span class="tag">口腔正畸</span>
-                        <span class="tag">颜面管理</span>
-                        <span class="tag">美学修复</span>
-                    </div>
-                </div>
-            </a>
-
-           
-
-            <a href="doctor-wuguoping.html" class="specialty-card fade-in">
-                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-                    <img src="images/吴医生海报.png" alt="吴国平" style="width:100% !important;height:100% !important;object-fit:cover !important;">
-                </div>
-                <div class="specialty-body">
-                    <h4>吴国平</h4>
-                    <div class="doc-name">医生</div>
-                    <p>擅长全科综合治疗与口腔预防保健，为患者提供全面的口腔健康管理服务。</p>
-                    <div class="tag-group">
-                        <span class="tag">全科治疗</span>
-                        <span class="tag">口腔预防</span>
-                        <span class="tag">口腔保健</span>
-                    </div>
-                </div>
-            </a>
-
-          
-
-            <a href="doctor-linxuemei.html" class="specialty-card fade-in">
-                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-                    <img src="images/林医生海报.png" alt="林雪梅" style="width:100% !important;height:100% !important;object-fit:cover !important;">
-                </div>
-                <div class="specialty-body">
-                    <h4>林雪梅</h4>
-                    <div class="doc-name">医生</div>
-                    <p>擅长儿童早期矫治，致力于儿童口腔健康管理与颌面发育引导。</p>
-                    <div class="tag-group">
-                        <span class="tag">儿童矫治</span>
-                        <span class="tag">早期干预</span>
-                        <span class="tag">颜面发育</span>
-                    </div>
-                </div>
-            </a>
-
-            <a href="doctor-fanyubo.html" class="specialty-card fade-in">
-                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-                    <img src="images/范医生海报.png" alt="范宇波" style="width:100% !important;height:100% !important;object-fit:cover !important;">
-                </div>
-                <div class="specialty-body">
-                    <h4>范宇波</h4>
-                    <div class="doc-name">医生</div>
-                    <p>擅长种植修复与牙周治疗，注重牙周健康与种植体长期稳定。</p>
-                    <div class="tag-group">
-                        <span class="tag">种植修复</span>
-                        <span class="tag">牙周治疗</span>
-                    </div>
-                </div>
-            </a>
-
-            <a href="doctor-songzhenfang.html" class="specialty-card fade-in">
-                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-                    <img src="images/宋医生海报.png" alt="宋镇芳" style="width:100% !important;height:100% !important;object-fit:cover !important;">
-                </div>
-                <div class="specialty-body">
-                    <h4>宋镇芳</h4>
-                    <div class="doc-name">医生</div>
-                    <p>擅长儿童口腔、口腔内科、修复治疗及综合治疗，在口腔修复领域经验丰富。</p>
-                    <div class="tag-group">
-                        <span class="tag">儿童口腔</span>
-                        <span class="tag">口腔内科</span>
-                        <span class="tag">修复治疗</span>
-                    </div>
-                </div>
-            </a>
-
         </div>
     </div>
 </section>
