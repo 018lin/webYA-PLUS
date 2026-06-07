@@ -464,13 +464,8 @@
                     帮助您掌握正确的刷牙方法，养成良好的口腔卫生习惯。
                     因为我们真心希望：<strong>您和您的牙齿，能相伴更久</strong>。
                 </p>
-                <div class="goal-intro">
-                    <p>世界卫生组织（WHO）曾提出"8020"目标——<strong>到 80 岁时，依然拥有 20 颗功能良好的天然牙齿</strong>。这不是少数人的幸运，而是每个人都可以通过科学护理一步步接近的结果。刷牙、使用牙线、定期检查、及时洁治……每一项看似简单的日常，都是在为十年后、数十年后的牙齿健康积蓄。预防不是一次性的选择，而是与生活相伴的方式。</p>
-                </div>
-            </div>
-            <div class="philosophy-image fade-in">
-                <img src="images/8020.png" alt="8020 口腔健康目标" style="width:100%;height:100%;object-fit:contain;">
-            </div>
+               
+          
         </div>
     </div>
 </section>
@@ -480,23 +475,29 @@
     <div class="container">
         <div class="guide-cards fade-in">
             <a href="prevention-guide.html" class="guide-card guide-card-prevent">
-                <div class="guide-card-icon">
-                    <i class="fas fa-shield-heart"></i>
+                <div class="guide-card-icon" aria-hidden="true">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 4L6 10V26C6 34 14 40 24 44C34 40 42 34 42 26V10L24 4Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 24L21 29L32 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
                 <div class="guide-card-body">
                     <h3>我的牙齿没问题，我该怎么预防？</h3>
                     <p>了解巴氏刷牙法、饮食护齿、定期检查等日常口腔护理知识，让牙疼永远不会发生。预防就是最好的治疗。</p>
-                    <span class="guide-card-link">查看日常护理指南 <i class="fas fa-arrow-right"></i></span>
+                  
                 </div>
             </a>
             <a href="problem-solution.html" class="guide-card guide-card-solve">
-                <div class="guide-card-icon">
-                    <i class="fas fa-hand-holding-medical"></i>
+                <div class="guide-card-icon" aria-hidden="true">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2.5"/>
+                        <path d="M24 14V34M14 24H34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>
                 </div>
                 <div class="guide-card-body">
                     <h3>我的牙齿有问题，我应该怎么解决？</h3>
                     <p>牙疼、蛀牙、缺牙、牙齿矫正……选择您的症状，了解可能的原因、推荐的专业医生和相关治疗案例。</p>
-                    <span class="guide-card-link">查看解决方案 <i class="fas fa-arrow-right"></i></span>
+                    
                 </div>
             </a>
         </div>
@@ -514,61 +515,109 @@
 }
 .guide-card {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 20px;
-    padding: 28px 26px;
-    border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-    border: 1.5px solid rgba(0,91,172,0.08);
+    padding: 40px;
+    border-radius: 24px;
     text-decoration: none;
     color: inherit;
-    transition: all 0.4s ease;
+    transition: background 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
     cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.7);
 }
-.guide-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(0,91,172,0.10);
-    color: inherit;
-    text-decoration: none;
+
+/* ---- 预防卡片：清朗薄荷绿 ---- */
+.guide-card-prevent {
+    background: linear-gradient(135deg, #FFFFFF, #F0FDF4);
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.85),
+        0 4px 50px rgba(22,101,52,0.06),
+        0 1px 4px rgba(22,101,52,0.04);
 }
 .guide-card-prevent:hover {
-    border-color: #2e7d32;
-    box-shadow: 0 16px 40px rgba(46,125,50,0.10);
+    background: linear-gradient(135deg, #FAFFFB, #DCFCE7);
+    transform: translateY(-4px);
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.9),
+        0 8px 64px rgba(22,101,52,0.10),
+        0 2px 10px rgba(22,101,52,0.06);
+    color: inherit;
+    text-decoration: none;
+}
+.guide-card-prevent .guide-card-icon { color: #166534; }
+.guide-card-prevent .guide-card-body h3 { color: #166534; }
+.guide-card-prevent .guide-card-link { color: #166534; }
+
+/* ---- 解决卡片：专业婴儿蓝 ---- */
+.guide-card-solve {
+    background: linear-gradient(135deg, #FFFFFF, #EFF6FF);
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.85),
+        0 4px 50px rgba(30,58,138,0.06),
+        0 1px 4px rgba(30,58,138,0.04);
 }
 .guide-card-solve:hover {
-    border-color: #005BAC;
-    box-shadow: 0 16px 40px rgba(0,91,172,0.12);
+    background: linear-gradient(135deg, #FAFBFF, #DBEAFE);
+    transform: translateY(-4px);
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.9),
+        0 8px 64px rgba(30,58,138,0.10),
+        0 2px 10px rgba(30,58,138,0.06);
+    color: inherit;
+    text-decoration: none;
 }
+.guide-card-solve .guide-card-icon { color: #1E3A8A; }
+.guide-card-solve .guide-card-body h3 { color: #1E3A8A; }
+.guide-card-solve .guide-card-link { color: #1E3A8A; }
+
+/* ---- 图标（含微底座） ---- */
 .guide-card-icon {
+    position: relative;
     flex-shrink: 0;
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
 }
-.guide-card-prevent .guide-card-icon {
-    background: #e8f5e9;
-    color: #2e7d32;
+/* 微底座：模糊圆形色块，让图标有"落在光晕上"的立体感 */
+.guide-card-prevent .guide-card-icon::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    background: rgba(22,101,52,0.10);
+    filter: blur(12px);
 }
-.guide-card-solve .guide-card-icon {
-    background: #e8f4ff;
-    color: #005BAC;
+.guide-card-solve .guide-card-icon::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    background: rgba(30,58,138,0.10);
+    filter: blur(12px);
 }
+.guide-card-icon svg {
+    position: relative;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+    display: block;
+}
+
+/* ---- 正文 ---- */
 .guide-card-body h3 {
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 700;
-    color: #1a2a3a;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     line-height: 1.4;
 }
 .guide-card-body p {
     font-size: 14px;
-    color: #888;
+    color: #4B5563;
     line-height: 1.8;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 .guide-card-link {
     display: inline-flex;
@@ -578,15 +627,14 @@
     font-weight: 600;
     transition: gap 0.3s;
 }
-.guide-card-prevent .guide-card-link { color: #2e7d32; }
-.guide-card-solve .guide-card-link { color: #005BAC; }
 .guide-card:hover .guide-card-link { gap: 10px; }
 .guide-card-link i { font-size: 12px; }
 
 @media (max-width: 768px) {
     .guide-cards { grid-template-columns: 1fr; gap: 16px; }
-    .guide-card { padding: 22px 20px; }
-    .guide-card-icon { width: 52px; height: 52px; font-size: 22px; }
+    .guide-card { padding: 28px 24px; gap: 16px; }
+    .guide-card-icon { width: 40px; height: 40px; }
+    .guide-card-icon svg { width: 40px; height: 40px; }
     .guide-card-body h3 { font-size: 16px; }
 }
 </style>
@@ -679,6 +727,86 @@
                         <span class="tag">儿童口腔</span>
                         <span class="tag">口腔内科</span>
                         <span class="tag">修复治疗</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="doctor-gujiahui.html" class="specialty-card fade-in">
+                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <img src="images/古医生海报.png" alt="古嘉慧" style="width:100% !important;height:100% !important;object-fit:cover !important;">
+                </div>
+                <div class="specialty-body">
+                    <h4>古嘉慧</h4>
+                    <div class="doc-name">全科医师</div>
+                    <p>擅长口腔全科综合治疗与口腔预防保健，注重与患者沟通，提供个性化治疗方案。</p>
+                    <div class="tag-group">
+                        <span class="tag">全科治疗</span>
+                        <span class="tag">口腔预防</span>
+                        <span class="tag">牙体修复</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="doctor-huangmeiting.html" class="specialty-card fade-in">
+                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <img src="images/黄医生海报.png" alt="黄美婷" style="width:100% !important;height:100% !important;object-fit:cover !important;">
+                </div>
+                <div class="specialty-body">
+                    <h4>黄美婷</h4>
+                    <div class="doc-name">全科医师</div>
+                    <p>擅长口腔全科综合诊疗与口腔美学修复，注重细节，兼顾美观与功能和谐统一。</p>
+                    <div class="tag-group">
+                        <span class="tag">全科治疗</span>
+                        <span class="tag">口腔修复</span>
+                        <span class="tag">牙体牙髓</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="doctor-hedongming.html" class="specialty-card fade-in">
+                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <img src="images/何医生海报.png" alt="何东明" style="width:100% !important;height:100% !important;object-fit:cover !important;">
+                </div>
+                <div class="specialty-body">
+                    <h4>何东明</h4>
+                    <div class="doc-name">医师</div>
+                    <p>具有扎实的专业理论基础和丰富的临床经验，为患者提供优质口腔医疗服务。</p>
+                    <div class="tag-group">
+                        <span class="tag">口腔全科</span>
+                        <span class="tag">口腔预防</span>
+                        <span class="tag">综合治疗</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="doctor-gupeishan.html" class="specialty-card fade-in">
+                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <img src="images/医生团队/古佩珊医生(PSD).png" alt="古佩珊" style="width:100% !important;height:100% !important;object-fit:cover !important;">
+                </div>
+                <div class="specialty-body">
+                    <h4>古佩珊</h4>
+                    <div class="doc-name">医师</div>
+                    <p>具备扎实的专业功底和丰富的临床经验，以精益求精的态度服务每一位患者。</p>
+                    <div class="tag-group">
+                        <span class="tag">口腔全科</span>
+                        <span class="tag">口腔预防</span>
+                        <span class="tag">综合治疗</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="doctor-xuyikun.html" class="specialty-card fade-in">
+                <div class="specialty-img" style="background:#f0f7ff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <img src="images/医生团队/徐艺坤医生.png" alt="徐艺坤" style="width:100% !important;height:100% !important;object-fit:cover !important;">
+                </div>
+                <div class="specialty-body">
+                    <h4>徐艺坤</h4>
+                    <div class="doc-name">医师</div>
+                    <p>具有扎实的专业理论基础和丰富的临床经验，为患者提供优质口腔医疗服务。</p>
+                    <div class="tag-group">
+                        <span class="tag">口腔全科</span>
+                        <span class="tag">口腔预防</span>
+                        <span class="tag">综合治疗</span>
                     </div>
                 </div>
             </a>
