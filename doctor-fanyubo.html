@@ -60,6 +60,43 @@
     </div>
 </section>
 
+<!-- ===================== DOCTOR HONORS ===================== -->
+<section class="section bg-light doctor-honors-section">
+    <div class="container">
+        <div class="fade-in" style="text-align:center;margin-bottom:40px;">
+            <h2 style="font-size:28px;font-weight:700;color:#00204a;">医师荣誉</h2>
+            <p style="color:#666;margin-top:6px;">范宇波医生专业培训与学术认证</p>
+        </div>
+        <div class="doctor-honor-grid">
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/ph/范宇波参加无牙颌种植即刻负重实战班.jpg" alt="范宇波参加无牙颌种植即刻负重实战班">
+                </div>
+                <div class="doctor-honor-title">无牙颌种植即刻负重实战班参训证书</div>
+            </div>
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/ph/范宇波完成UITC种植系列课程之无牙颌种植修复.jpg" alt="范宇波完成UITC种植系列课程之无牙颌种植修复">
+                </div>
+                <div class="doctor-honor-title">UITC 种植系列课程之无牙颌种植修复结业证书</div>
+            </div>
+            <div class="doctor-honor-card fade-in" onclick="openLightbox(this)">
+                <div class="doctor-honor-media">
+                    <img src="images/ph/范宇波完成士卓曼SAC种植课程.jpg" alt="范宇波完成士卓曼SAC种植课程">
+                </div>
+                <div class="doctor-honor-title">士卓曼 SAC 种植课程结业证书</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== LIGHTBOX ===================== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="close-btn">&times;</span>
+    <img id="lightbox-img" src="">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
 <!-- ===================== FOOTER ===================== -->
 <footer class="footer">
     <div class="container">
@@ -110,5 +147,19 @@
 </div>
 
 <script src="js/main.js"></script>
+<script>
+    function openLightbox(el) {
+        var img = el.querySelector('img');
+        var title = el.querySelector('.doctor-honor-title');
+        document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox-caption').textContent = title ? title.textContent : img.alt;
+        document.getElementById('lightbox').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+</script>
 </body>
 </html>
