@@ -235,6 +235,51 @@ img { max-width: 100%; display: block; }
     object-fit: contain;
     object-position: center center;
 }
+.hero-carousel {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+.carousel-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 0;
+}
+.carousel-slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+}
+/* Carousel dots */
+.carousel-dots {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 10px;
+}
+.carousel-dots .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.45);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+.carousel-dots .dot.active,
+.carousel-dots .dot:hover {
+    background: #fff;
+    transform: scale(1.25);
+}
 .hero-overlay {
     position: absolute;
     inset: 0;
@@ -379,6 +424,19 @@ img { max-width: 100%; display: block; }
     .hero-bg img {
         width: 100%;
         height: auto;
+        display: block;
+        object-fit: contain;
+    }
+    .hero-carousel {
+        position: relative;
+        overflow: hidden;
+        top: 0;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+    }
+    .carousel-slide img {
+        width: 100%;
+        height: 100%;
         display: block;
         object-fit: contain;
     }

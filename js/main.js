@@ -110,3 +110,47 @@ if (sections.length > 0) {
         el.style.display = 'none';
     });
 })();
+
+// ======================== Hero Carousel ========================
+(function initHeroCarousel() {
+    var slides = document.querySelectorAll('#heroBanner .carousel-slide');
+    var dots = document.querySelectorAll('#heroBanner .carousel-dots .dot');
+    if (slides.length === 0) return;
+
+    var current = 0;
+    var timer = null;
+
+    function goTo(index) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = ((index % slides.length) + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+    }
+
+    function next() { goTo(current + 1); }
+
+    function startTimer() {
+        stopTimer();
+        timer = setInterval(next, 4000);
+    }
+
+    function stopTimer() {
+        if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    dots.forEach(function(dot) {
+        dot.addEventListener('click', function() {
+            goTo(parseInt(this.getAttribute('data-index'), 10));
+            startTimer();
+        });
+    });
+
+    var hero = document.getElementById('heroBanner');
+    if (hero) {
+        hero.addEventListener('mouseenter', stopTimer);
+        hero.addEventListener('mouseleave', startTimer);
+    }
+
+    startTimer();
+})();
