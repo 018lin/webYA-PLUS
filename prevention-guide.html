@@ -155,43 +155,61 @@
             font-size: 11px;
         }
 
-        /* ---- Steps / Timeline ---- */
+        /* ---- Brushing Steps with Images ---- */
         .guide-steps {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
         }
         .guide-step {
-            text-align: center;
-            padding: 24px 16px;
             background: #fff;
             border-radius: 12px;
+            overflow: hidden;
             box-shadow: 0 2px 12px rgba(0,0,0,0.04);
             border: 1px solid rgba(0,91,172,0.06);
+            display: flex;
+            flex-direction: column;
         }
-        .guide-step .step-badge {
-            width: 36px;
-            height: 36px;
+        .guide-step-img {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform 0.4s ease;
+        }
+        .guide-step:hover .guide-step-img {
+            transform: scale(1.05);
+        }
+        .guide-step-body {
+            flex: 1;
+            padding: 18px 14px 20px;
+            text-align: center;
+            background: #f7f9fc;
+        }
+        .guide-step-body .step-badge {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: #005BAC;
             color: #fff;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
-        .guide-step h5 {
+        .guide-step-body h5 {
             font-size: 15px;
             color: #1a2a3a;
             font-weight: 600;
             margin-bottom: 8px;
         }
-        .guide-step p {
+        .guide-step-body p {
             font-size: 13px;
             color: #777;
             line-height: 1.7;
+            margin: 0;
         }
 
         /* ---- Food grid ---- */
@@ -361,27 +379,39 @@
             绝大多数口腔问题都源于清洁不到位。学会正确的刷牙方法，比任何治疗都更重要。
         </p>
 
-        <!-- 4 steps -->
+        <!-- 4 steps with images -->
         <div class="guide-steps fade-in">
             <div class="guide-step">
-                <div class="step-badge">1</div>
-                <h5>刷外侧面</h5>
-                <p>牙刷与牙龈呈45°，小幅度水平颤动，每次覆盖2-3颗牙，从后往前有序移动。</p>
+                <div class="guide-step-img" style="background-image:url('images/bass01.png');"></div>
+                <div class="guide-step-body">
+                    <div class="step-badge">1</div>
+                    <h5>刷外侧面</h5>
+                    <p>牙刷与牙龈呈45°，小幅度水平颤动，每次覆盖2-3颗牙，从后往前有序移动。</p>
+                </div>
             </div>
             <div class="guide-step">
-                <div class="step-badge">2</div>
-                <h5>刷内侧面</h5>
-                <p>同样45°倾斜，刷毛指向牙龈，轻轻颤动清洁。下牙内侧容易遗漏，需格外留意。</p>
+                <div class="guide-step-img" style="background-image:url('images/bass02.png');"></div>
+                <div class="guide-step-body">
+                    <div class="step-badge">2</div>
+                    <h5>刷内侧面</h5>
+                    <p>同样45°倾斜，刷毛指向牙龈，轻轻颤动清洁。下牙内侧容易遗漏，需格外留意。</p>
+                </div>
             </div>
             <div class="guide-step">
-                <div class="step-badge">3</div>
-                <h5>刷咬合面</h5>
-                <p>刷毛垂直对准咬合面沟隙，前后短距离来回刷，清除窝沟内食物残渣。</p>
+                <div class="guide-step-img" style="background-image:url('images/bass03.png');"></div>
+                <div class="guide-step-body">
+                    <div class="step-badge">3</div>
+                    <h5>刷咬合面</h5>
+                    <p>刷毛垂直对准咬合面沟隙，前后短距离来回刷，清除窝沟内食物残渣。</p>
+                </div>
             </div>
             <div class="guide-step">
-                <div class="step-badge">4</div>
-                <h5>刷舌苔</h5>
-                <p>轻轻刷洗舌苔表面，可去除大量细菌，有效改善口气，让口腔更清爽。</p>
+                <div class="guide-step-img" style="background-image:url('images/bass04.png');"></div>
+                <div class="guide-step-body">
+                    <div class="step-badge">4</div>
+                    <h5>刷舌苔</h5>
+                    <p>轻轻刷洗舌苔表面，可去除大量细菌，有效改善口气，让口腔更清爽。</p>
+                </div>
             </div>
         </div>
 
@@ -502,86 +532,6 @@
                 <div class="checkup-freq">正畸期间</div>
                 <div class="checkup-desc">
                     <p><strong>遵医嘱定期复诊</strong><br>矫正期间口腔清洁难度增加，需更频繁的专业清洁和检查，确保牙周健康和矫正效果。</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ===================== 5. 各年龄段预防重点 ===================== -->
-<section class="guide-section">
-    <div class="container">
-        <div class="section-label"><i class="fas fa-users"></i> 全生命周期</div>
-        <h2>不同年龄段，<em>预防重点不同</em></h2>
-        <p style="font-size:15px;color:#666;margin-bottom:28px;max-width:720px;line-height:1.8;">
-            口腔健康管理贯穿一生，每个阶段都有独特的关注重点。
-        </p>
-
-        <div class="age-timeline fade-in">
-            <div class="age-group" data-age="0-6">
-                <div class="age-group-header" role="button" tabindex="0">
-                    <div class="age-icon"><i class="fas fa-baby"></i></div>
-                    <div class="age-range">0-6岁</div>
-                    <span class="stage-name">乳牙期</span>
-                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
-                </div>
-                <div class="age-group-content">
-                    <p>保持口腔清洁，每天两次含氟牙膏刷牙；避免奶睡和频繁摄入甜食、含糖饮料，预防龋齿；定期口腔检查；关注吮指、口呼吸等不良习惯及颌面发育情况，发现异常及时干预。建议首次口腔检查在1岁前完成。</p>
-                </div>
-            </div>
-            <div class="age-group" data-age="7-12">
-                <div class="age-group-header" role="button" tabindex="0">
-                    <div class="age-icon"><i class="fas fa-child"></i></div>
-                    <div class="age-range">7-12岁</div>
-                    <span class="stage-name">换牙期</span>
-                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
-                </div>
-                <div class="age-group-content">
-                    <p>每天两次使用含氟牙膏刷牙，重点预防恒牙龋齿；关注"六龄齿"的保护，及时进行窝沟封闭和局部涂氟；定期口腔检查；关注牙齿排列、咬合关系及颌面发育，发现牙列不齐、地包天等问题及时进行正畸评估。</p>
-                </div>
-            </div>
-            <div class="age-group" data-age="13-18">
-                <div class="age-group-header" role="button" tabindex="0">
-                    <div class="age-icon"><i class="fas fa-user-graduate"></i></div>
-                    <div class="age-range">13-18岁</div>
-                    <span class="stage-name">青少年期</span>
-                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
-                </div>
-                <div class="age-group-content">
-                    <p>坚持每天两次含氟牙膏刷牙，预防龋齿和牙龈炎；定期口腔检查及洁牙；关注智齿萌出情况；重视牙齿排列、咬合及正畸治疗效果；避免吸烟、含糖饮料等不良习惯。</p>
-                </div>
-            </div>
-            <div class="age-group" data-age="19-40">
-                <div class="age-group-header" role="button" tabindex="0">
-                    <div class="age-icon"><i class="fas fa-user-tie"></i></div>
-                    <div class="age-range">19-40岁</div>
-                    <span class="stage-name">成年期</span>
-                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
-                </div>
-                <div class="age-group-content">
-                    <p>坚持每天刷牙和使用牙线，预防龋齿及牙周疾病；定期口腔检查和洁牙；及时修复龋坏及缺损牙齿；关注智齿、牙齿磨耗及牙龈出血等问题；避免吸烟、槟榔及高糖饮食。</p>
-                </div>
-            </div>
-            <div class="age-group" data-age="41-59">
-                <div class="age-group-header" role="button" tabindex="0">
-                    <div class="age-icon"><i class="fas fa-user"></i></div>
-                    <div class="age-range">41-59岁</div>
-                    <span class="stage-name">中年期</span>
-                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
-                </div>
-                <div class="age-group-content">
-                    <p>正确刷牙并使用牙线或牙间刷，定期口腔检查和洁牙；关注牙龈出血、牙齿松动、牙龈退缩等牙周问题；及时修复缺失牙，维持良好咀嚼功能；戒烟限糖，预防牙周疾病和根面龋。</p>
-                </div>
-            </div>
-            <div class="age-group" data-age="60+">
-                <div class="age-group-header" role="button" tabindex="0">
-                    <div class="age-icon"><i class="fas fa-user-plus"></i></div>
-                    <div class="age-range">60岁+</div>
-                    <span class="stage-name">老年期</span>
-                    <span class="age-group-toggle"><i class="fas fa-chevron-down"></i></span>
-                </div>
-                <div class="age-group-content">
-                    <p><strong>目标：80岁拥有20颗功能牙。</strong>坚持口腔清洁和定期检查，预防根面龋和牙周病；关注牙齿松动、口干及口腔黏膜问题；及时修复缺失牙，维护咀嚼功能；做好义齿清洁与维护，提高生活质量。</p>
                 </div>
             </div>
         </div>
