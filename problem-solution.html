@@ -12,6 +12,28 @@
       tailwind.config = { corePlugins: { preflight: false } }
     </script>
     <style>
+        /* ---- Banner ---- */
+        .problem-banner {
+            padding: 140px 0 80px;
+            background: linear-gradient(135deg, #004a8a 0%, #005BAC 50%, #0072C6 100%);
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .problem-banner h1 {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .problem-banner p {
+            font-size: 17px;
+            opacity: 0.88;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
         /* ---- Tabs / Category Selector ---- */
         .problem-tabs {
             display: flex;
@@ -283,6 +305,7 @@
         }
 
         @media (max-width: 768px) {
+            .problem-banner h1 { font-size: 26px; }
             .problem-tab { padding: 14px 20px; min-width: 80px; }
             .problem-tab i { font-size: 24px; }
             .problem-tab span { font-size: 13px; }
@@ -313,6 +336,14 @@
         </nav>
     </div>
 </header>
+
+<!-- ===================== BANNER ===================== -->
+<section class="problem-banner">
+    <div class="container">
+        <h1>牙齿有问题？我们帮您解决</h1>
+        <p>不同牙齿问题对应不同的解决方案，惠尔口腔为您提供专业的诊疗建议。选择您的症状，了解可能的病因与治疗方案。</p>
+    </div>
+</section>
 
 <!-- ===================== CATEGORY TABS ===================== -->
 <section class="section">

@@ -13,6 +13,50 @@
         .guide-banner > .container {
             max-width: 1320px;
         }
+
+        /* ---- Guide Hero / Banner ---- */
+        .guide-banner {
+            padding: 140px 0 80px;
+            background: linear-gradient(135deg, #005BAC 0%, #0072C6 100%);
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .guide-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+        .guide-banner h1 {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .guide-banner p {
+            font-size: 17px;
+            opacity: 0.88;
+            max-width: 620px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            line-height: 1.7;
+        }
+        .guide-banner .banner-icon {
+            font-size: 56px;
+            margin-bottom: 18px;
+            opacity: 0.3;
+            position: relative;
+            z-index: 1;
+        }
+
         .guide-section {
             padding: 52px 0;
         }
@@ -937,6 +981,7 @@
             }
         }
         @media (max-width: 768px) {
+            .guide-banner h1 { font-size: 26px; }
             .guide-section { padding: 40px 0; }
             .guide-section > .container,
             .guide-banner > .container {
@@ -1068,6 +1113,14 @@
     </div>
 </header>
 
+<!-- ===================== BANNER ===================== -->
+<section class="guide-banner">
+    <div class="container">
+        <div class="banner-icon"><i class="fas fa-shield-heart"></i></div>
+        <h1>日常口腔护理指南</h1>
+        <p>预防胜于一切的治疗 —— 从今天开始，用科学的方法守护您的每一颗牙齿，让牙疼永远不会发生。</p>
+    </div>
+</section>
 
 <!-- ===================== 1. 基础护理 ===================== -->
 <section class="guide-section teaching-section">
