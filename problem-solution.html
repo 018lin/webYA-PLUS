@@ -12,180 +12,58 @@
       tailwind.config = { corePlugins: { preflight: false } }
     </script>
     <style>
-        /* =========================================
-                   1. Banner：左右布局
-                   ========================================= */
+        /* ---- Banner ---- */
         .problem-banner {
-            padding: 140px 0 60px;
+            padding: 140px 0 80px;
             background: linear-gradient(135deg, #004a8a 0%, #005BAC 50%, #0072C6 100%);
+            text-align: center;
+            color: #fff;
             position: relative;
             overflow: hidden;
         }
-        .problem-banner::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        .problem-banner h1 {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 12px;
         }
-        .banner-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-        .banner-left h1 {
-            font-size: 42px;
-            font-weight: 800;
-            color: #fff;
-            line-height: 1.25;
-            margin-bottom: 16px;
-            letter-spacing: -0.5px;
-        }
-        .banner-left h1 span {
-            display: block;
-            font-size: 20px;
-            font-weight: 400;
-            opacity: 0.85;
-            letter-spacing: 1px;
-            margin-top: 10px;
-        }
-        .banner-left p {
+        .problem-banner p {
             font-size: 17px;
-            color: rgba(255,255,255,0.8);
-            line-height: 1.8;
-            max-width: 500px;
-            margin-bottom: 28px;
-        }
-        .banner-btns {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-        .banner-btns a {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 13px 32px;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .banner-btns .btn-primary {
-            background: #fff;
-            color: #005BAC;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-        }
-        .banner-btns .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(0,0,0,0.2);
-        }
-        .banner-btns .btn-outline {
-            border: 2px solid rgba(255,255,255,0.5);
-            color: #fff;
-        }
-        .banner-btns .btn-outline:hover {
-            border-color: #fff;
-            background: rgba(255,255,255,0.1);
+            opacity: 0.88;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
         }
 
-        /* -- 牙齿模型 (右侧) -- */
-        .banner-model {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .banner-model .tooth-svg {
-            width: 100%;
-            max-width: 380px;
-            filter: drop-shadow(0 20px 60px rgba(0,0,0,0.2));
-            animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-        /* -- 数据统计条 -- */
-        .stats-bar {
-            background: #fff;
-            border-radius: 16px;
-            padding: 32px 40px;
-            margin-top: 48px;
-            box-shadow: 0 8px 32px rgba(0,91,172,0.12);
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            position: relative;
-            z-index: 1;
-        }
-        .stats-bar .stat-item {
-            text-align: center;
-            padding: 8px 4px;
-            position: relative;
-        }
-        .stats-bar .stat-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1px;
-            height: 40px;
-            background: #e5edf5;
-        }
-        .stats-bar .stat-num {
-            font-size: 28px;
-            font-weight: 800;
-            color: #005BAC;
-            line-height: 1.2;
-        }
-        .stats-bar .stat-num .plus { font-size: 20px; }
-        .stats-bar .stat-label {
-            font-size: 13px;
-            color: #6b7a8a;
-            margin-top: 4px;
-            line-height: 1.4;
-        }
-
-        /* =========================================
-                   2. Tabs / 分类选择器
-                   ========================================= */
+        /* ---- Tabs / Category Selector ---- */
         .problem-tabs {
             display: flex;
             justify-content: center;
             gap: 14px;
-            margin: 48px auto 0;
+            margin-top: 32px;
+            position: relative;
+            z-index: 2;
             flex-wrap: wrap;
-            max-width: 800px;
         }
         .problem-tab {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
-            padding: 24px 40px;
-            border-radius: 16px;
+            gap: 6px;
+            padding: 20px 32px;
+            border-radius: 14px;
             background: #fff;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.08);
             cursor: pointer;
             transition: all 0.35s ease;
             border: 2px solid transparent;
-            min-width: 130px;
+            min-width: 120px;
             user-select: none;
         }
-        .problem-tab .tab-icon {
-            font-size: 28px;
-            line-height: 1;
-            color: #8899aa;
+        .problem-tab i {
+            font-size: 30px;
+            color: #888;
             transition: color 0.35s;
         }
-        .problem-tab.active .tab-icon { color: #005BAC; }
-        .problem-tab:hover .tab-icon { color: #005BAC; }
         .problem-tab span {
             font-size: 15px;
             font-weight: 600;
@@ -196,708 +74,245 @@
             transform: translateY(-4px);
             box-shadow: 0 12px 36px rgba(0,91,172,0.12);
         }
-        .problem-tab:hover span { color: #005BAC; }
+        .problem-tab:hover i,
+        .problem-tab:hover span {
+            color: #005BAC;
+        }
         .problem-tab.active {
             border-color: #005BAC;
             background: #f0f7ff;
             transform: translateY(-4px);
             box-shadow: 0 12px 36px rgba(0,91,172,0.15);
         }
-        .problem-tab.active span { color: #005BAC; }
-
-        /* =========================================
-                   3. Panels
-                   ========================================= */
-        .problem-panel { display: none; margin-top: 40px; }
-        .problem-panel.active { display: block; }
-
-        /* -- 3.1 症状简述卡片 -- */
-        .symptom-summary {
-            background: linear-gradient(135deg, #f0f7ff, #e8f4ff);
-            border-radius: 16px;
-            padding: 28px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 36px;
-            border: 1px solid rgba(0,91,172,0.08);
+        .problem-tab.active i,
+        .problem-tab.active span {
+            color: #005BAC;
         }
-        .symptom-summary .symptom-left {
-            display: flex;
-            align-items: center;
-            gap: 18px;
+
+        /* ---- Content panels ---- */
+        .problem-panel {
+            display: none;
+            margin-top: 36px;
         }
-        .symptom-summary .symptom-icon {
-            width: 52px;
-            height: 52px;
+        .problem-panel.active {
+            display: block;
+        }
+
+        /* ---- Cause card ---- */
+        .cause-card {
+            background: #fff;
             border-radius: 14px;
-            background: linear-gradient(135deg, #e8f4ff, #d0eaff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #005BAC;
-            flex-shrink: 0;
-        }
-        .symptom-summary .symptom-text h4 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1a2a3a;
-            margin-bottom: 4px;
-        }
-        .symptom-summary .symptom-text p {
-            font-size: 14px;
-            color: #6b7a8a;
-        }
-        .symptom-summary .symptom-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #005BAC;
-            font-weight: 600;
-            font-size: 14px;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            background: #fff;
-            box-shadow: 0 2px 8px rgba(0,91,172,0.08);
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-        .symptom-summary .symptom-link:hover {
-            gap: 10px;
-            box-shadow: 0 4px 16px rgba(0,91,172,0.15);
-            transform: translateY(-1px);
-        }
-
-        /* -- 3.2 病因列表：卡片式 PC 两列 -- */
-        .cause-grid-2col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 40px;
-        }
-        .cause-card-pc {
-            background: #fff;
-            border-radius: 16px;
-            padding: 26px 28px;
-            border: 1px solid #e8f0f8;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.03);
-            transition: all 0.35s ease;
-            cursor: default;
-            position: relative;
-            overflow: hidden;
-        }
-        .cause-card-pc::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: #005BAC;
-            border-radius: 0 2px 2px 0;
-        }
-        .cause-card-pc:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0,91,172,0.10);
-            border-color: rgba(0,91,172,0.2);
-        }
-        .cause-card-pc .cause-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #f0f7ff, #e0ecf8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: #005BAC;
-            margin-bottom: 14px;
-        }
-        .cause-card-pc h4 {
-            font-size: 17px;
-            font-weight: 700;
-            color: #1a2a3a;
-            margin-bottom: 8px;
-        }
-        .cause-card-pc p {
-            font-size: 13px;
-            color: #6b7a8a;
-            line-height: 1.8;
-        }
-        .cause-card-pc .cause-tag {
-            display: inline-block;
-            margin-top: 14px;
-            font-size: 12px;
-            color: #005BAC;
-            background: #e8f4ff;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-
-        /* -- 3.3 推荐治疗方案 -- */
-        .treatment-section {
-            margin-bottom: 44px;
-        }
-        .treatment-section .section-label {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a2a3a;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .treatment-section .section-label i { color: #005BAC; }
-        .treatment-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-        .treatment-card {
-            background: #fff;
-            border-radius: 16px;
-            padding: 26px 24px;
-            border: 1px solid #e8f0f8;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.03);
-            transition: all 0.35s ease;
-            display: flex;
-            flex-direction: column;
-        }
-        .treatment-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0,91,172,0.10);
-            border-color: rgba(0,91,172,0.2);
-        }
-        .treatment-card .treat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #e8f4ff, #d0eaff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            color: #005BAC;
-            margin-bottom: 16px;
-        }
-        .treatment-card h4 {
-            font-size: 17px;
-            font-weight: 700;
-            color: #1a2a3a;
-            margin-bottom: 12px;
-        }
-        .treatment-card .treat-detail {
-            font-size: 13px;
-            color: #6b7a8a;
-            line-height: 1.8;
-            flex: 1;
-        }
-        .treatment-card .treat-detail strong {
-            color: #1a2a3a;
-            font-weight: 600;
-        }
-        .treatment-card .treat-detail .treat-row {
-            margin-bottom: 4px;
-        }
-        .treatment-card .treat-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 18px;
-            padding: 10px 20px;
-            border-radius: 8px;
-            background: #f0f7ff;
-            color: #005BAC;
-            font-size: 13px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            align-self: flex-start;
-        }
-        .treatment-card .treat-btn:hover {
-            background: #005BAC;
-            color: #fff;
-            gap: 10px;
-        }
-
-        /* -- 3.4 医生卡片（40%图 / 60%信息） -- */
-        .doctor-section {
-            margin-bottom: 44px;
-        }
-        .doctor-section .section-label {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a2a3a;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .doctor-section .section-label i { color: #005BAC; }
-        .doctor-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-        .doctor-card-new {
-            background: #fff;
-            border-radius: 16px;
-            overflow: hidden;
+            padding: 32px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-            border: 1px solid #e8f0f8;
-            display: flex;
-            transition: all 0.35s ease;
+            border: 1px solid rgba(0,91,172,0.06);
+            margin-bottom: 28px;
         }
-        .doctor-card-new:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 36px rgba(0,91,172,0.10);
-            border-color: rgba(0,91,172,0.15);
-        }
-        .doctor-card-new .doc-img-wrap {
-            width: 40%;
-            flex-shrink: 0;
-            background: #f0f7ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            min-height: 260px;
-        }
-        .doctor-card-new .doc-img-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .doctor-card-new .doc-info {
-            width: 60%;
-            padding: 28px 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .doctor-card-new .doc-info h4 {
+        .cause-card h3 {
             font-size: 20px;
             font-weight: 700;
             color: #1a2a3a;
-            margin-bottom: 4px;
-        }
-        .doctor-card-new .doc-info .doc-title {
-            font-size: 13px;
-            color: #005BAC;
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
-        .doctor-card-new .doc-info .doc-desc {
-            font-size: 13px;
-            color: #6b7a8a;
-            line-height: 1.8;
-            margin-bottom: 14px;
-        }
-        .doctor-card-new .doc-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
             margin-bottom: 16px;
-        }
-        .doctor-card-new .doc-tags span {
-            font-size: 11px;
-            background: #f0f7ff;
-            color: #005BAC;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-        .doctor-card-new .doc-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .doctor-card-new .doc-actions a,
-        .doctor-card-new .doc-actions span {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 9px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .doctor-card-new .doc-actions .btn-view {
-            background: #f0f7ff;
-            color: #005BAC;
-        }
-        .doctor-card-new .doc-actions .btn-view:hover {
-            background: #005BAC;
-            color: #fff;
-        }
-        .doctor-card-new .doc-actions .btn-consult {
-            background: #005BAC;
-            color: #fff;
-        }
-        .doctor-card-new .doc-actions .btn-consult:hover {
-            background: #004a8d;
-        }
-
-        /* -- 3.5 患者评价 -- */
-        .review-section {
-            margin-bottom: 44px;
-        }
-        .review-section .section-label {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a2a3a;
-            margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .review-section .section-label i { color: #005BAC; }
-        .review-grid {
+        .cause-card h3 i { color: #005BAC; }
+        .cause-card .cause-list {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
+            gap: 16px;
         }
-        .review-card {
-            background: #fafbfc;
-            border-radius: 12px;
-            padding: 20px 22px;
-            border: 1px solid #eef2f6;
-            transition: all 0.3s;
+        .cause-card .cause-item {
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            gap: 12px;
+            align-items: start;
+            padding: 14px 18px;
+            border-radius: 10px;
+            background: #f8fafc;
+            transition: background 0.3s;
         }
-        .review-card:hover {
-            background: #f7f9fc;
-            border-color: #dce3ed;
+        .cause-card .cause-item:hover {
+            background: #eef4fa;
         }
-        .review-card .review-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .review-card .review-avatar {
+        .cause-card .cause-item .num {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #e8f4ff, #c5dfff);
+            background: #005BAC;
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #005BAC;
-            font-size: 14px;
-            font-weight: 700;
-        }
-        .review-card .review-name {
             font-size: 14px;
             font-weight: 600;
+            flex-shrink: 0;
+        }
+        .cause-card .cause-item p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.7;
+            padding-top: 6px;
+        }
+        .cause-card .cause-item p strong {
             color: #1a2a3a;
         }
-        .review-card .review-stars {
-            color: #f5a623;
-            font-size: 12px;
-            margin-left: auto;
-        }
-        .review-card .review-text {
-            font-size: 13px;
-            color: #6b7a8a;
-            line-height: 1.8;
-        }
 
-        /* -- 3.6 Before / After 案例 -- */
-        .case-section {
-            margin-bottom: 44px;
+        /* ---- Doctor recommendation ---- */
+        .doctor-recs {
+            margin-bottom: 28px;
         }
-        .case-section .section-label {
+        .doctor-recs h3 {
             font-size: 20px;
             font-weight: 700;
             color: #1a2a3a;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .case-section .section-label i { color: #005BAC; }
-        .case-ba-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
+        .doctor-recs h3 i { color: #005BAC; }
+        /* .doctor-recs-grid now uses Tailwind grid classes inline */
+
+        /* ---- Case gallery ---- */
+        .case-gallery {
+            margin-bottom: 28px;
         }
-        .case-ba-card {
-            background: #fff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-            border: 1px solid #e8f0f8;
-            transition: all 0.35s ease;
-        }
-        .case-ba-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0,91,172,0.10);
-        }
-        .case-ba-card .ba-label {
+        .case-gallery h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a2a3a;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 14px 20px;
-            background: #f7f9fc;
-            font-size: 13px;
-            font-weight: 600;
-            color: #6b7a8a;
-            border-bottom: 1px solid #eef2f6;
+            gap: 10px;
         }
-        .case-ba-card .ba-label .ba-vs {
-            color: #005BAC;
-            font-weight: 700;
-        }
-        .case-ba-card .ba-images {
+        .case-gallery h3 i { color: #005BAC; }
+        .case-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
         }
-        .case-ba-card .ba-img-box {
-            position: relative;
-            height: 220px;
+        .case-card {
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .case-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(0,91,172,0.10);
+        }
+        .case-img {
+            height: 200px;
+            background: #e8f4ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
         }
-        .case-ba-card .ba-img-box img {
+        .case-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s;
         }
-        .case-ba-card:hover .ba-img-box img { transform: scale(1.05); }
-        .case-ba-card .ba-img-box .ba-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 6px;
-            background: rgba(0,0,0,0.55);
-            color: #fff;
+        .case-body {
+            padding: 16px 18px;
         }
-        .case-ba-card .ba-body {
-            padding: 18px 20px;
-        }
-        .case-ba-card .ba-body h4 {
+        .case-body h4 {
             font-size: 15px;
             font-weight: 600;
             color: #1a2a3a;
             margin-bottom: 6px;
         }
-        .case-ba-card .ba-body p {
+        .case-body p {
             font-size: 13px;
-            color: #999;
+            color: #888;
             line-height: 1.6;
         }
-
-        /* -- 3.7 就诊流程 -- */
-        .flow-section {
-            margin-bottom: 44px;
-            background: linear-gradient(135deg, #f7f9fc, #f0f7ff);
-            border-radius: 16px;
-            padding: 40px 48px;
-        }
-        .flow-section .section-label {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a2a3a;
-            margin-bottom: 32px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
-        }
-        .flow-section .section-label i { color: #005BAC; }
-        .flow-steps {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
-        .flow-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            text-align: center;
-            padding: 0 16px;
-        }
-        .flow-step .flow-circle {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            background: #fff;
-            border: 3px solid #005BAC;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            color: #005BAC;
-            transition: all 0.3s;
-        }
-        .flow-step:hover .flow-circle {
-            background: #005BAC;
-            color: #fff;
-        }
-        .flow-step .flow-num {
-            font-size: 12px;
-            font-weight: 700;
-            color: #005BAC;
+        .case-body .case-tag {
+            display: inline-block;
             background: #e8f4ff;
-            padding: 2px 10px;
-            border-radius: 10px;
-        }
-        .flow-step .flow-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a2a3a;
-        }
-        .flow-arrow {
-            font-size: 22px;
             color: #005BAC;
-            opacity: 0.3;
-            padding: 0 6px;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 8px;
         }
 
-        /* =========================================
-                   4. CTA
-                   ========================================= */
-        .cta-section {
-            background: linear-gradient(135deg, #004a8a 0%, #005BAC 50%, #0072C6 100%);
-            border-radius: 20px;
-            padding: 48px 52px;
+        /* ---- CTA ---- */
+        .problem-cta {
+            background: linear-gradient(135deg, #005BAC, #0072C6);
+            border-radius: 14px;
+            padding: 36px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 36px;
+            gap: 24px;
             color: #fff;
-            margin-bottom: 48px;
-            position: relative;
-            overflow: hidden;
+            flex-wrap: wrap;
         }
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='20' cy='20' r='2'/%3E%3C/g%3E%3C/svg%3E");
-        }
-        .cta-section .cta-content {
-            position: relative;
-            z-index: 1;
-            flex: 1;
-        }
-        .cta-section .cta-content h3 {
-            font-size: 28px;
+        .problem-cta .cta-text h4 {
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 6px;
         }
-        .cta-section .cta-content .cta-checks {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-        }
-        .cta-section .cta-content .cta-checks span {
+        .problem-cta .cta-text p {
             font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            opacity: 0.9;
+            opacity: 0.85;
         }
-        .cta-section .cta-content .cta-checks i {
-            color: #4ade80;
-            font-size: 14px;
-        }
-        .cta-section .cta-btns {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-        .cta-section .cta-btns a {
+        .problem-cta .cta-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 14px 32px;
-            border-radius: 10px;
-            font-size: 15px;
+            background: #fff;
+            color: #005BAC;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s;
+            white-space: nowrap;
         }
-        .cta-section .cta-btns .cta-primary {
-            background: #fff;
-            color: #005BAC;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-        }
-        .cta-section .cta-btns .cta-primary:hover {
+        .problem-cta .cta-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-        }
-        .cta-section .cta-btns .cta-outline {
-            border: 2px solid rgba(255,255,255,0.5);
-            color: #fff;
-        }
-        .cta-section .cta-btns .cta-outline:hover {
-            border-color: #fff;
-            background: rgba(255,255,255,0.1);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
         }
 
-        /* -- 区块间留白呼吸感 -- */
-        .section-spacer { height: 12px; }
+        /* ---- Warning callout ---- */
+        .warning-callout {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 18px 22px;
+            border-radius: 10px;
+            background: #fff8e1;
+            border-left: 4px solid #f9a825;
+            margin-bottom: 28px;
+        }
+        .warning-callout i {
+            font-size: 22px;
+            color: #f9a825;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .warning-callout p {
+            font-size: 14px;
+            color: #6d5200;
+            line-height: 1.8;
+        }
 
-        /* =========================================
-                   Responsive
-                   ========================================= */
-        @media (max-width: 1024px) {
-            .treatment-grid { grid-template-columns: repeat(2, 1fr); }
-            .stats-bar { grid-template-columns: repeat(3, 1fr); gap: 16px; }
-            .stats-bar .stat-item:nth-child(3)::after { display: none; }
-        }
-        @media (max-width: 992px) {
-            .banner-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-            .banner-left p { max-width: 100%; margin-left: auto; margin-right: auto; }
-            .banner-btns { justify-content: center; }
-            .banner-model .tooth-svg { max-width: 280px; }
-            .doctor-list { grid-template-columns: 1fr; }
-            .review-grid { grid-template-columns: 1fr; }
-            .case-ba-grid { grid-template-columns: 1fr; }
-        }
         @media (max-width: 768px) {
-            .problem-banner { padding: 120px 0 40px; }
-            .banner-left h1 { font-size: 28px; }
-            .banner-left h1 span { font-size: 16px; }
-            .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px 18px; }
-            .stats-bar .stat-item:nth-child(2)::after { display: none; }
-            .stats-bar .stat-num { font-size: 22px; }
-            .stats-bar .stat-label { font-size: 12px; }
-            .cause-grid-2col { grid-template-columns: 1fr; }
-            .treatment-grid { grid-template-columns: 1fr; }
-            .doctor-card-new { flex-direction: column; }
-            .doctor-card-new .doc-img-wrap { width: 100%; min-height: 200px; }
-            .doctor-card-new .doc-info { width: 100%; }
-            .flow-steps { flex-direction: column; gap: 12px; }
-            .flow-arrow { transform: rotate(90deg); }
-            .flow-section { padding: 28px 20px; }
-            .cta-section { padding: 32px 24px; flex-direction: column; text-align: center; }
-            .cta-section .cta-content .cta-checks { justify-content: center; }
-            .cta-section .cta-btns { justify-content: center; }
-            .symptom-summary { flex-direction: column; text-align: center; padding: 24px 20px; }
-            .symptom-summary .symptom-left { flex-direction: column; }
-        }
-        @media (max-width: 480px) {
-            .stats-bar { grid-template-columns: 1fr 1fr; }
-            .stats-bar .stat-item:nth-child(2)::after { display: none; }
-            .problem-tab { min-width: 80px; padding: 16px 20px; }
-            .problem-tab .tab-icon { font-size: 22px; }
+            .problem-banner h1 { font-size: 26px; }
+            .problem-tab { padding: 14px 20px; min-width: 80px; }
+            .problem-tab i { font-size: 24px; }
+            .problem-tab span { font-size: 13px; }
+            .case-grid { grid-template-columns: 1fr; }
+            .cause-card { padding: 24px 20px; }
+            .problem-cta { padding: 28px 24px; flex-direction: column; text-align: center; }
+            /* doctor-recs-grid responsive now handled by Tailwind grid-cols-1 md:grid-cols-2 */
         }
     </style>
 </head>
@@ -922,1147 +337,365 @@
     </div>
 </header>
 
-<!-- ===================== BANNER（左右布局） ===================== -->
+<!-- ===================== BANNER ===================== -->
 <section class="problem-banner">
     <div class="container">
-        <div class="banner-grid">
-            <!-- 左侧文案 -->
-            <div class="banner-left">
-                <h1>
-                    牙齿有问题？<br>我们帮您解决
-                    <span>专业诊断 · 精准治疗 · 安心服务</span>
-                </h1>
-                <p>不同牙齿问题对应不同的解决方案，惠尔口腔为您提供专业的诊疗建议。选择您的症状，了解可能的病因与治疗方案。</p>
-                <div class="banner-btns">
-                    <a href="#panels" class="btn-primary"><i class="fas fa-search"></i> 自测症状</a>
-                    <a href="contact.html" class="btn-outline"><i class="fas fa-phone-alt"></i> 预约咨询</a>
-                </div>
-            </div>
-            <!-- 右侧牙齿模型 -->
-            <div class="banner-model">
-                <svg class="tooth-svg" viewBox="0 0 400 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <ellipse cx="200" cy="395" rx="140" ry="15" fill="rgba(0,0,0,0.08)"/>
-                    <defs>
-                        <linearGradient id="toothGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#ffffff"/>
-                            <stop offset="100%" stop-color="#f0f4fa"/>
-                        </linearGradient>
-                        <linearGradient id="toothShine" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
-                            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-                        </linearGradient>
-                    </defs>
-                    <path d="M200 30 C 240 30, 290 50, 300 100 C 310 140, 310 180, 300 220 C 290 260, 280 300, 270 340 C 260 370, 250 390, 240 395 C 230 400, 220 400, 210 395 C 200 390, 200 385, 200 385 C 200 385, 200 390, 190 395 C 180 400, 170 400, 160 395 C 150 390, 140 370, 130 340 C 120 300, 110 260, 100 220 C 90 180, 90 140, 100 100 C 110 50, 160 30, 200 30Z" fill="url(#toothGrad)" stroke="#d0d8e4" stroke-width="1.5"/>
-                    <path d="M160 100 C 170 70, 200 60, 220 65 C 240 70, 250 90, 245 110 C 230 90, 190 85, 160 100Z" fill="url(#toothShine)" opacity="0.6"/>
-                    <path d="M185 340 C 188 360, 195 375, 200 385" stroke="#dce3ed" stroke-width="1" fill="none"/>
-                    <path d="M215 340 C 212 360, 205 375, 200 385" stroke="#dce3ed" stroke-width="1" fill="none"/>
-                    <ellipse cx="200" cy="360" rx="45" ry="12" fill="rgba(255,255,255,0.3)"/>
-                    <circle cx="130" cy="150" r="3" fill="rgba(255,255,255,0.6)"/>
-                    <circle cx="270" cy="180" r="2" fill="rgba(255,255,255,0.5)"/>
-                    <circle cx="150" cy="250" r="2.5" fill="rgba(255,255,255,0.4)"/>
-                    <path d="M150 310 C 170 325, 230 325, 250 310" stroke="rgba(0,91,172,0.15)" stroke-width="2" stroke-linecap="round" fill="none"/>
-                </svg>
-            </div>
-        </div>
-
-        <!-- 数据统计条 -->
-        <div class="stats-bar fade-in">
-            <div class="stat-item">
-                <div class="stat-num">15<span class="plus">年</span></div>
-                <div class="stat-label">成立历程</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num">20,000<span class="plus">+</span></div>
-                <div class="stat-label">服务患者</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num">12<span class="plus">位</span></div>
-                <div class="stat-label">专业医生</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num">98.6<span class="plus">%</span></div>
-                <div class="stat-label">患者满意度</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num">1<span class="plus">个</span></div>
-                <div class="stat-label">数字化诊疗中心</div>
-            </div>
-        </div>
+        <h1>牙齿有问题？我们帮您解决</h1>
+        <p>不同牙齿问题对应不同的解决方案，惠尔口腔为您提供专业的诊疗建议。选择您的症状，了解可能的病因与治疗方案。</p>
     </div>
 </section>
 
-<!-- ===================== 主内容区 ===================== -->
-<section class="section" id="panels">
+<!-- ===================== CATEGORY TABS ===================== -->
+<section class="section">
     <div class="container">
-        <!-- TAB 导航 -->
         <div class="problem-tabs fade-in" id="problemTabs">
             <div class="problem-tab active" data-tab="toothache">
-                <span class="tab-icon"><i class="fas fa-tooth"></i></span>
+                <i class="fas fa-bolt"></i>
                 <span>牙疼</span>
             </div>
             <div class="problem-tab" data-tab="cavity">
-                <span class="tab-icon"><i class="fas fa-teeth"></i></span>
+                <i class="fas fa-teeth"></i>
                 <span>蛀牙</span>
             </div>
             <div class="problem-tab" data-tab="missing">
-                <span class="tab-icon"><i class="fas fa-teeth-open"></i></span>
+                <i class="fas fa-grin-beam-sweat"></i>
                 <span>缺牙</span>
             </div>
             <div class="problem-tab" data-tab="ortho">
-                <span class="tab-icon"><i class="fas fa-smile"></i></span>
-                <span>矫正</span>
+                <i class="fas fa-smile-wink"></i>
+                <span>牙齿矫正</span>
             </div>
         </div>
 
-        <!-- ============================ 牙疼 ============================ -->
+        <!-- ======================== 牙疼 ======================== -->
         <div class="problem-panel active" id="panel-toothache">
 
-            <!-- 症状简述 -->
-            <div class="symptom-summary fade-in">
-                <div class="symptom-left">
-                    <span class="symptom-icon"><i class="fas fa-tooth"></i></span>
-                    <div class="symptom-text">
-                        <h4>牙疼</h4>
-                        <p>持续疼痛 / 冷热敏感</p>
+            <div class="cause-card fade-in">
+                <h3><i class="fas fa-search"></i> 牙疼的可能原因</h3>
+                <div class="cause-list">
+                    <div class="cause-item">
+                        <div class="num">1</div>
+                        <p><strong>深度龋齿（蛀牙）</strong> —— 细菌侵蚀到牙本质深层，冷热酸甜刺激引发疼痛，是最常见的牙疼原因。早期可能只有冷热敏感，晚期则出现自发性疼痛。</p>
                     </div>
-                </div>
-                <a href="knowledge-detail.html" class="symptom-link">
-                    查看原因 <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <!-- 病因卡片（两列） -->
-            <h3 class="section-label" style="font-size:20px;font-weight:700;color:#1a2a3a;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-                <i class="fas fa-clipboard-list" style="color:#005BAC;"></i> 牙疼的可能原因
-            </h3>
-            <div class="cause-grid-2col fade-in">
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-tooth"></i></span>
-                    <h4>深龋</h4>
-                    <p>细菌侵蚀到牙本质深层，冷热酸甜刺激引发疼痛，是最常见的牙疼原因。早期可能只有冷热敏感。</p>
-                    <span class="cause-tag">早期可补牙修复</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-fire"></i></span>
-                    <h4>牙髓炎</h4>
-                    <p>蛀牙未及时治疗，细菌感染牙髓（牙神经），引起剧烈疼痛，尤其是夜间疼痛加剧。</p>
-                    <span class="cause-tag">需根管治疗</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-sync-alt"></i></span>
-                    <h4>根尖周炎</h4>
-                    <p>牙髓炎继续发展，炎症扩散到牙根尖周围组织，牙齿浮起感、咬合时疼痛明显。</p>
-                    <span class="cause-tag">需根管治疗</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-capsules"></i></span>
-                    <h4>牙周脓肿</h4>
-                    <p>严重的牙周炎导致牙周袋内细菌感染化脓，牙龈红肿、胀痛，可能伴有发热。</p>
-                    <span class="cause-tag">需牙周治疗</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-tooth"></i></span>
-                    <h4>智齿冠周炎</h4>
-                    <p>智齿萌出不全，牙冠周围牙龈瓣发炎，张口受限、吞咽疼痛。常见于18-30岁人群。</p>
-                    <span class="cause-tag">需拔除智齿</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-exclamation-triangle"></i></span>
-                    <h4>牙隐裂</h4>
-                    <p>牙齿表面出现细微裂纹，咬合时疼痛明显，多见于咀嚼硬物后，裂纹可延伸至牙根。</p>
-                    <span class="cause-tag">需全冠修复</span>
-                </div>
-            </div>
-
-            <!-- 推荐治疗方案 -->
-            <div class="treatment-section fade-in">
-                <div class="section-label"><i class="fas fa-notes-medical"></i> 推荐治疗方案</div>
-                <div class="treatment-grid">
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-tooth"></i></div>
-                        <h4>根管治疗</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>牙髓炎、根尖周炎</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>3-7天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">2</div>
+                        <p><strong>牙髓炎（牙神经发炎）</strong> —— 蛀牙未及时治疗，细菌感染牙髓（牙神经），引起剧烈疼痛，尤其是夜间疼痛加剧，疼痛可能放射到同侧头部。</p>
                     </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-fill-drip"></i></div>
-                        <h4>补牙修复</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>浅龋、中龋、深龋</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>1-2天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">3</div>
+                        <p><strong>根尖周炎</strong> —— 牙髓炎继续发展，炎症扩散到牙根尖周围组织，牙齿浮起感、咬合时疼痛明显，严重时可导致牙龈起包（瘘管）。</p>
                     </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-teeth"></i></div>
-                        <h4>拔牙治疗</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>智齿冠周炎、严重蛀牙</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>7-14天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">4</div>
+                        <p><strong>牙周脓肿</strong> —— 严重的牙周炎导致牙周袋内细菌感染化脓，牙龈红肿、胀痛，可能伴有发热。需及时排脓和牙周治疗。</p>
                     </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-crown"></i></div>
-                        <h4>牙冠修复</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>牙隐裂、根管治疗后</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>7-14天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">5</div>
+                        <p><strong>智齿冠周炎</strong> —— 智齿萌出不全，牙冠周围牙龈瓣发炎，张口受限、吞咽疼痛，严重时可引起颌面部间隙感染。常见于18-30岁人群。</p>
                     </div>
                 </div>
             </div>
 
-            <!-- 推荐医生 -->
-            <div class="doctor-section fade-in">
-                <div class="section-label"><i class="fas fa-user-md"></i> 推荐医生</div>
-                <div class="doctor-list">
-                    <a href="doctor-wuguoping.html" class="doctor-card-new" style="text-decoration:none;color:inherit;">
-                        <div class="doc-img-wrap">
-                            <img src="images/吴医生海报.png" alt="吴国平">
+            <div class="warning-callout fade-in">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p><strong>紧急提醒：</strong> 牙疼不是小事！出现剧烈、持续性牙疼，尤其是伴有面部肿胀、发热时，请立即就诊，避免炎症扩散导致更严重的并发症。</p>
+            </div>
+
+            <div class="doctor-recs fade-in">
+                <h3><i class="fas fa-user-md"></i> 推荐医生</h3>
+                <div class="doctor-recs-grid w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="doctor-wuguoping.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/吴医生海报.png" alt="吴国平" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="doc-info">
-                            <div>
-                                <h4>吴国平</h4>
-                                <div class="doc-title">全科主治医师</div>
-                                <div class="doc-desc">从事口腔全科诊疗十余年，擅长牙体牙髓病诊治、龋病预防与修复治疗。</div>
-                                <div class="doc-tags">
-                                    <span>全科治疗</span>
-                                    <span>牙体牙髓</span>
-                                    <span>口腔预防</span>
-                                </div>
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
+                                <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">吴国平</h4>
+                                <p class="text-base text-slate-500 whitespace-nowrap">全科主治医师</p>
                             </div>
-                            <div class="doc-actions">
-                                <span class="btn-view"><i class="fas fa-user"></i> 查看详情</span>
-                                <span class="btn-consult"><i class="fas fa-comment-dots"></i> 在线咨询</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">从事口腔全科诊疗十余年，擅长牙体牙髓病诊治、龋病预防与修复治疗，以精细操作和患者沟通见长，深受社区居民信赖。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">全科治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">牙体牙髓</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">口腔预防</span>
                             </div>
                         </div>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
-                    <a href="doctor-songzhenfang.html" class="doctor-card-new" style="text-decoration:none;color:inherit;">
-                        <div class="doc-img-wrap">
-                            <img src="images/宋医生海报.png" alt="宋镇芳">
+                    <a href="doctor-songzhenfang.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/宋医生海报.png" alt="宋镇芳" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="doc-info">
-                            <div>
-                                <h4>宋镇芳</h4>
-                                <div class="doc-title">口腔综合主治医师</div>
-                                <div class="doc-desc">擅长口腔内科、修复治疗及儿童龋病管理，注重治疗方案的全面性与长期稳定性。</div>
-                                <div class="doc-tags">
-                                    <span>口腔内科</span>
-                                    <span>修复治疗</span>
-                                    <span>综合治疗</span>
-                                </div>
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
+                                <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">宋镇芳</h4>
+                                <p class="text-base text-slate-500 whitespace-nowrap">口腔综合主治医师</p>
                             </div>
-                            <div class="doc-actions">
-                                <span class="btn-view"><i class="fas fa-user"></i> 查看详情</span>
-                                <span class="btn-consult"><i class="fas fa-comment-dots"></i> 在线咨询</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">口腔综合主治医师，擅长口腔内科、修复治疗及儿童龋病管理，注重治疗方案的全面性与长期稳定性。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">口腔内科</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">修复治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">综合治疗</span>
                             </div>
                         </div>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
                 </div>
             </div>
 
-            <!-- 患者评价 -->
-            <div class="review-section fade-in">
-                <div class="section-label"><i class="fas fa-star"></i> 患者评价</div>
-                <div class="review-grid">
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="review-avatar">张</div>
-                            <span class="review-name">张女士</span>
-                            <span class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                        </div>
-                        <div class="review-text">"牙疼了好几天，晚上都睡不好。吴医生检查后说是牙髓炎，做了根管治疗，真的不疼了。技术很好，过程也不难受。"</div>
-                    </div>
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="review-avatar">李</div>
-                            <span class="review-name">李先生</span>
-                            <span class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                        </div>
-                        <div class="review-text">"智齿发炎肿了半边脸，宋医生帮我做了冲洗消炎，建议消炎后拔除。整个过程解释得很清楚，让人很安心。"</div>
-                    </div>
+            <div class="problem-cta fade-in">
+                <div class="cta-text">
+                    <h4>正在牙疼？别忍着</h4>
+                    <p>立即预约就诊，查明原因，对症治疗</p>
                 </div>
-            </div>
-
-            <!-- Before / After 案例 -->
-            <div class="case-section fade-in">
-                <div class="section-label"><i class="fas fa-images"></i> 医疗案例</div>
-                <div class="case-ba-grid">
-                    <div class="case-ba-card">
-                        <div class="ba-label">
-                            <span>Before / After</span>
-                            <span class="ba-vs">治疗前 &nbsp;→&nbsp; 治疗后</span>
-                        </div>
-                        <div class="ba-images">
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗前</span>
-                                <img src="images/服务项目/牙体牙髓/icon_牙体牙髓.png" alt="治疗前" style="padding:20px;object-fit:contain;">
-                            </div>
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗后</span>
-                                <img src="images/服务项目/牙齿修复/牙体缺损真实病例.jpg" alt="治疗后" style="object-fit:cover;">
-                            </div>
-                        </div>
-                        <div class="ba-body">
-                            <h4>深度龋齿引发牙髓炎——根管治疗保住天然牙</h4>
-                            <p>28岁女性，右下后牙自发性疼痛，经根管治疗+冠修复后疼痛消失</p>
-                        </div>
-                    </div>
-                    <div class="case-ba-card">
-                        <div class="ba-label">
-                            <span>Before / After</span>
-                            <span class="ba-vs">治疗前 &nbsp;→&nbsp; 治疗后</span>
-                        </div>
-                        <div class="ba-images">
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗前</span>
-                                <img src="images/服务项目/牙周治疗/牙周治疗后牙龈的变化.png" alt="治疗前" style="object-fit:cover;">
-                            </div>
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗后</span>
-                                <img src="images/服务项目/牙周治疗/牙周治疗后牙龈的变化.png" alt="治疗后" style="object-fit:cover;">
-                            </div>
-                        </div>
-                        <div class="ba-body">
-                            <h4>牙龈反复肿痛——牙周系统治疗恢复健康</h4>
-                            <p>45岁男性，重度牙周炎合并牙周脓肿，经系统治疗后症状完全缓解</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 就诊流程 -->
-            <div class="flow-section fade-in">
-                <div class="section-label"><i class="fas fa-route"></i> 就诊流程</div>
-                <div class="flow-steps">
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-phone-alt"></i></div>
-                        <span class="flow-num">STEP 01</span>
-                        <span class="flow-label">预约咨询</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-stethoscope"></i></div>
-                        <span class="flow-num">STEP 02</span>
-                        <span class="flow-label">到院检查</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-clipboard-list"></i></div>
-                        <span class="flow-num">STEP 03</span>
-                        <span class="flow-label">制定方案</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-procedures"></i></div>
-                        <span class="flow-num">STEP 04</span>
-                        <span class="flow-label">开始治疗</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-heartbeat"></i></div>
-                        <span class="flow-num">STEP 05</span>
-                        <span class="flow-label">术后复诊</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CTA -->
-            <div class="cta-section fade-in">
-                <div class="cta-content">
-                    <h3>立即获取专业口腔诊断建议</h3>
-                    <div class="cta-checks">
-                        <span><i class="fas fa-check-circle"></i> 免费初步咨询</span>
-                        <span><i class="fas fa-check-circle"></i> 专业医生评估</span>
-                        <span><i class="fas fa-check-circle"></i> 当天可预约</span>
-                    </div>
-                    <div class="cta-btns">
-                        <a href="contact.html" class="cta-primary"><i class="fas fa-comment-dots"></i> 在线咨询</a>
-                        <a href="tel:0752-7820202" class="cta-outline"><i class="fas fa-phone-alt"></i> 电话预约</a>
-                    </div>
-                </div>
+                <a href="contact.html" class="cta-btn"><i class="fas fa-phone-alt"></i> 预约看诊</a>
             </div>
         </div>
 
-        <!-- ============================ 蛀牙 ============================ -->
+        <!-- ======================== 蛀牙 ======================== -->
         <div class="problem-panel" id="panel-cavity">
 
-            <div class="symptom-summary fade-in">
-                <div class="symptom-left">
-                    <span class="symptom-icon"><i class="fas fa-teeth"></i></span>
-                    <div class="symptom-text">
-                        <h4>蛀牙</h4>
-                        <p>牙齿黑点 / 食物嵌塞 / 冷热敏感</p>
+            <div class="cause-card fade-in">
+                <h3><i class="fas fa-search"></i> 蛀牙的成因与发展</h3>
+                <div class="cause-list">
+                    <div class="cause-item">
+                        <div class="num">1</div>
+                        <p><strong>细菌 + 糖 = 酸 → 腐蚀牙齿</strong> —— 口腔中的致龋菌（如变形链球菌）分解食物中的糖分产生酸性物质，酸性物质持续侵蚀牙釉质，使矿物质流失，形成蛀洞。</p>
                     </div>
-                </div>
-                <a href="knowledge-detail.html" class="symptom-link">
-                    查看原因 <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <h3 class="section-label" style="font-size:20px;font-weight:700;color:#1a2a3a;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-                <i class="fas fa-clipboard-list" style="color:#005BAC;"></i> 蛀牙的成因与发展
-            </h3>
-            <div class="cause-grid-2col fade-in">
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-bacterium"></i></span>
-                    <h4>细菌侵蚀</h4>
-                    <p>致龋菌分解食物中的糖分产生酸性物质，持续侵蚀牙釉质，使矿物质流失形成蛀洞。</p>
-                    <span class="cause-tag">所有蛀牙的根源</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-circle"></i></span>
-                    <h4>早期（浅龋）</h4>
-                    <p>牙釉质表面出现白垩色或褐色斑点，没有明显疼痛。此时补牙最简单。</p>
-                    <span class="cause-tag">可一次补好</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-thermometer-half"></i></span>
-                    <h4>中期（中龋）</h4>
-                    <p>蛀牙发展到牙本质层，对冷热甜酸产生敏感刺激。此时仍可保留牙神经。</p>
-                    <span class="cause-tag">需去腐充填</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-exclamation-triangle"></i></span>
-                    <h4>深龋 → 牙髓炎</h4>
-                    <p>蛀洞接近或已穿透牙髓腔，引发牙髓炎，出现自发痛、夜间痛。需根管治疗。</p>
-                    <span class="cause-tag">需根管治疗</span>
-                </div>
-            </div>
-
-            <div class="treatment-section fade-in">
-                <div class="section-label"><i class="fas fa-notes-medical"></i> 推荐治疗方案</div>
-                <div class="treatment-grid">
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-fill-drip"></i></div>
-                        <h4>补牙修复</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>浅龋、中龋</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>1-2天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">2</div>
+                        <p><strong>早期（浅龋）</strong> —— 牙釉质表面出现白垩色或褐色斑点，没有明显疼痛。此时补牙最简单，一次即可完成，几乎无不适感。</p>
                     </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-tooth"></i></div>
-                        <h4>根管治疗</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>深龋、牙髓炎</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>3-7天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">3</div>
+                        <p><strong>中期（中龋）</strong> —— 蛀牙发展到牙本质层，对冷、热、甜、酸产生敏感刺激。此时补牙仍可保留牙神经，但需去除更多腐坏组织。</p>
                     </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-crown"></i></div>
-                        <h4>嵌体修复</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>大面积龋坏</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>7-14天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-shield-alt"></i></div>
-                        <h4>窝沟封闭</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>儿童预防龋齿</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>即做即走</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">4</div>
+                        <p><strong>深龋 → 牙髓炎</strong> —— 蛀洞接近或已穿透牙髓腔，引发牙髓炎，出现自发痛、夜间痛。此时需要根管治疗而非简单的补牙。</p>
                     </div>
                 </div>
             </div>
 
-            <div class="doctor-section fade-in">
-                <div class="section-label"><i class="fas fa-user-md"></i> 推荐医生</div>
-                <div class="doctor-list">
-                    <a href="doctor-wuguoping.html" class="doctor-card-new" style="text-decoration:none;color:inherit;">
-                        <div class="doc-img-wrap">
-                            <img src="images/吴医生海报.png" alt="吴国平">
+            <div class="warning-callout fade-in">
+                <i class="fas fa-info-circle"></i>
+                <p><strong>重要提示：</strong> 蛀牙是不可逆的，一旦形成蛀洞，牙釉质无法自我修复。越早治疗，越简单、越省钱、越不痛苦。建议每半年到一年进行一次口腔检查，及早发现早期龋齿。</p>
+            </div>
+
+            <div class="doctor-recs fade-in">
+                <h3><i class="fas fa-user-md"></i> 推荐医生</h3>
+                <div class="doctor-recs-grid w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="doctor-wuguoping.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/吴医生海报.png" alt="吴国平" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="doc-info">
-                            <div>
-                                <h4>吴国平</h4>
-                                <div class="doc-title">全科主治医师</div>
-                                <div class="doc-desc">从事口腔全科诊疗十余年，擅长牙体牙髓病诊治、龋病预防与修复治疗。</div>
-                                <div class="doc-tags">
-                                    <span>全科治疗</span>
-                                    <span>龋病治疗</span>
-                                    <span>牙体修复</span>
-                                </div>
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
+                                <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">吴国平</h4>
+                                <p class="text-base text-slate-500 whitespace-nowrap">全科主治医师</p>
                             </div>
-                            <div class="doc-actions">
-                                <span class="btn-view"><i class="fas fa-user"></i> 查看详情</span>
-                                <span class="btn-consult"><i class="fas fa-comment-dots"></i> 在线咨询</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">从事口腔全科诊疗十余年，擅长牙体牙髓病诊治、龋病预防与修复治疗，以精细操作和患者沟通见长，深受社区居民信赖。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">全科治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">龋病治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">牙体修复</span>
                             </div>
                         </div>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
-                    <a href="doctor-songzhenfang.html" class="doctor-card-new" style="text-decoration:none;color:inherit;">
-                        <div class="doc-img-wrap">
-                            <img src="images/宋医生海报.png" alt="宋镇芳">
+                    <a href="doctor-songzhenfang.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/宋医生海报.png" alt="宋镇芳" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="doc-info">
-                            <div>
-                                <h4>宋镇芳</h4>
-                                <div class="doc-title">口腔综合主治医师</div>
-                                <div class="doc-desc">擅长口腔内科、修复治疗及儿童龋病管理，注重治疗方案的全面性。</div>
-                                <div class="doc-tags">
-                                    <span>口腔内科</span>
-                                    <span>修复治疗</span>
-                                    <span>儿童龋病</span>
-                                </div>
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
+                                <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">宋镇芳</h4>
+                                <p class="text-base text-slate-500 whitespace-nowrap">口腔综合主治医师</p>
                             </div>
-                            <div class="doc-actions">
-                                <span class="btn-view"><i class="fas fa-user"></i> 查看详情</span>
-                                <span class="btn-consult"><i class="fas fa-comment-dots"></i> 在线咨询</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">口腔综合主治医师，擅长口腔内科、修复治疗及儿童龋病管理，注重治疗方案的全面性与长期稳定性。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">口腔内科</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">修复治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">儿童龋病</span>
                             </div>
                         </div>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
                 </div>
             </div>
 
-            <div class="review-section fade-in">
-                <div class="section-label"><i class="fas fa-star"></i> 患者评价</div>
-                <div class="review-grid">
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="review-avatar">王</div>
-                            <span class="review-name">王女士</span>
-                            <span class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                        </div>
-                        <div class="review-text">"蛀牙一直拖着没去补，结果越蛀越大。吴医生帮我做了嵌体修复，颜色和真牙一样，完全看不出来，太满意了！"</div>
-                    </div>
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="review-avatar">刘</div>
-                            <span class="review-name">刘先生</span>
-                            <span class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                        </div>
-                        <div class="review-text">"孩子检查发现好几颗蛀牙，宋医生很耐心，孩子一点不怕。补完牙还教了怎么正确刷牙，非常负责。"</div>
-                    </div>
+            <div class="problem-cta fade-in">
+                <div class="cta-text">
+                    <h4>发现蛀牙，越早治疗越好</h4>
+                    <p>预约检查，让我们帮您评估龋齿情况</p>
                 </div>
-            </div>
-
-            <div class="case-section fade-in">
-                <div class="section-label"><i class="fas fa-images"></i> 医疗案例</div>
-                <div class="case-ba-grid">
-                    <div class="case-ba-card">
-                        <div class="ba-label">
-                            <span>Before / After</span>
-                            <span class="ba-vs">治疗前 &nbsp;→&nbsp; 治疗后</span>
-                        </div>
-                        <div class="ba-images">
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗前</span>
-                                <img src="images/服务项目/牙齿修复/牙体缺损真实病例.jpg" alt="治疗前" style="object-fit:cover;">
-                            </div>
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗后</span>
-                                <img src="images/服务项目/牙齿修复/常见补牙材料.png" alt="治疗后" style="padding:20px;object-fit:contain;">
-                            </div>
-                        </div>
-                        <div class="ba-body">
-                            <h4>后牙大面积蛀坏——瓷嵌体修复恢复咀嚼功能</h4>
-                            <p>32岁男性，右下后牙大面积龋坏，经瓷嵌体修复后颜色形态与天然牙一致</p>
-                        </div>
-                    </div>
-                    <div class="case-ba-card">
-                        <div class="ba-label">
-                            <span>Before / After</span>
-                            <span class="ba-vs">治疗前 &nbsp;→&nbsp; 治疗后</span>
-                        </div>
-                        <div class="ba-images">
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗前</span>
-                                <img src="images/服务项目/牙体牙髓/icon_牙体牙髓.png" alt="治疗前" style="padding:20px;object-fit:contain;">
-                            </div>
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗后</span>
-                                <img src="images/服务项目/牙齿修复/常见补牙材料.png" alt="治疗后" style="padding:20px;object-fit:contain;">
-                            </div>
-                        </div>
-                        <div class="ba-body">
-                            <h4>多颗浅龋——美学树脂充填一次完成</h4>
-                            <p>25岁女性，多颗牙齿邻面浅龋，美学树脂充填色泽自然逼真</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flow-section fade-in">
-                <div class="section-label"><i class="fas fa-route"></i> 就诊流程</div>
-                <div class="flow-steps">
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-phone-alt"></i></div>
-                        <span class="flow-num">STEP 01</span>
-                        <span class="flow-label">预约咨询</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-stethoscope"></i></div>
-                        <span class="flow-num">STEP 02</span>
-                        <span class="flow-label">到院检查</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-clipboard-list"></i></div>
-                        <span class="flow-num">STEP 03</span>
-                        <span class="flow-label">制定方案</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-procedures"></i></div>
-                        <span class="flow-num">STEP 04</span>
-                        <span class="flow-label">开始治疗</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-heartbeat"></i></div>
-                        <span class="flow-num">STEP 05</span>
-                        <span class="flow-label">术后复诊</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cta-section fade-in">
-                <div class="cta-content">
-                    <h3>立即获取专业口腔诊断建议</h3>
-                    <div class="cta-checks">
-                        <span><i class="fas fa-check-circle"></i> 免费初步咨询</span>
-                        <span><i class="fas fa-check-circle"></i> 专业医生评估</span>
-                        <span><i class="fas fa-check-circle"></i> 当天可预约</span>
-                    </div>
-                    <div class="cta-btns">
-                        <a href="contact.html" class="cta-primary"><i class="fas fa-comment-dots"></i> 在线咨询</a>
-                        <a href="tel:0752-7820202" class="cta-outline"><i class="fas fa-phone-alt"></i> 电话预约</a>
-                    </div>
-                </div>
+                <a href="contact.html" class="cta-btn"><i class="fas fa-phone-alt"></i> 预约看诊</a>
             </div>
         </div>
 
-        <!-- ============================ 缺牙 ============================ -->
+        <!-- ======================== 缺牙 ======================== -->
         <div class="problem-panel" id="panel-missing">
 
-            <div class="symptom-summary fade-in">
-                <div class="symptom-left">
-                    <span class="symptom-icon"><i class="fas fa-teeth-open"></i></span>
-                    <div class="symptom-text">
-                        <h4>缺牙</h4>
-                        <p>牙齿缺失 / 邻牙倾斜 / 咀嚼困难</p>
+            <div class="cause-card fade-in">
+                <h3><i class="fas fa-search"></i> 缺牙的原因与修复方式</h3>
+                <div class="cause-list">
+                    <div class="cause-item">
+                        <div class="num">1</div>
+                        <p><strong>缺牙的常见原因</strong> —— 严重龋坏无法保留（最常见）、牙周病导致牙齿松动脱落、外伤意外脱落、先天性缺牙等。缺牙后应尽快修复，避免邻牙倾斜和对牙伸长。</p>
                     </div>
-                </div>
-                <a href="knowledge-detail.html" class="symptom-link">
-                    查看原因 <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <h3 class="section-label" style="font-size:20px;font-weight:700;color:#1a2a3a;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-                <i class="fas fa-clipboard-list" style="color:#005BAC;"></i> 缺牙的原因与修复方式
-            </h3>
-            <div class="cause-grid-2col fade-in">
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-tooth"></i></span>
-                    <h4>严重龋坏</h4>
-                    <p>蛀牙发展到无法保留的程度，是导致缺牙最常见的原因。牙体组织大部分丧失，无法通过补牙修复。</p>
-                    <span class="cause-tag">需拔除后修复</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-leaf"></i></span>
-                    <h4>牙周病</h4>
-                    <p>严重的牙周炎导致牙槽骨吸收、牙齿松动脱落。是成年人缺牙的主要原因之一。</p>
-                    <span class="cause-tag">需牙周+种植</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-bolt"></i></span>
-                    <h4>外伤脱落</h4>
-                    <p>因意外撞击、摔倒等导致牙齿完全脱位或折断无法保留。需立即就医处理。</p>
-                    <span class="cause-tag">需紧急处理</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-dna"></i></span>
-                    <h4>先天性缺牙</h4>
-                    <p>先天性的牙胚缺失，最常见于第三磨牙（智齿）和侧切牙。需根据情况修复。</p>
-                    <span class="cause-tag">需修复治疗</span>
-                </div>
-            </div>
-
-            <div class="treatment-section fade-in">
-                <div class="section-label"><i class="fas fa-notes-medical"></i> 推荐治疗方案</div>
-                <div class="treatment-grid">
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-tooth"></i></div>
-                        <h4>根管治疗</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>牙髓炎、根尖炎</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>3-7天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">2</div>
+                        <p><strong>种植牙（推荐方案）</strong> —— 在缺牙位置植入纯钛种植体，再在上面安装牙冠。不损伤邻牙，使用感受最接近天然牙，使用寿命可达数十年。被誉为"人类的第三副牙齿"。</p>
                     </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-fill-drip"></i></div>
-                        <h4>补牙修复</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>浅龋、中龋、深龋</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>1-2天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">3</div>
+                        <p><strong>固定桥</strong> —— 将缺牙两侧的健康牙磨小作为基牙，制作三单位连体牙冠。治疗周期短（约2周），但需要磨损健康邻牙，清洁难度较大。</p>
                     </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-teeth"></i></div>
-                        <h4>拔牙治疗</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>智齿冠周炎、严重蛀牙</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>7-14天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-crown"></i></div>
-                        <h4>牙冠修复</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>牙隐裂、根管治疗后</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>7-14天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">4</div>
+                        <p><strong>活动义齿</strong> —— 可自行取戴的假牙，适用范围广、价格较低。但异物感明显、咀嚼效率低，长期使用可能加速牙槽骨吸收。</p>
                     </div>
                 </div>
             </div>
 
-            <div class="doctor-section fade-in">
-                <div class="section-label"><i class="fas fa-user-md"></i> 推荐医生</div>
-                <div class="doctor-list">
-                    <a href="doctor-fanyubo.html" class="doctor-card-new" style="text-decoration:none;color:inherit;">
-                        <div class="doc-img-wrap">
-                            <img src="images/范医生海报.png" alt="范宇波">
+            <div class="warning-callout fade-in">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p><strong>注意：</strong> 缺牙不及时修复会导致邻牙倾斜、对颌牙伸长、咬合功能紊乱、牙槽骨萎缩、面容改变等一系列问题。无论缺多少颗牙，都应尽早咨询专业修复方案。</p>
+            </div>
+
+            <div class="doctor-recs fade-in">
+                <h3><i class="fas fa-user-md"></i> 推荐医生</h3>
+                <div class="doctor-recs-grid w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="doctor-fanyubo.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/范医生海报.png" alt="范宇波" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="doc-info">
-                            <div>
-                                <h4>范宇波</h4>
-                                <div class="doc-title">种植修复专科医师</div>
-                                <div class="doc-desc">专注种植修复与牙周治疗多年，精通单颗及多颗牙缺失的种植方案设计。</div>
-                                <div class="doc-tags">
-                                    <span>种植修复</span>
-                                    <span>牙周治疗</span>
-                                    <span>牙周维护</span>
-                                </div>
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
+                                <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">范宇波</h4>
+                                <p class="text-base text-slate-500 whitespace-nowrap">种植修复专科医师</p>
                             </div>
-                            <div class="doc-actions">
-                                <span class="btn-view"><i class="fas fa-user"></i> 查看详情</span>
-                                <span class="btn-consult"><i class="fas fa-comment-dots"></i> 在线咨询</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">专注种植修复与牙周治疗多年，精通单颗及多颗牙缺失的种植方案设计，兼顾功能重建与美学修复，为患者重获咀嚼自信。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">种植修复</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">牙周治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">牙周维护</span>
                             </div>
                         </div>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
-                    <a href="doctor-songzhenfang.html" class="doctor-card-new" style="text-decoration:none;color:inherit;">
-                        <div class="doc-img-wrap">
-                            <img src="images/宋医生海报.png" alt="宋镇芳">
+                    <a href="doctor-songzhenfang.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/宋医生海报.png" alt="宋镇芳" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="doc-info">
-                            <div>
-                                <h4>宋镇芳</h4>
-                                <div class="doc-title">口腔综合主治医师</div>
-                                <div class="doc-desc">擅长口腔内科、修复治疗及儿童龋病管理，注重治疗方案全面性。</div>
-                                <div class="doc-tags">
-                                    <span>修复治疗</span>
-                                    <span>固定/活动义齿</span>
-                                    <span>综合治疗</span>
-                                </div>
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
+                                <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">宋镇芳</h4>
+                                <p class="text-base text-slate-500 whitespace-nowrap">口腔综合主治医师</p>
                             </div>
-                            <div class="doc-actions">
-                                <span class="btn-view"><i class="fas fa-user"></i> 查看详情</span>
-                                <span class="btn-consult"><i class="fas fa-comment-dots"></i> 在线咨询</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">口腔综合主治医师，擅长口腔内科、修复治疗及儿童龋病管理，注重治疗方案的全面性与长期稳定性。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">修复治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">固定/活动义齿</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">综合治疗</span>
                             </div>
                         </div>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
                 </div>
             </div>
 
-            <div class="review-section fade-in">
-                <div class="section-label"><i class="fas fa-star"></i> 患者评价</div>
-                <div class="review-grid">
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="review-avatar">陈</div>
-                            <span class="review-name">陈先生</span>
-                            <span class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                        </div>
-                        <div class="review-text">"缺了一颗牙好几年，一直不敢种。范医生讲解得很清楚，手术比想象中快多了，现在吃东西完全没问题！"</div>
-                    </div>
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="review-avatar">赵</div>
-                            <span class="review-name">赵阿姨</span>
-                            <span class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                        </div>
-                        <div class="review-text">"宋医生帮我做的活动义齿，戴上很舒适，吃东西也比以前有力了。价格也很合理，真的很感谢！"</div>
-                    </div>
+            <div class="problem-cta fade-in">
+                <div class="cta-text">
+                    <h4>缺牙不再等，即刻修复</h4>
+                    <p>咨询种植专家，了解最适合您的修复方案</p>
                 </div>
-            </div>
-
-            <div class="case-section fade-in">
-                <div class="section-label"><i class="fas fa-images"></i> 医疗案例</div>
-                <div class="case-ba-grid">
-                    <div class="case-ba-card">
-                        <div class="ba-label">
-                            <span>Before / After</span>
-                            <span class="ba-vs">治疗前 &nbsp;→&nbsp; 治疗后</span>
-                        </div>
-                        <div class="ba-images">
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗前</span>
-                                <img src="images/服务项目/牙齿种植/真实案例_种植后活动义齿修复.png" alt="治疗前" style="padding:20px;object-fit:contain;">
-                            </div>
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗后</span>
-                                <img src="images/服务项目/牙齿种植/种植步骤.jpg" alt="治疗后" style="padding:20px;object-fit:contain;">
-                            </div>
-                        </div>
-                        <div class="ba-body">
-                            <h4>单颗后牙缺失——种植修复完美解决</h4>
-                            <p>35岁男性，右下第一磨牙严重龋坏无法保留，单颗种植修复后咀嚼功能接近天然牙</p>
-                        </div>
-                    </div>
-                    <div class="case-ba-card">
-                        <div class="ba-label">
-                            <span>Before / After</span>
-                            <span class="ba-vs">治疗前 &nbsp;→&nbsp; 治疗后</span>
-                        </div>
-                        <div class="ba-images">
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗前</span>
-                                <img src="images/服务项目/牙齿种植/种植步骤.jpg" alt="治疗前" style="padding:20px;object-fit:contain;">
-                            </div>
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗后</span>
-                                <img src="images/服务项目/牙齿种植/真实案例_种植后活动义齿修复.png" alt="治疗后" style="padding:20px;object-fit:contain;">
-                            </div>
-                        </div>
-                        <div class="ba-body">
-                            <h4>多颗牙缺失——固定桥修复恢复全口功能</h4>
-                            <p>60岁女性，下颌多颗牙缺失多年，种植体支持的固定桥修复后重获咀嚼功能</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flow-section fade-in">
-                <div class="section-label"><i class="fas fa-route"></i> 就诊流程</div>
-                <div class="flow-steps">
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-phone-alt"></i></div>
-                        <span class="flow-num">STEP 01</span>
-                        <span class="flow-label">预约咨询</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-stethoscope"></i></div>
-                        <span class="flow-num">STEP 02</span>
-                        <span class="flow-label">到院检查</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-clipboard-list"></i></div>
-                        <span class="flow-num">STEP 03</span>
-                        <span class="flow-label">制定方案</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-procedures"></i></div>
-                        <span class="flow-num">STEP 04</span>
-                        <span class="flow-label">开始治疗</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-heartbeat"></i></div>
-                        <span class="flow-num">STEP 05</span>
-                        <span class="flow-label">术后复诊</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cta-section fade-in">
-                <div class="cta-content">
-                    <h3>立即获取专业口腔诊断建议</h3>
-                    <div class="cta-checks">
-                        <span><i class="fas fa-check-circle"></i> 免费初步咨询</span>
-                        <span><i class="fas fa-check-circle"></i> 专业医生评估</span>
-                        <span><i class="fas fa-check-circle"></i> 当天可预约</span>
-                    </div>
-                    <div class="cta-btns">
-                        <a href="contact.html" class="cta-primary"><i class="fas fa-comment-dots"></i> 在线咨询</a>
-                        <a href="tel:0752-7820202" class="cta-outline"><i class="fas fa-phone-alt"></i> 电话预约</a>
-                    </div>
-                </div>
+                <a href="contact.html" class="cta-btn"><i class="fas fa-phone-alt"></i> 预约咨询</a>
             </div>
         </div>
 
-        <!-- ============================ 牙齿矫正 ============================ -->
+        <!-- ======================== 牙齿矫正 ======================== -->
         <div class="problem-panel" id="panel-ortho">
 
-            <div class="symptom-summary fade-in">
-                <div class="symptom-left">
-                    <span class="symptom-icon"><i class="fas fa-smile"></i></span>
-                    <div class="symptom-text">
-                        <h4>牙齿矫正</h4>
-                        <p>牙齿不齐 / 地包天 / 牙缝过大</p>
+            <div class="cause-card fade-in">
+                <h3><i class="fas fa-search"></i> 需要正畸的常见情况</h3>
+                <div class="cause-list">
+                    <div class="cause-item">
+                        <div class="num">1</div>
+                        <p><strong>牙齿拥挤</strong> —— 牙弓长度不足以容纳所有牙齿，导致牙齿排列不齐、重叠。拥挤的牙齿不易清洁，易患龋齿和牙周炎，影响美观和咬合功能。</p>
                     </div>
-                </div>
-                <a href="knowledge-detail.html" class="symptom-link">
-                    查看原因 <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <h3 class="section-label" style="font-size:20px;font-weight:700;color:#1a2a3a;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-                <i class="fas fa-clipboard-list" style="color:#005BAC;"></i> 需要正畸的常见情况
-            </h3>
-            <div class="cause-grid-2col fade-in">
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-tooth"></i></span>
-                    <h4>牙齿拥挤</h4>
-                    <p>牙弓长度不足以容纳所有牙齿，导致牙齿排列不齐、重叠。不易清洁，易患龋齿和牙周炎。</p>
-                    <span class="cause-tag">最常见错𬌗畸形</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-arrows-alt-h"></i></span>
-                    <h4>地包天（反𬌗）</h4>
-                    <p>下牙咬在上牙外面，影响面部美观（月亮脸），还可能影响咀嚼功能和颞下颌关节健康。</p>
-                    <span class="cause-tag">建议早期矫治</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-tooth"></i></span>
-                    <h4>龅牙（深覆盖）</h4>
-                    <p>上前牙过度前突，下前牙位置靠后。容易造成外伤性折断，影响唇部闭合和面部美观。</p>
-                    <span class="cause-tag">需正畸治疗</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-sync-alt"></i></span>
-                    <h4>牙缝过大</h4>
-                    <p>牙齿之间有过大的间隙，影响美观且容易嵌塞食物。可能因牙齿过小或先天性缺牙引起。</p>
-                    <span class="cause-tag">可矫正或修复</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-wind"></i></span>
-                    <h4>开𬌗</h4>
-                    <p>咬合时前牙不能接触，形成梭形缝隙。影响发音和切割功能，常伴有吐舌习惯。</p>
-                    <span class="cause-tag">需正畸+肌功能训练</span>
-                </div>
-                <div class="cause-card-pc">
-                    <span class="cause-icon"><i class="fas fa-moon"></i></span>
-                    <h4>埋伏牙</h4>
-                    <p>牙齿未能正常萌出，埋伏在颌骨内，常见于尖牙和智齿，可能压迫邻牙牙根。</p>
-                    <span class="cause-tag">需外科+正畸联合</span>
-                </div>
-            </div>
-
-            <div class="treatment-section fade-in">
-                <div class="section-label"><i class="fas fa-notes-medical"></i> 推荐治疗方案</div>
-                <div class="treatment-grid">
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-tooth"></i></div>
-                        <h4>根管治疗</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>牙髓炎、根尖炎</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>3-7天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">2</div>
+                        <p><strong>地包天（反𬌗）</strong> —— 下牙咬在上牙外面。不仅影响面部美观（月亮脸），还可能影响咀嚼功能和颞下颌关节健康。儿童期矫治效果最好。</p>
                     </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-fill-drip"></i></div>
-                        <h4>补牙修复</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>浅龋、中龋、深龋</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>1-2天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">3</div>
+                        <p><strong>龅牙（深覆盖）</strong> —— 上前牙过度前突，下前牙位置靠后。容易造成外伤性折断，影响唇部闭合和面部美观，也是儿童期矫治的重中之重。</p>
                     </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-teeth"></i></div>
-                        <h4>拔牙治疗</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>智齿冠周炎、严重蛀牙</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>7-14天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">4</div>
+                        <p><strong>牙缝过大</strong> —— 牙齿之间有过大的间隙，影响美观且容易嵌塞食物。可能由于牙齿过小、先天性缺牙或系带附着过低引起。</p>
                     </div>
-                    <div class="treatment-card">
-                        <div class="treat-icon"><i class="fas fa-crown"></i></div>
-                        <h4>牙冠修复</h4>
-                        <div class="treat-detail">
-                            <div class="treat-row"><strong>适用：</strong>牙隐裂、根管治疗后</div>
-                            <div class="treat-row"><strong>恢复周期：</strong>7-14天</div>
-                        </div>
-                        <a href="contact.html" class="treat-btn">预约咨询 <i class="fas fa-arrow-right"></i></a>
+                    <div class="cause-item">
+                        <div class="num">5</div>
+                        <p><strong>开𬌗</strong> —— 咬合时前牙不能接触，形成梭形缝隙。影响发音和切割功能，常伴有吐舌习惯或吮指习惯。</p>
                     </div>
                 </div>
             </div>
 
-            <div class="doctor-section fade-in">
-                <div class="section-label"><i class="fas fa-user-md"></i> 推荐医生</div>
-                <div class="doctor-list">
-                    <a href="doctor-yangyuanyang.html" class="doctor-card-new" style="text-decoration:none;color:inherit;">
-                        <div class="doc-img-wrap">
-                            <img src="images/杨医生海报.png" alt="杨远洋">
+            <div class="warning-callout fade-in">
+                <i class="fas fa-info-circle"></i>
+                <p><strong>温馨提示：</strong> 正畸治疗最佳年龄是12-18岁恒牙𬌗完建期，但成人正畸同样可以达到良好的效果。儿童期的某些错𬌗畸形（如地包天）建议7-10岁进行早期干预。矫治器种类包括传统金属托槽、陶瓷托槽、隐形矫正等，医生会根据个人情况推荐最合适的方案。</p>
+            </div>
+
+            <div class="doctor-recs fade-in">
+                <h3><i class="fas fa-user-md"></i> 推荐医生</h3>
+                <div class="doctor-recs-grid w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="doctor-yangyuanyang.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/杨医生海报.png" alt="杨远洋" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="doc-info">
-                            <div>
-                                <h4>杨远洋</h4>
-                                <div class="doc-title">正畸院长 / 创始合伙人</div>
-                                <div class="doc-desc">深耕口腔正畸与颜面管理领域十余年，擅长儿童早期干预及成人美学矫正。</div>
-                                <div class="doc-tags">
-                                    <span>口腔正畸</span>
-                                    <span>颜面管理</span>
-                                    <span>美学修复</span>
-                                </div>
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
+                                <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">杨远洋</h4>
+                                <p class="text-base text-slate-500 whitespace-nowrap">正畸院长 / 创始合伙人</p>
                             </div>
-                            <div class="doc-actions">
-                                <span class="btn-view"><i class="fas fa-user"></i> 查看详情</span>
-                                <span class="btn-consult"><i class="fas fa-comment-dots"></i> 在线咨询</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">深耕口腔正畸与颜面管理领域十余年，擅长儿童早期干预及成人美学矫正，以个性化方案和精细技术赢得广泛口碑。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">口腔正畸</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">颜面管理</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">美学修复</span>
                             </div>
                         </div>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
-                    <a href="doctor-linxuemei.html" class="doctor-card-new" style="text-decoration:none;color:inherit;">
-                        <div class="doc-img-wrap">
-                            <img src="images/林医生海报.png" alt="林雪梅">
+                    <a href="doctor-linxuemei.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/林医生海报.png" alt="林雪梅" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="doc-info">
-                            <div>
-                                <h4>林雪梅</h4>
-                                <div class="doc-title">儿童口腔专科医师</div>
-                                <div class="doc-desc">专注儿童龋病防治、早期矫治与颜面发育管理，以耐心细致的态度深受好评。</div>
-                                <div class="doc-tags">
-                                    <span>儿童矫治</span>
-                                    <span>早期干预</span>
-                                    <span>颜面发育</span>
-                                </div>
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
+                                <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">林雪梅</h4>
+                                <p class="text-base text-slate-500 whitespace-nowrap">儿童口腔专科医师</p>
                             </div>
-                            <div class="doc-actions">
-                                <span class="btn-view"><i class="fas fa-user"></i> 查看详情</span>
-                                <span class="btn-consult"><i class="fas fa-comment-dots"></i> 在线咨询</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">专注儿童龋病防治、早期矫治与颜面发育管理，以耐心细致的态度和轻柔手法，为小患者提供安心舒适的诊疗体验。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">儿童矫治</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">早期干预</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">颜面发育</span>
                             </div>
                         </div>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
                 </div>
             </div>
 
-            <div class="review-section fade-in">
-                <div class="section-label"><i class="fas fa-star"></i> 患者评价</div>
-                <div class="review-grid">
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="review-avatar">周</div>
-                            <span class="review-name">周小姐</span>
-                            <span class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                        </div>
-                        <div class="review-text">"从小牙齿就不齐，工作后终于下定决心矫正。杨院长设计的方案很专业，现在摘了牙套，笑起来自信多了！"</div>
-                    </div>
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="review-avatar">孙</div>
-                            <span class="review-name">孙妈妈</span>
-                            <span class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                        </div>
-                        <div class="review-text">"孩子8岁有点地包天，林医生说要早期干预，做了半年矫正器，效果很明显。林医生对孩子特别有耐心。"</div>
-                    </div>
+            <div class="problem-cta fade-in">
+                <div class="cta-text">
+                    <h4>想拥有整齐美丽的牙齿？</h4>
+                    <p>预约正畸评估，了解最适合您的矫正方案</p>
                 </div>
-            </div>
-
-            <div class="case-section fade-in">
-                <div class="section-label"><i class="fas fa-images"></i> 医疗案例</div>
-                <div class="case-ba-grid">
-                    <div class="case-ba-card">
-                        <div class="ba-label">
-                            <span>Before / After</span>
-                            <span class="ba-vs">治疗前 &nbsp;→&nbsp; 治疗后</span>
-                        </div>
-                        <div class="ba-images">
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗前</span>
-                                <img src="images/服务项目/牙齿矫治/timgCAVM77UL.jpg" alt="治疗前" style="object-fit:cover;">
-                            </div>
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗后</span>
-                                <img src="images/服务项目/牙齿矫治/timgCA7ONOSW_副本.jpg" alt="治疗后" style="object-fit:cover;">
-                            </div>
-                        </div>
-                        <div class="ba-body">
-                            <h4>牙齿拥挤不齐——金属自锁托槽矫正</h4>
-                            <p>22岁女性，牙列拥挤影响美观，历时18个月矫正后牙齿排列整齐</p>
-                        </div>
-                    </div>
-                    <div class="case-ba-card">
-                        <div class="ba-label">
-                            <span>Before / After</span>
-                            <span class="ba-vs">治疗前 &nbsp;→&nbsp; 治疗后</span>
-                        </div>
-                        <div class="ba-images">
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗前</span>
-                                <img src="images/服务项目/牙齿矫治/timgCA7ONOSW_副本.jpg" alt="治疗前" style="object-fit:cover;">
-                            </div>
-                            <div class="ba-img-box">
-                                <span class="ba-badge">治疗后</span>
-                                <img src="images/服务项目/牙齿矫治/timgCAVM77UL.jpg" alt="治疗后" style="object-fit:cover;">
-                            </div>
-                        </div>
-                        <div class="ba-body">
-                            <h4>轻度牙列拥挤——隐形矫正悄然变美</h4>
-                            <p>26岁男性，前牙轻度拥挤，隐形矫正12周即见显著改善</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flow-section fade-in">
-                <div class="section-label"><i class="fas fa-route"></i> 就诊流程</div>
-                <div class="flow-steps">
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-phone-alt"></i></div>
-                        <span class="flow-num">STEP 01</span>
-                        <span class="flow-label">预约咨询</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-stethoscope"></i></div>
-                        <span class="flow-num">STEP 02</span>
-                        <span class="flow-label">到院检查</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-clipboard-list"></i></div>
-                        <span class="flow-num">STEP 03</span>
-                        <span class="flow-label">制定方案</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-procedures"></i></div>
-                        <span class="flow-num">STEP 04</span>
-                        <span class="flow-label">开始治疗</span>
-                    </div>
-                    <span class="flow-arrow"><i class="fas fa-chevron-down"></i></span>
-                    <div class="flow-step">
-                        <div class="flow-circle"><i class="fas fa-heartbeat"></i></div>
-                        <span class="flow-num">STEP 05</span>
-                        <span class="flow-label">术后复诊</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cta-section fade-in">
-                <div class="cta-content">
-                    <h3>立即获取专业口腔诊断建议</h3>
-                    <div class="cta-checks">
-                        <span><i class="fas fa-check-circle"></i> 免费初步咨询</span>
-                        <span><i class="fas fa-check-circle"></i> 专业医生评估</span>
-                        <span><i class="fas fa-check-circle"></i> 当天可预约</span>
-                    </div>
-                    <div class="cta-btns">
-                        <a href="contact.html" class="cta-primary"><i class="fas fa-comment-dots"></i> 在线咨询</a>
-                        <a href="tel:0752-7820202" class="cta-outline"><i class="fas fa-phone-alt"></i> 电话预约</a>
-                    </div>
-                </div>
+                <a href="contact.html" class="cta-btn"><i class="fas fa-phone-alt"></i> 预约评估</a>
             </div>
         </div>
 
@@ -2124,11 +757,14 @@
         };
 
         function switchTab(tabId) {
+            // Update tabs
             tabs.forEach(t => t.classList.remove('active'));
             document.querySelector(`.problem-tab[data-tab="${tabId}"]`).classList.add('active');
+            // Update panels
             Object.keys(panels).forEach(key => {
                 panels[key].classList.toggle('active', key === tabId);
             });
+            // Scroll to panels area smoothly
             const targetPanel = panels[tabId];
             if (targetPanel) {
                 const y = targetPanel.getBoundingClientRect().top + window.scrollY - 100;
@@ -2150,29 +786,11 @@
             });
         });
 
+        // Check URL hash for direct tab access
         const hash = window.location.hash.replace('#', '');
         if (hash && panels[hash]) {
             switchTab(hash);
         }
-    })();
-
-    /* ---- 滚动动画 ---- */
-    (function() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(24px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
     })();
 </script>
 
