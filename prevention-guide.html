@@ -8,49 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        /* ---- Guide Hero / Banner ---- */
-        .guide-banner {
-            padding: 140px 0 80px;
-            background: linear-gradient(135deg, #005BAC 0%, #0072C6 100%);
-            text-align: center;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-        }
-        .guide-banner::after {
-            content: '';
-            position: absolute;
-            bottom: -40px;
-            right: -40px;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.05);
-        }
-        .guide-banner h1 {
-            font-size: 38px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
-        }
-        .guide-banner p {
-            font-size: 17px;
-            opacity: 0.88;
-            max-width: 620px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-            line-height: 1.7;
-        }
-        .guide-banner .banner-icon {
-            font-size: 56px;
-            margin-bottom: 18px;
-            opacity: 0.3;
-            position: relative;
-            z-index: 1;
-        }
-
         /* ---- Section styling ---- */
         .guide-section {
             padding: 60px 0;
@@ -117,37 +74,19 @@
         }
         .tip-card .tip-icon {
             display: block;
-            margin-bottom: 30px;
-            line-height: 0;
-        }
-        .tip-card .tip-icon svg {
-            display: block;
         }
         .tip-card h4 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             color: #0f172a;
-            margin-bottom: 10px;
             letter-spacing: 0.01em;
+            margin: 0;
         }
         .tip-card p {
             font-size: 14px;
-            color: #64748b;
-            line-height: 1.65;
-            margin-bottom: 0;
-        }
-        .tip-card .tip-more {
-            display: inline-block;
-            margin-top: auto;
-            padding-top: 24px;
-            font-size: 16px;
-            color: #cbd5e1;
-            transition: transform 0.3s ease, color 0.3s ease;
-            align-self: flex-start;
-        }
-        .tip-card:hover .tip-more {
-            transform: translateX(4px);
-            color: #005BAC;
+            color: #52525b;
+            line-height: 1.7;
+            margin: 0;
         }
         .tip-card ul {
             margin-top: 10px;
@@ -395,7 +334,6 @@
             .guide-steps { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
-            .guide-banner h1 { font-size: 26px; }
             .guide-section { padding: 40px 0; }
             .guide-section h2 { font-size: 22px; }
             .tip-grid { grid-template-columns: 1fr; }
@@ -431,14 +369,6 @@
     </div>
 </header>
 
-<!-- ===================== BANNER ===================== -->
-<section class="guide-banner">
-    <div class="container">
-        <div class="banner-icon"><i class="fas fa-shield-heart"></i></div>
-        <h1>日常口腔护理指南</h1>
-        <p>预防胜于一切的治疗 —— 从今天开始，用科学的方法守护您的每一颗牙齿，让牙疼永远不会发生。</p>
-    </div>
-</section>
 
 <!-- ===================== 1. 正确刷牙 ===================== -->
 <section class="guide-section">
@@ -507,40 +437,49 @@
         <div class="tip-grid">
             <div class="tip-card fade-in">
                 <div class="tip-icon">
-                    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16 8a12 12 0 0 0 12 28" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M18 8a10 10 0 0 0 8 24" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round" opacity="0.28"/>
-                    </svg>
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-5 text-blue-600">
+                        <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 8a12 12 0 0 0 12 28" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M18 8a10 10 0 0 0 8 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.28"/>
+                        </svg>
+                    </div>
                 </div>
-                <h4>牙线</h4>
-                <p>每天至少使用一次牙线，清除牙缝中的食物残渣和牙菌斑。正确使用牙线不会让牙缝变大 —— 牙缝变大是牙周炎的后果，而非牙线的错。</p>
-                <span class="tip-more">&rarr;</span>
-            </div>
+                <div class="flex flex-col gap-2">
+                    <h4>牙线</h4>
+                    <p>每天至少使用一次牙线，清除牙缝中的食物残渣和牙菌斑。正确使用牙线不会让牙缝变大 —— 牙缝变大是牙周炎的后果，而非牙线的错。</p>
+                </div>
+                            </div>
             <div class="tip-card fade-in">
                 <div class="tip-icon">
-                    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22 14v10" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M18 20a4 4 0 0 0 8 0" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M16 26a6 6 0 0 0 12 0" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round" opacity="0.28"/>
-                        <circle cx="22" cy="34" r="1.5" fill="#005BAC" opacity="0.28"/>
-                    </svg>
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-5 text-blue-600">
+                        <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 14v10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M18 20a4 4 0 0 0 8 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M16 26a6 6 0 0 0 12 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.28"/>
+                            <circle cx="22" cy="34" r="1.5" fill="currentColor" opacity="0.28"/>
+                        </svg>
+                    </div>
                 </div>
-                <h4>冲牙器</h4>
-                <p>适合牙缝较大、佩戴矫正器或有牙周炎的患者。高压水流可冲走食物残渣，按摩牙龈。但不能替代牙线的机械摩擦清洁。</p>
-                <span class="tip-more">&rarr;</span>
-            </div>
+                <div class="flex flex-col gap-2">
+                    <h4>冲牙器</h4>
+                    <p>适合牙缝较大、佩戴矫正器或有牙周炎的患者。高压水流可冲走食物残渣，按摩牙龈。但不能替代牙线的机械摩擦清洁。</p>
+                </div>
+                            </div>
             <div class="tip-card fade-in">
                 <div class="tip-icon">
-                    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14 34l16-24" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M24 18l-2-2M28 24l-2-2M22 14l-2-2" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M20 12l-2-2" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round" opacity="0.28"/>
-                    </svg>
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-5 text-blue-600">
+                        <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 34l16-24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M24 18l-2-2M28 24l-2-2M22 14l-2-2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M20 12l-2-2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.28"/>
+                        </svg>
+                    </div>
                 </div>
-                <h4>牙缝刷</h4>
-                <p>当牙缝较大时，牙缝刷比牙线更高效。选择合适尺寸的牙缝刷，轻柔地前后移动，清洁每个牙邻面。正畸患者尤其推荐使用。</p>
-                <span class="tip-more">&rarr;</span>
-            </div>
+                <div class="flex flex-col gap-2">
+                    <h4>牙缝刷</h4>
+                    <p>当牙缝较大时，牙缝刷比牙线更高效。选择合适尺寸的牙缝刷，轻柔地前后移动，清洁每个牙邻面。正畸患者尤其推荐使用。</p>
+                </div>
+                            </div>
         </div>
     </div>
 </section>

@@ -12,34 +12,12 @@
       tailwind.config = { corePlugins: { preflight: false } }
     </script>
     <style>
-        /* ---- Banner ---- */
-        .problem-banner {
-            padding: 140px 0 80px;
-            background: linear-gradient(135deg, #004a8a 0%, #005BAC 50%, #0072C6 100%);
-            text-align: center;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-        }
-        .problem-banner h1 {
-            font-size: 38px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-        .problem-banner p {
-            font-size: 17px;
-            opacity: 0.88;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-
         /* ---- Tabs / Category Selector ---- */
         .problem-tabs {
             display: flex;
             justify-content: center;
             gap: 14px;
-            margin-top: -36px;
+            margin-top: 32px;
             position: relative;
             z-index: 2;
             flex-wrap: wrap;
@@ -305,7 +283,6 @@
         }
 
         @media (max-width: 768px) {
-            .problem-banner h1 { font-size: 26px; }
             .problem-tab { padding: 14px 20px; min-width: 80px; }
             .problem-tab i { font-size: 24px; }
             .problem-tab span { font-size: 13px; }
@@ -337,16 +314,8 @@
     </div>
 </header>
 
-<!-- ===================== BANNER ===================== -->
-<section class="problem-banner">
-    <div class="container">
-        <h1>牙齿有问题？我们帮您解决</h1>
-        <p>不同牙齿问题对应不同的解决方案，惠尔口腔为您提供专业的诊疗建议。选择您的症状，了解可能的病因与治疗方案。</p>
-    </div>
-</section>
-
 <!-- ===================== CATEGORY TABS ===================== -->
-<section class="section" style="padding-top:30px;">
+<section class="section">
     <div class="container">
         <div class="problem-tabs fade-in" id="problemTabs">
             <div class="problem-tab active" data-tab="toothache">
@@ -404,39 +373,41 @@
             <div class="doctor-recs fade-in">
                 <h3><i class="fas fa-user-md"></i> 推荐医生</h3>
                 <div class="doctor-recs-grid w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <a href="doctor-wuguoping.html" class="group w-full flex flex-row gap-6 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 min-h-[320px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
-                        <div class="w-28 h-28 rounded-2xl overflow-hidden flex-shrink-0 bg-blue-50">
-                            <img src="images/吴医生海报.png" alt="吴国平" class="w-full h-full object-cover">
+                    <a href="doctor-wuguoping.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/吴医生海报.png" alt="吴国平" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="flex flex-col justify-center flex-1 min-w-0">
-                            <div class="flex flex-row items-baseline gap-3 flex-wrap">
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
                                 <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">吴国平</h4>
                                 <p class="text-base text-slate-500 whitespace-nowrap">全科主治医师</p>
                             </div>
-                            <div class="flex flex-row flex-wrap gap-2 mt-3">
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">全科治疗</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">牙体牙髓</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">口腔预防</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">从事口腔全科诊疗十余年，擅长牙体牙髓病诊治、龋病预防与修复治疗，以精细操作和患者沟通见长，深受社区居民信赖。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">全科治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">牙体牙髓</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">口腔预防</span>
                             </div>
                         </div>
-                        <span class="absolute bottom-5 right-5 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
-                    <a href="doctor-songzhenfang.html" class="group w-full flex flex-row gap-6 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 min-h-[320px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
-                        <div class="w-28 h-28 rounded-2xl overflow-hidden flex-shrink-0 bg-blue-50">
-                            <img src="images/宋医生海报.png" alt="宋镇芳" class="w-full h-full object-cover">
+                    <a href="doctor-songzhenfang.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/宋医生海报.png" alt="宋镇芳" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="flex flex-col justify-center flex-1 min-w-0">
-                            <div class="flex flex-row items-baseline gap-3 flex-wrap">
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
                                 <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">宋镇芳</h4>
                                 <p class="text-base text-slate-500 whitespace-nowrap">口腔综合主治医师</p>
                             </div>
-                            <div class="flex flex-row flex-wrap gap-2 mt-3">
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">口腔内科</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">修复治疗</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">综合治疗</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">口腔综合主治医师，擅长口腔内科、修复治疗及儿童龋病管理，注重治疗方案的全面性与长期稳定性。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">口腔内科</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">修复治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">综合治疗</span>
                             </div>
                         </div>
-                        <span class="absolute bottom-5 right-5 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
                 </div>
             </div>
@@ -509,39 +480,41 @@
             <div class="doctor-recs fade-in">
                 <h3><i class="fas fa-user-md"></i> 推荐医生</h3>
                 <div class="doctor-recs-grid w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <a href="doctor-wuguoping.html" class="group w-full flex flex-row gap-6 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 min-h-[320px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
-                        <div class="w-28 h-28 rounded-2xl overflow-hidden flex-shrink-0 bg-blue-50">
-                            <img src="images/吴医生海报.png" alt="吴国平" class="w-full h-full object-cover">
+                    <a href="doctor-wuguoping.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/吴医生海报.png" alt="吴国平" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="flex flex-col justify-center flex-1 min-w-0">
-                            <div class="flex flex-row items-baseline gap-3 flex-wrap">
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
                                 <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">吴国平</h4>
                                 <p class="text-base text-slate-500 whitespace-nowrap">全科主治医师</p>
                             </div>
-                            <div class="flex flex-row flex-wrap gap-2 mt-3">
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">全科治疗</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">龋病治疗</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">牙体修复</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">从事口腔全科诊疗十余年，擅长牙体牙髓病诊治、龋病预防与修复治疗，以精细操作和患者沟通见长，深受社区居民信赖。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">全科治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">龋病治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">牙体修复</span>
                             </div>
                         </div>
-                        <span class="absolute bottom-5 right-5 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
-                    <a href="doctor-songzhenfang.html" class="group w-full flex flex-row gap-6 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 min-h-[320px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
-                        <div class="w-28 h-28 rounded-2xl overflow-hidden flex-shrink-0 bg-blue-50">
-                            <img src="images/宋医生海报.png" alt="宋镇芳" class="w-full h-full object-cover">
+                    <a href="doctor-songzhenfang.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/宋医生海报.png" alt="宋镇芳" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="flex flex-col justify-center flex-1 min-w-0">
-                            <div class="flex flex-row items-baseline gap-3 flex-wrap">
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
                                 <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">宋镇芳</h4>
                                 <p class="text-base text-slate-500 whitespace-nowrap">口腔综合主治医师</p>
                             </div>
-                            <div class="flex flex-row flex-wrap gap-2 mt-3">
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">口腔内科</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">修复治疗</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">儿童龋病</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">口腔综合主治医师，擅长口腔内科、修复治疗及儿童龋病管理，注重治疗方案的全面性与长期稳定性。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">口腔内科</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">修复治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">儿童龋病</span>
                             </div>
                         </div>
-                        <span class="absolute bottom-5 right-5 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
                 </div>
             </div>
@@ -614,39 +587,41 @@
             <div class="doctor-recs fade-in">
                 <h3><i class="fas fa-user-md"></i> 推荐医生</h3>
                 <div class="doctor-recs-grid w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <a href="doctor-fanyubo.html" class="group w-full flex flex-row gap-6 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 min-h-[320px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
-                        <div class="w-28 h-28 rounded-2xl overflow-hidden flex-shrink-0 bg-blue-50">
-                            <img src="images/范医生海报.png" alt="范宇波" class="w-full h-full object-cover">
+                    <a href="doctor-fanyubo.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/范医生海报.png" alt="范宇波" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="flex flex-col justify-center flex-1 min-w-0">
-                            <div class="flex flex-row items-baseline gap-3 flex-wrap">
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
                                 <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">范宇波</h4>
                                 <p class="text-base text-slate-500 whitespace-nowrap">种植修复专科医师</p>
                             </div>
-                            <div class="flex flex-row flex-wrap gap-2 mt-3">
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">种植修复</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">牙周治疗</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">牙周维护</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">专注种植修复与牙周治疗多年，精通单颗及多颗牙缺失的种植方案设计，兼顾功能重建与美学修复，为患者重获咀嚼自信。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">种植修复</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">牙周治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">牙周维护</span>
                             </div>
                         </div>
-                        <span class="absolute bottom-5 right-5 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
-                    <a href="doctor-songzhenfang.html" class="group w-full flex flex-row gap-6 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 min-h-[320px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
-                        <div class="w-28 h-28 rounded-2xl overflow-hidden flex-shrink-0 bg-blue-50">
-                            <img src="images/宋医生海报.png" alt="宋镇芳" class="w-full h-full object-cover">
+                    <a href="doctor-songzhenfang.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/宋医生海报.png" alt="宋镇芳" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="flex flex-col justify-center flex-1 min-w-0">
-                            <div class="flex flex-row items-baseline gap-3 flex-wrap">
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
                                 <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">宋镇芳</h4>
                                 <p class="text-base text-slate-500 whitespace-nowrap">口腔综合主治医师</p>
                             </div>
-                            <div class="flex flex-row flex-wrap gap-2 mt-3">
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">修复治疗</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">固定/活动义齿</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">综合治疗</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">口腔综合主治医师，擅长口腔内科、修复治疗及儿童龋病管理，注重治疗方案的全面性与长期稳定性。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">修复治疗</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">固定/活动义齿</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">综合治疗</span>
                             </div>
                         </div>
-                        <span class="absolute bottom-5 right-5 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
                 </div>
             </div>
@@ -723,39 +698,41 @@
             <div class="doctor-recs fade-in">
                 <h3><i class="fas fa-user-md"></i> 推荐医生</h3>
                 <div class="doctor-recs-grid w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <a href="doctor-yangyuanyang.html" class="group w-full flex flex-row gap-6 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 min-h-[320px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
-                        <div class="w-28 h-28 rounded-2xl overflow-hidden flex-shrink-0 bg-blue-50">
-                            <img src="images/杨医生海报.png" alt="杨远洋" class="w-full h-full object-cover">
+                    <a href="doctor-yangyuanyang.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/杨医生海报.png" alt="杨远洋" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="flex flex-col justify-center flex-1 min-w-0">
-                            <div class="flex flex-row items-baseline gap-3 flex-wrap">
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
                                 <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">杨远洋</h4>
                                 <p class="text-base text-slate-500 whitespace-nowrap">正畸院长 / 创始合伙人</p>
                             </div>
-                            <div class="flex flex-row flex-wrap gap-2 mt-3">
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">口腔正畸</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">颜面管理</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">美学修复</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">深耕口腔正畸与颜面管理领域十余年，擅长儿童早期干预及成人美学矫正，以个性化方案和精细技术赢得广泛口碑。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">口腔正畸</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">颜面管理</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">美学修复</span>
                             </div>
                         </div>
-                        <span class="absolute bottom-5 right-5 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
-                    <a href="doctor-linxuemei.html" class="group w-full flex flex-row gap-6 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 min-h-[320px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
-                        <div class="w-28 h-28 rounded-2xl overflow-hidden flex-shrink-0 bg-blue-50">
-                            <img src="images/林医生海报.png" alt="林雪梅" class="w-full h-full object-cover">
+                    <a href="doctor-linxuemei.html" class="group w-full flex flex-col md:flex-row gap-8 bg-blue-50/60 border border-slate-100 rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline relative">
+                        <div class="w-40 shrink-0">
+                            <img src="images/林医生海报.png" alt="林雪梅" class="w-full h-auto aspect-square object-cover rounded-2xl shadow-sm">
                         </div>
-                        <div class="flex flex-col justify-center flex-1 min-w-0">
-                            <div class="flex flex-row items-baseline gap-3 flex-wrap">
+                        <div class="flex-1 flex flex-col justify-start min-w-0">
+                            <div class="flex items-baseline gap-3 flex-wrap">
                                 <h4 class="text-2xl font-bold text-slate-800 whitespace-nowrap">林雪梅</h4>
                                 <p class="text-base text-slate-500 whitespace-nowrap">儿童口腔专科医师</p>
                             </div>
-                            <div class="flex flex-row flex-wrap gap-2 mt-3">
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">儿童矫治</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">早期干预</span>
-                                <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md">颜面发育</span>
+                            <p class="mt-4 text-base text-slate-600 leading-relaxed">专注儿童龋病防治、早期矫治与颜面发育管理，以耐心细致的态度和轻柔手法，为小患者提供安心舒适的诊疗体验。</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">儿童矫治</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">早期干预</span>
+                                <span class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg">颜面发育</span>
                             </div>
                         </div>
-                        <span class="absolute bottom-5 right-5 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
+                        <span class="absolute bottom-6 right-6 text-blue-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-xl font-light">&rarr;</span>
                     </a>
                 </div>
             </div>
