@@ -99,51 +99,65 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
+            align-items: stretch;
         }
         .tip-card {
             background: #fff;
-            border-radius: 14px;
-            padding: 32px 26px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.04);
-            border: 1px solid rgba(0,91,172,0.06);
-            transition: transform 0.35s, box-shadow 0.35s;
+            border-radius: 16px;
+            padding: 44px 38px 40px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            display: flex;
+            flex-direction: column;
         }
         .tip-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0,91,172,0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.06);
         }
         .tip-card .tip-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #e8f4ff, #d0eaff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #005BAC;
-            margin-bottom: 18px;
+            display: block;
+            margin-bottom: 30px;
+            line-height: 0;
+        }
+        .tip-card .tip-icon svg {
+            display: block;
         }
         .tip-card h4 {
-            font-size: 17px;
-            font-weight: 600;
-            color: #1a2a3a;
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
             margin-bottom: 10px;
+            letter-spacing: 0.01em;
         }
         .tip-card p {
             font-size: 14px;
-            color: #666;
-            line-height: 1.8;
+            color: #64748b;
+            line-height: 1.65;
+            margin-bottom: 0;
+        }
+        .tip-card .tip-more {
+            display: inline-block;
+            margin-top: auto;
+            padding-top: 24px;
+            font-size: 16px;
+            color: #cbd5e1;
+            transition: transform 0.3s ease, color 0.3s ease;
+            align-self: flex-start;
+        }
+        .tip-card:hover .tip-more {
+            transform: translateX(4px);
+            color: #005BAC;
         }
         .tip-card ul {
             margin-top: 10px;
         }
         .tip-card ul li {
             font-size: 14px;
-            color: #555;
+            color: #64748b;
             padding: 5px 0 5px 22px;
             position: relative;
-            line-height: 1.6;
+            line-height: 1.7;
         }
         .tip-card ul li::before {
             content: '\f00c';
@@ -212,41 +226,95 @@
             margin: 0;
         }
 
-        /* ---- Food grid ---- */
-        .food-grid {
+        /* ---- Diet Comparison Cards ---- */
+        .diet-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 28px;
         }
-        .food-col h4 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 14px;
+        .diet-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 40px 36px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,91,172,0.06);
+        }
+        .diet-card .diet-card-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
         }
-        .food-col h4 i { font-size: 20px; }
-        .food-col.good h4 { color: #2e7d32; }
-        .food-col.bad h4 { color: #c62828; }
-        .food-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .food-tags span {
-            padding: 8px 16px;
+        .diet-card .diet-card-header .diet-icon {
+            width: 34px;
+            height: 34px;
             border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
         }
-        .food-col.good .food-tags span {
+        .diet-card.recommend .diet-card-header .diet-icon {
             background: #e8f5e9;
             color: #2e7d32;
         }
-        .food-col.bad .food-tags span {
-            background: #ffebee;
-            color: #c62828;
+        .diet-card.caution .diet-card-header .diet-icon {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .diet-card .diet-card-header h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a2a3a;
+            margin: 0;
+        }
+        .diet-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .diet-card ul li {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 13px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            line-height: 1.75;
+        }
+        .diet-card ul li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .diet-card ul li .food-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: #1a2a3a;
+            flex-shrink: 0;
+            margin-right: 20px;
+        }
+        .diet-card ul li .food-reason {
+            font-size: 13px;
+            color: #999;
+            text-align: right;
+            line-height: 1.65;
+        }
+        /* ---- Diet Tip Callout ---- */
+        .diet-tip-callout {
+            margin-top: 32px;
+            padding: 20px 24px;
+            border-left: 4px solid #005BAC;
+            background: transparent;
+        }
+        .diet-tip-callout p {
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.9;
+            margin: 0;
+        }
+        .diet-tip-callout p strong {
+            color: #1a2a3a;
         }
 
         /* ---- Checkup timeline ---- */
@@ -332,7 +400,9 @@
             .guide-section h2 { font-size: 22px; }
             .tip-grid { grid-template-columns: 1fr; }
             .guide-steps { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .food-grid { grid-template-columns: 1fr; gap: 20px; }
+            .diet-grid { grid-template-columns: 1fr; gap: 20px; }
+            .diet-card ul li { flex-direction: column; gap: 4px; }
+            .diet-card ul li .food-reason { text-align: left; }
             .checkup-item { grid-template-columns: 1fr; gap: 8px; }
             .checkup-freq { text-align: left; }
             .guide-cta { padding: 32px 24px; }
@@ -436,19 +506,40 @@
 
         <div class="tip-grid">
             <div class="tip-card fade-in">
-                <div class="tip-icon"><i class="fas fa-thread"></i></div>
+                <div class="tip-icon">
+                    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 8a12 12 0 0 0 12 28" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M18 8a10 10 0 0 0 8 24" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round" opacity="0.28"/>
+                    </svg>
+                </div>
                 <h4>牙线</h4>
-                <p>每天至少使用一次牙线，清除牙缝中的食物残渣和牙菌斑。正确使用牙线不会让牙缝变大——牙缝变大是牙周炎的后果，而非牙线的错。</p>
+                <p>每天至少使用一次牙线，清除牙缝中的食物残渣和牙菌斑。正确使用牙线不会让牙缝变大 —— 牙缝变大是牙周炎的后果，而非牙线的错。</p>
+                <span class="tip-more">&rarr;</span>
             </div>
             <div class="tip-card fade-in">
-                <div class="tip-icon"><i class="fas fa-water"></i></div>
+                <div class="tip-icon">
+                    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 14v10" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M18 20a4 4 0 0 0 8 0" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M16 26a6 6 0 0 0 12 0" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round" opacity="0.28"/>
+                        <circle cx="22" cy="34" r="1.5" fill="#005BAC" opacity="0.28"/>
+                    </svg>
+                </div>
                 <h4>冲牙器</h4>
                 <p>适合牙缝较大、佩戴矫正器或有牙周炎的患者。高压水流可冲走食物残渣，按摩牙龈。但不能替代牙线的机械摩擦清洁。</p>
+                <span class="tip-more">&rarr;</span>
             </div>
             <div class="tip-card fade-in">
-                <div class="tip-icon"><i class="fas fa-syringe"></i></div>
+                <div class="tip-icon">
+                    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 34l16-24" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M24 18l-2-2M28 24l-2-2M22 14l-2-2" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M20 12l-2-2" stroke="#005BAC" stroke-width="1.5" stroke-linecap="round" opacity="0.28"/>
+                    </svg>
+                </div>
                 <h4>牙缝刷</h4>
                 <p>当牙缝较大时，牙缝刷比牙线更高效。选择合适尺寸的牙缝刷，轻柔地前后移动，清洁每个牙邻面。正畸患者尤其推荐使用。</p>
+                <span class="tip-more">&rarr;</span>
             </div>
         </div>
     </div>
@@ -463,39 +554,43 @@
             牙齿的健康不仅取决于清洁，也与日常饮食息息相关。不同食物对牙齿的影响差异巨大。
         </p>
 
-        <div class="food-grid fade-in">
-            <div class="food-col good">
-                <h4><i class="fas fa-check-circle"></i> 对牙齿有益的食物</h4>
-                <div class="food-tags">
-                    <span>🥛 牛奶、奶酪（高钙）</span>
-                    <span>🥕 胡萝卜、芹菜（清洁牙面）</span>
-                    <span>🍎 苹果（刺激唾液分泌）</span>
-                    <span>🍵 绿茶（含氟、抑菌）</span>
-                    <span>🥚 鸡蛋（优质蛋白）</span>
-                    <span>🐟 深海鱼（维生素D）</span>
-                    <span>🥬 绿叶蔬菜（维生素）</span>
-                    <span>🌰 坚果（矿物质）</span>
+        <div class="diet-grid fade-in">
+            <div class="diet-card recommend">
+                <div class="diet-card-header">
+                    <div class="diet-icon"><i class="fas fa-check"></i></div>
+                    <h4>推荐饮食</h4>
                 </div>
+                <ul>
+                    <li><span class="food-name">牛奶、奶酪</span><span class="food-reason">富含钙质，强化牙釉质</span></li>
+                    <li><span class="food-name">胡萝卜、芹菜</span><span class="food-reason">纤维清洁牙面，刺激唾液分泌</span></li>
+                    <li><span class="food-name">苹果</span><span class="food-reason">刺激唾液分泌，中和口腔酸性</span></li>
+                    <li><span class="food-name">绿茶</span><span class="food-reason">含氟化物和茶多酚，抑制细菌滋生</span></li>
+                    <li><span class="food-name">鸡蛋</span><span class="food-reason">优质蛋白质，促进牙周组织修复</span></li>
+                    <li><span class="food-name">深海鱼</span><span class="food-reason">富含维生素D，促进钙质吸收</span></li>
+                    <li><span class="food-name">绿叶蔬菜</span><span class="food-reason">富含维生素和矿物质，坚固牙齿</span></li>
+                    <li><span class="food-name">坚果</span><span class="food-reason">富含矿物质，咀嚼促进唾液分泌</span></li>
+                </ul>
             </div>
-            <div class="food-col bad">
-                <h4><i class="fas fa-times-circle"></i> 对牙齿有害的食物</h4>
-                <div class="food-tags">
-                    <span>🍬 糖果、粘性甜食</span>
-                    <span>🥤 碳酸饮料（酸蚀牙釉质）</span>
-                    <span>🧊 冰块（咬裂牙齿风险）</span>
-                    <span>☕ 浓茶、咖啡（色素沉着）</span>
-                    <span>🍷 红酒（色素、酸性）</span>
-                    <span>🍋 柠檬（高酸性）</span>
-                    <span>🍪 饼干（残渣易发酵）</span>
-                    <span>🍟 薯片（易卡牙缝）</span>
+            <div class="diet-card caution">
+                <div class="diet-card-header">
+                    <div class="diet-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <h4>需谨慎的饮食</h4>
                 </div>
+                <ul>
+                    <li><span class="food-name">糖果、粘性甜食</span><span class="food-reason">糖分被细菌分解产酸，腐蚀牙釉质</span></li>
+                    <li><span class="food-name">碳酸饮料</span><span class="food-reason">酸性物质直接侵蚀牙釉质，导致脱矿</span></li>
+                    <li><span class="food-name">冰块</span><span class="food-reason">硬度高，咀嚼可能导致牙齿隐裂</span></li>
+                    <li><span class="food-name">浓茶、咖啡</span><span class="food-reason">色素沉着，长期导致牙齿着色变黄</span></li>
+                    <li><span class="food-name">红酒</span><span class="food-reason">含色素和酸性物质，双重损害牙釉质</span></li>
+                    <li><span class="food-name">柠檬</span><span class="food-reason">高酸性，直接接触会腐蚀牙釉质</span></li>
+                    <li><span class="food-name">饼干</span><span class="food-reason">精制碳水，残渣易发酵产酸</span></li>
+                    <li><span class="food-name">薯片</span><span class="food-reason">易卡在牙缝中，滋生细菌</span></li>
+                </ul>
             </div>
         </div>
 
-        <div style="margin-top:24px;padding:18px 22px;background:#fff8e1;border-radius:10px;">
-            <p style="font-size:14px;color:#8d6e00;line-height:1.8;">
-                <i class="fas fa-lightbulb"></i> <strong>小贴士：</strong> 吃完酸性食物或饮料后，最好等待30分钟再刷牙。因为酸会软化牙釉质，立即刷牙反而会磨损牙齿。先用清水漱口，待唾液中和酸性后再刷牙。
-            </p>
+        <div class="diet-tip-callout">
+            <p><strong>小贴士：</strong> 吃完酸性食物或饮料后，最好等待30分钟再刷牙。因为酸会软化牙釉质，立即刷牙反而会磨损牙齿。先用清水漱口，待唾液中和酸性后再刷牙。</p>
         </div>
     </div>
 </section>
