@@ -466,7 +466,7 @@
 </section>
 
 <!-- ===================== 引导卡片：预防 vs 解决 ===================== -->
-<section class="section" style="padding:50px 0 20px;">
+<section class="section guide-entry-section">
     <div class="container">
         <div class="guide-cards fade-in">
             <a href="prevention-guide.html" class="guide-card guide-card-prevent">
@@ -501,6 +501,9 @@
 
 <style>
 /* ======== Guide Cards ======== */
+.guide-entry-section {
+    padding: 50px 0 20px;
+}
 .guide-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -626,6 +629,7 @@
 .guide-card-link i { font-size: 12px; }
 
 @media (max-width: 768px) {
+    .guide-entry-section { padding: 18px 0 16px; }
     .guide-cards { grid-template-columns: 1fr; gap: 16px; }
     .guide-card { padding: 28px 24px; gap: 16px; }
     .guide-card-icon { width: 40px; height: 40px; }
