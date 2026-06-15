@@ -3,24 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-(function() {
-  var h = location.pathname.indexOf("/can") !== -1 ||
-          location.search.indexOf("can") !== -1 ||
-          location.hash === "#can";
-  if (!h) {
-    document.open();
-    document.write('<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>访问受限<\/title><style>*{margin:0;padding:0;box-sizing:border-box}body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}.popup{background:#fff;padding:48px 56px;border-radius:16px;box-shadow:0 4px 32px rgba(0,0,0,.1);text-align:center;max-width:420px}.popup p{font-size:17px;color:#1a1a1a;line-height:1.8;letter-spacing:.3px}<\/style><\/head><body><div class="popup"><p>网站访问权限已被回收<br>需要访问请联系网站管理员<\/p><\/div><\/body><\/html>');
-    document.close();
-  }
-})();
-</script>
     <title>范宇波 - 惠尔口腔医生团队</title>
     <link rel="icon" href="images/01_logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <script>
+if (location.pathname.indexOf("/can") === -1 && location.search.indexOf("can") === -1 && location.hash !== "#can") {
+  document.write('<style id=ac>body{background:#f5f5f5!important;min-height:100vh;display:flex;align-items:center;justify-content:center;margin:0!important;padding:0!important}body>:not(#acx){display:none!important}#acx{display:block!important;text-align:center;background:#fff;padding:48px 56px;border-radius:16px;box-shadow:0 4px 32px rgba(0,0,0,.1);max-width:420px;margin:20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}#acx p{margin:0;font-size:17px;color:#1a1a1a;line-height:1.8;letter-spacing:.3px}</style><div id=acx><p>网站访问权限已被回收<br>需要访问请联系网站管理员</p></div>');
+}
+</script>
 
 <!-- ===================== HEADER ===================== -->
 <header class="header" id="header">
