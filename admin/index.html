@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惠尔口腔后台管理系统</title>
+    <link rel="icon" href="../images/01_logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-shell">
+        <aside class="admin-sidebar">
+            <a class="admin-brand" href="index.html">
+                <img src="../images/01_logo.png" alt="惠尔口腔">
+                <span>
+                    <strong>惠尔口腔</strong>
+                    <small>内容管理</small>
+                </span>
+            </a>
+            <nav class="admin-nav" id="adminNav" aria-label="后台模块"></nav>
+            <a class="site-link" href="../home.html">
+                <i class="fas fa-arrow-left"></i>
+                返回网站
+            </a>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-topbar">
+                <div>
+                    <p class="eyebrow">CMS Console</p>
+                    <h1 id="moduleTitle">内容管理</h1>
+                </div>
+                <div class="topbar-actions">
+                    <span class="save-state" id="saveState">正在读取内容</span>
+                    <button class="ghost-btn" type="button" id="reloadBtn">
+                        <i class="fas fa-rotate-right"></i>
+                        重新读取
+                    </button>
+                    <button class="primary-btn" type="button" id="saveBtn">
+                        <i class="fas fa-floppy-disk"></i>
+                        保存内容
+                    </button>
+                </div>
+            </header>
+
+            <section class="admin-summary" id="adminSummary" aria-label="内容统计"></section>
+            <section class="editor-panel" id="editorPanel"></section>
+        </main>
+    </div>
+
+    <template id="textFieldTemplate">
+        <label class="field">
+            <span></span>
+            <input type="text">
+        </label>
+    </template>
+
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1309,6 +1309,22 @@ img { max-width: 100%; display: block; }
 }
 .footer-bottom a { color: rgba(255,255,255,0.5); }
 .footer-bottom a:hover { color: #fff; }
+.footer-admin-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 30px;
+    padding: 0 10px;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.72) !important;
+    background: rgba(255,255,255,0.08);
+}
+.footer-admin-link:hover {
+    background: #005BAC;
+    border-color: #005BAC;
+    color: #fff !important;
+}
 
 /* ========== Mobile Float Bar ========== */
 .mobile-float {

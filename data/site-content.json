@@ -1,0 +1,119 @@
+{
+  "site": {
+    "name": "惠尔口腔",
+    "slogan": "预防胜于一切的治疗",
+    "phone": "0752-7820202",
+    "email": "hcjkqmz@163.com",
+    "address": "惠州市惠城区麦地东二路鸿润花园A栋102-106铺",
+    "hours": "周一至周四09:00-20:00 周五至周日09:00-18:00",
+    "icpText": "（备案号）",
+    "mapLng": "114.409602",
+    "mapLat": "23.06347"
+  },
+  "home": {
+    "heroSlides": [
+      {
+        "title": "首页轮播 1",
+        "image": "images/轮播图/轮播图1.JPG",
+        "alt": "轮播图1",
+        "visible": true
+      },
+      {
+        "title": "首页轮播 2",
+        "image": "images/轮播图/轮播图2.jpg",
+        "alt": "轮播图2",
+        "visible": true
+      }
+    ],
+    "philosophyTitle": "我们的理念",
+    "philosophyText": "我们希望您来惠尔，不是因为牙疼。而是为了让牙疼永远不会发生。",
+    "ctaTitle": "守护牙齿，从今天开始",
+    "ctaButton": "预约口腔检查"
+  },
+  "doctors": [
+    {
+      "name": "杨远洋",
+      "title": "正畸院长 / 创始合伙人",
+      "avatar": "images/杨医生海报.png",
+      "tags": "口腔正畸,颜面管理,美学修复",
+      "summary": "遵义医科大学毕业，从事口腔正畸与颜面管理、口腔美学修复多年。",
+      "featured": true,
+      "visible": true
+    },
+    {
+      "name": "吴国平",
+      "title": "医生",
+      "avatar": "images/吴医生海报.png",
+      "tags": "全科治疗,口腔预防,口腔保健",
+      "summary": "擅长全科综合治疗与口腔预防保健，为患者提供全面的口腔健康管理服务。",
+      "featured": true,
+      "visible": true
+    },
+    {
+      "name": "林雪梅",
+      "title": "医生",
+      "avatar": "images/林医生海报.png",
+      "tags": "儿童矫治,早期干预,颜面发育",
+      "summary": "擅长儿童早期矫治，致力于儿童口腔健康管理与颌面发育引导。",
+      "featured": true,
+      "visible": true
+    }
+  ],
+  "specialties": [
+    {
+      "name": "牙齿矫正",
+      "subtitle": "正畸医生团队",
+      "cover": "images/服务项目/牙齿矫治/微信图片_20200614195731_副本.jpg",
+      "tags": "隐形矫正,早期矫治,固定矫正",
+      "doctorNames": "杨远洋,林雪梅",
+      "summary": "传统托槽矫正、隐形矫正、儿童早期矫治等全年龄段正畸方案。",
+      "visible": true
+    },
+    {
+      "name": "牙齿种植",
+      "subtitle": "种植医生团队",
+      "cover": "images/服务项目/牙齿种植/安装牙冠.png",
+      "tags": "数字化导板,即刻种植,穿颧穿翼",
+      "doctorNames": "范宇波",
+      "summary": "数字化导板种植、即刻种植、穿颧穿翼等技术，修复缺失牙。",
+      "visible": true
+    }
+  ],
+  "articles": [
+    {
+      "title": "隐形矫正 vs 传统矫正：该如何选择？",
+      "category": "牙齿矫正",
+      "date": "2026-05-20",
+      "image": "images/knowledge/orthodontics-model-display.jpg",
+      "summary": "隐形矫正和传统固定矫正各有适合的人群、配合要求和治疗重点。",
+      "body": "真正决定方案的，不只是预算或外观偏好，而是牙列拥挤程度、面型诉求、咬合关系、牙周基础以及日常配合能力。",
+      "visible": true
+    },
+    {
+      "title": "种植牙能用一辈子吗？",
+      "category": "牙齿种植",
+      "date": "2026-05-18",
+      "image": "images/knowledge/implant-crown-placement.png",
+      "summary": "种植牙能用多久，核心不只是材料本身，而是手术条件、咬合设计、牙周环境和后期维护。",
+      "body": "如果把种植牙看作一个长期合作项目，医生负责把基础打稳，患者负责把维护做好，寿命自然会更理想。",
+      "visible": true
+    }
+  ],
+  "media": [
+    {
+      "name": "Logo",
+      "category": "品牌",
+      "path": "images/01_logo.png",
+      "alt": "惠尔口腔",
+      "visible": true
+    },
+    {
+      "name": "诊所外环境",
+      "category": "机构环境",
+      "path": "images/诊所外环境.jpg",
+      "alt": "惠尔口腔诊所外环境",
+      "visible": true
+    }
+  ],
+  "updatedAt": "2026-08-18T08:52:08.939Z"
+}
