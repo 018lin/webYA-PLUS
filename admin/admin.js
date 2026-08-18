@@ -169,12 +169,21 @@ async function saveContent() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(content)
         });
-        if (!response.ok) throw new Error(await response.text());
+        if (!response.ok) {
+            const text = await response.text();
+            let message = text;
+            try {
+                message = JSON.parse(text).error || message;
+            } catch (parseError) {
+                // Keep the raw response text.
+            }
+            throw new Error(message);
+        }
         content = normalizeContent(await response.json());
         setState("内容已保存", "ok");
         renderSummary();
     } catch (error) {
-        setState("保存失败", "error");
+        setState(error.message || "保存失败", "error");
         console.error(error);
     }
 }
