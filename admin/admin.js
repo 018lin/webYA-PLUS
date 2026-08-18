@@ -284,10 +284,11 @@ function getCollectionConfig(type) {
                 ["姓名", "name"],
                 ["职称", "title"],
                 ["头像/海报路径", "avatar"],
+                ["详情页链接", "href"],
                 ["擅长标签（用逗号分隔）", "tags"],
                 ["简介", "summary", "textarea"]
             ],
-            defaultItem: { name: "新医生", title: "医生", avatar: "", tags: "", summary: "", featured: false, visible: true },
+            defaultItem: { name: "新医生", title: "医生", avatar: "", href: "team.html", tags: "", summary: "", featured: false, visible: true },
             switches: [["首页推荐", "featured"], ["显示", "visible"]]
         },
         specialties: {
@@ -300,11 +301,12 @@ function getCollectionConfig(type) {
                 ["专科名称", "name"],
                 ["副标题", "subtitle"],
                 ["封面图路径", "cover"],
+                ["详情页链接", "href"],
                 ["标签（用逗号分隔）", "tags"],
                 ["关联医生（用逗号分隔）", "doctorNames"],
                 ["简介", "summary", "textarea"]
             ],
-            defaultItem: { name: "新专科", subtitle: "", cover: "", tags: "", doctorNames: "", summary: "", visible: true },
+            defaultItem: { name: "新专科", subtitle: "", cover: "", href: "specialties.html", tags: "", doctorNames: "", summary: "", visible: true },
             switches: [["显示", "visible"]]
         },
         articles: {
@@ -315,13 +317,14 @@ function getCollectionConfig(type) {
             subKey: "category",
             fields: [
                 ["文章标题", "title"],
+                ["详情标识", "topic"],
                 ["分类", "category"],
                 ["发布时间", "date"],
                 ["封面图路径", "image"],
                 ["摘要", "summary", "textarea"],
                 ["正文", "body", "textarea"]
             ],
-            defaultItem: { title: "新文章", category: "口腔科普", date: new Date().toISOString().slice(0, 10), image: "", summary: "", body: "", visible: true },
+            defaultItem: { title: "新文章", topic: "", category: "口腔科普", date: new Date().toISOString().slice(0, 10), image: "", summary: "", body: "", visible: true },
             switches: [["发布", "visible"]]
         },
         media: {
