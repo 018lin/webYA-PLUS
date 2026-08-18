@@ -331,8 +331,19 @@ h1 {
     border-bottom: 1px solid var(--line);
 }
 
+.content-item-thumb {
+    width: 48px;
+    height: 38px;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #f3f5f2;
+    flex-shrink: 0;
+}
+
 .content-item-title {
     min-width: 0;
+    flex: 1;
 }
 
 .content-item-title strong,

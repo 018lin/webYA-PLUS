@@ -69,19 +69,52 @@ function normalizeContent(raw) {
     };
 }
 
+async function fetchJson(url) {
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) throw new Error(`Cannot load ${url}`);
+    return response.json();
+}
+
+function contentScore(value) {
+    if (!value) return 0;
+    return [
+        value.doctors,
+        value.specialties,
+        value.articles,
+        value.media,
+        value.home && value.home.heroSlides
+    ].reduce((sum, list) => sum + (Array.isArray(list) ? list.length : 0), 0);
+}
+
 async function loadContent() {
     setState("正在读取内容");
     try {
-        const response = await fetch("../api/content", { cache: "no-store" });
-        if (!response.ok) throw new Error("API unavailable");
-        content = normalizeContent(await response.json());
+        content = normalizeContent(await fetchJson("../api/content"));
         apiMode = true;
         setState("已连接保存接口", "ok");
     } catch (error) {
-        const saved = localStorage.getItem("here-dental-admin-content");
-        content = normalizeContent(saved ? JSON.parse(saved) : fallbackContent);
         apiMode = false;
-        setState("本地草稿模式", "neutral");
+
+        const saved = localStorage.getItem("here-dental-admin-content");
+        let localDraft = null;
+        if (saved) {
+            try {
+                localDraft = normalizeContent(JSON.parse(saved));
+            } catch (draftError) {
+                localStorage.removeItem("here-dental-admin-content");
+            }
+        }
+
+        try {
+            const staticContent = normalizeContent(await fetchJson("../data/site-content.json"));
+            content = localDraft && contentScore(localDraft) >= contentScore(staticContent)
+                ? localDraft
+                : staticContent;
+            setState(localDraft === content ? "本地草稿模式" : "已读取静态内容数据", "neutral");
+        } catch (staticError) {
+            content = localDraft || normalizeContent(fallbackContent);
+            setState(localDraft ? "本地草稿模式" : "使用默认空数据", "neutral");
+        }
     }
     render();
 }
@@ -304,7 +337,8 @@ function renderCollection(type) {
         `)}
         <div class="item-list">
             ${content[type].length ? content[type].map((item, index) => {
-                return renderItem(type, item, index, config.titleKey, config.fields, true, config);
+                const openByDefault = type !== "media" && content[type].length <= 12;
+                return renderItem(type, item, index, config.titleKey, config.fields, openByDefault, config);
             }).join("") : `<div class="empty-state">暂无内容</div>`}
         </div>
     `;
@@ -316,6 +350,7 @@ function renderItem(collectionPath, item, index, titleKey, fields, open = false,
     return `
         <article class="content-item ${open ? "open" : ""}" data-item="${collectionPath}.${index}">
             <div class="content-item-head">
+                ${collectionPath === "media" && item.path ? `<img class="content-item-thumb" src="../${item.path}" alt="">` : ""}
                 <div class="content-item-title">
                     <strong>${item[titleKey] || "未命名内容"}</strong>
                     <span>${sub || collectionPath}</span>
