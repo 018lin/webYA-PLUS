@@ -47,8 +47,9 @@
 3.1. 新增 Vercel 内容接口
 
 - 已创建 Vercel Serverless API：`api/content.js`
-- Vercel 上的 `GET /api/content` 会优先读取 Vercel Blob 中最新保存的 CMS JSON
-- Vercel 上的 `POST /api/content` 会把后台保存内容写入 Vercel Blob
+- Vercel 上的 `GET /api/content` 会优先通过 Blob SDK 读取 Vercel Blob 中最新保存的 CMS JSON
+- Vercel 上的 `POST /api/content` 会把后台保存内容写入 Vercel Blob，默认使用 Private Blob
+- 如需改为 Public Blob，可在 Vercel 环境变量中设置 `CMS_BLOB_ACCESS=public`
 - 如果 Vercel Blob 尚未接入，读取会回退到 `data/site-content.json`，但保存会返回配置错误
 - 已新增 `package.json` 和 `vercel.json`，用于 Vercel 安装依赖和打包初始内容数据
 

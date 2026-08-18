@@ -3,6 +3,7 @@ const path = require("path");
 
 const DATA_FILE = path.join(process.cwd(), "data", "site-content.json");
 const BLOB_PREFIX = "cms/site-content-";
+const BLOB_ACCESS = process.env.CMS_BLOB_ACCESS === "public" ? "public" : "private";
 
 function sendJson(res, status, value) {
     res.statusCode = status;
@@ -53,6 +54,22 @@ async function getBlobSdk() {
     }
 }
 
+async function streamToText(stream) {
+    if (!stream) return "";
+    const reader = stream.getReader();
+    const decoder = new TextDecoder();
+    let text = "";
+
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        text += decoder.decode(value, { stream: true });
+    }
+
+    text += decoder.decode();
+    return text;
+}
+
 async function readLatestBlobContent() {
     const sdk = await getBlobSdk();
     if (!sdk) return null;
@@ -64,9 +81,13 @@ async function readLatestBlobContent() {
 
     if (!latest) return null;
 
-    const response = await fetch(latest.url, { cache: "no-store" });
-    if (!response.ok) throw new Error("Cannot read CMS content blob");
-    return response.json();
+    const blob = await sdk.get(latest.pathname, {
+        access: BLOB_ACCESS,
+        useCache: false
+    });
+    if (!blob || blob.statusCode !== 200) return null;
+
+    return JSON.parse(await streamToText(blob.stream));
 }
 
 async function writeBlobContent(content) {
@@ -78,7 +99,7 @@ async function writeBlobContent(content) {
     const stamp = new Date().toISOString().replace(/[:.]/g, "-");
     const pathname = `${BLOB_PREFIX}${stamp}.json`;
     await sdk.put(pathname, JSON.stringify(content, null, 2), {
-        access: "public",
+        access: BLOB_ACCESS,
         contentType: "application/json; charset=utf-8"
     });
 
