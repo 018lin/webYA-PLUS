@@ -44,6 +44,14 @@
   - 保存时自动备份旧数据到 `data/backups/`
 - 已在 `.gitignore` 忽略运行时备份目录：`data/backups/`
 
+3.1. 新增 Vercel 内容接口
+
+- 已创建 Vercel Serverless API：`api/content.js`
+- Vercel 上的 `GET /api/content` 会优先读取 Vercel Blob 中最新保存的 CMS JSON
+- Vercel 上的 `POST /api/content` 会把后台保存内容写入 Vercel Blob
+- 如果 Vercel Blob 尚未接入，读取会回退到 `data/site-content.json`，但保存会返回配置错误
+- 已新增 `package.json` 和 `vercel.json`，用于 Vercel 安装依赖和打包初始内容数据
+
 4. 修复后台数据读取逻辑
 
 - 后台优先读取 `../api/content`，并兼容根路径 `/api/content`
