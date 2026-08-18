@@ -86,6 +86,23 @@ function contentScore(value) {
     ].reduce((sum, list) => sum + (Array.isArray(list) ? list.length : 0), 0);
 }
 
+function contentTimestamp(value) {
+    const time = Date.parse(value && value.updatedAt);
+    return Number.isFinite(time) ? time : 0;
+}
+
+function shouldUseLocalDraft(localDraft, staticContent) {
+    if (!localDraft) return false;
+
+    const localTime = contentTimestamp(localDraft);
+    const staticTime = contentTimestamp(staticContent);
+
+    if (localTime && staticTime) return localTime > staticTime;
+    if (localTime && !staticTime) return true;
+
+    return contentScore(localDraft) > contentScore(staticContent);
+}
+
 async function loadContent() {
     setState("正在读取内容");
     try {
@@ -107,10 +124,9 @@ async function loadContent() {
 
         try {
             const staticContent = normalizeContent(await fetchJson("../data/site-content.json"));
-            content = localDraft && contentScore(localDraft) >= contentScore(staticContent)
-                ? localDraft
-                : staticContent;
-            setState(localDraft === content ? "本地草稿模式" : "已读取静态内容数据", "neutral");
+            const useLocalDraft = shouldUseLocalDraft(localDraft, staticContent);
+            content = useLocalDraft ? localDraft : staticContent;
+            setState(useLocalDraft ? "本地草稿模式" : "已读取静态内容数据", "neutral");
         } catch (staticError) {
             content = localDraft || normalizeContent(fallbackContent);
             setState(localDraft ? "本地草稿模式" : "使用默认空数据", "neutral");
