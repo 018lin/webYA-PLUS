@@ -38,6 +38,10 @@ const fallbackContent = {
 let content = JSON.parse(JSON.stringify(fallbackContent));
 let activeModule = "settings";
 let apiMode = false;
+let apiUrl = "../api/content";
+
+const apiUrls = ["../api/content", "/api/content"];
+const staticContentUrls = ["../data/site-content.json", "/data/site-content.json"];
 
 const navEl = document.getElementById("adminNav");
 const titleEl = document.getElementById("moduleTitle");
@@ -75,6 +79,18 @@ async function fetchJson(url) {
     return response.json();
 }
 
+async function fetchFirstJson(urls) {
+    let lastError = null;
+    for (const url of urls) {
+        try {
+            return { url, data: await fetchJson(url) };
+        } catch (error) {
+            lastError = error;
+        }
+    }
+    throw lastError || new Error("Cannot load content");
+}
+
 function contentScore(value) {
     if (!value) return 0;
     return [
@@ -106,7 +122,9 @@ function shouldUseLocalDraft(localDraft, staticContent) {
 async function loadContent() {
     setState("正在读取内容");
     try {
-        content = normalizeContent(await fetchJson("../api/content"));
+        const apiContent = await fetchFirstJson(apiUrls);
+        apiUrl = apiContent.url;
+        content = normalizeContent(apiContent.data);
         apiMode = true;
         setState("已连接保存接口", "ok");
     } catch (error) {
@@ -123,13 +141,13 @@ async function loadContent() {
         }
 
         try {
-            const staticContent = normalizeContent(await fetchJson("../data/site-content.json"));
+            const staticContent = normalizeContent((await fetchFirstJson(staticContentUrls)).data);
             const useLocalDraft = shouldUseLocalDraft(localDraft, staticContent);
             content = useLocalDraft ? localDraft : staticContent;
-            setState(useLocalDraft ? "本地草稿模式" : "已读取静态内容数据", "neutral");
+            setState(useLocalDraft ? "仅本地草稿，前台/其他设备不会同步" : "已读取静态内容，保存仅本地草稿", "error");
         } catch (staticError) {
             content = localDraft || normalizeContent(fallbackContent);
-            setState(localDraft ? "本地草稿模式" : "使用默认空数据", "neutral");
+            setState(localDraft ? "仅本地草稿，前台/其他设备不会同步" : "使用默认空数据", "error");
         }
     }
     render();
@@ -139,14 +157,14 @@ async function saveContent() {
     content.updatedAt = new Date().toISOString();
     if (!apiMode) {
         localStorage.setItem("here-dental-admin-content", JSON.stringify(content));
-        setState("本地草稿已保存", "ok");
+        setState("本地草稿已保存，未写入服务器", "error");
         renderSummary();
         return;
     }
 
     setState("正在保存");
     try {
-        const response = await fetch("../api/content", {
+        const response = await fetch(apiUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(content)

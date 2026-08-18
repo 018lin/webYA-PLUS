@@ -1,6 +1,7 @@
 (function initCmsRender() {
     const pageName = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
-    const contentUrls = ["api/content", "/api/content", "data/site-content.json"];
+    const apiContentUrls = ["api/content", "/api/content"];
+    const staticContentUrls = ["data/site-content.json", "/data/site-content.json"];
 
     function escapeHtml(value) {
         return String(value == null ? "" : value).replace(/[&<>"']/g, char => ({
@@ -28,15 +29,68 @@
     }
 
     async function fetchContent() {
-        for (const url of contentUrls) {
+        for (const url of apiContentUrls) {
             try {
                 const response = await fetch(url, { cache: "no-store" });
                 if (response.ok) return response.json();
             } catch (error) {
-                // Try the next source. The site can run through Node or as static files.
+                // Try the next API source. The site can be mounted at root or a subpath.
             }
         }
-        return null;
+
+        const localDraft = loadLocalDraft();
+        let staticContent = null;
+        for (const url of staticContentUrls) {
+            try {
+                const response = await fetch(url, { cache: "no-store" });
+                if (response.ok) {
+                    staticContent = await response.json();
+                    break;
+                }
+            } catch (error) {
+                // Try the next static source.
+            }
+        }
+
+        if (staticContent && shouldUseLocalDraft(localDraft, staticContent)) return localDraft;
+        return staticContent || localDraft;
+    }
+
+    function loadLocalDraft() {
+        try {
+            const saved = localStorage.getItem("here-dental-admin-content");
+            return saved ? JSON.parse(saved) : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function contentTimestamp(value) {
+        const time = Date.parse(value && value.updatedAt);
+        return Number.isFinite(time) ? time : 0;
+    }
+
+    function contentScore(value) {
+        if (!value) return 0;
+        return [
+            value.doctors,
+            value.specialties,
+            value.articles,
+            value.media,
+            value.home && value.home.heroSlides
+        ].reduce((sum, list) => sum + (Array.isArray(list) ? list.length : 0), 0);
+    }
+
+    function shouldUseLocalDraft(localDraft, staticContent) {
+        if (!localDraft) return false;
+
+        const localTime = contentTimestamp(localDraft);
+        const staticTime = contentTimestamp(staticContent);
+
+        if (localTime && staticTime) return localTime > staticTime;
+        if (localTime && !staticTime) return true;
+
+        return contentScore(localDraft) > contentScore(staticContent);
     }
 
     function renderTags(tags, className = "tag") {
