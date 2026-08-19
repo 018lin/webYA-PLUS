@@ -1,0 +1,29 @@
+# ===== 敏感与本地文件,禁止部署到 Vercel =====
+#
+# 说明:Vercel 路由中静态文件系统优先于 vercel.json 的 rewrites,
+# 因此"已存在的文件"无法用 rewrite 挡住(/data/* 曾因此泄露)。
+# 正确做法是把敏感文件排除在部署产物之外(本文件),并配合
+# middleware.js 兜底拦截。
+
+# 数据文件:患者咨询等数据在生产环境存 Vercel Blob(私有),
+# data/ 下的 seed 仅供本地开发(server.js),不允许进入部署产物
+data/
+
+# 本地开发服务器(内含认证逻辑与默认口令回退),不允许公开访问
+server.js
+
+# 域名验证临时文件(vercel.json 部署校验用),无公开访问必要
+5ea4c0f87cac3124394319c54abfd181.txt
+
+# 本地文档与说明
+docs/
+README.md
+
+# 根目录设计截图(仅本地参考)
+about-desktop.png
+about-desktop-shot.png
+about-mobile.png
+
+# 本地工具目录
+.claude/
+.codebuddy/

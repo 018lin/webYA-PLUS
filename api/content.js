@@ -14,6 +14,12 @@ function sendJson(res, status, value) {
 }
 
 function readSeedContent() {
+    // seed 文件已被 .vercelignore 排除在部署之外(生产数据存 Blob),
+    // 本地开发(server.js / vercel dev)时文件仍存在。缺失时返回空结构,
+    // 避免生产环境未连接 Blob 时接口直接 500。
+    if (!fs.existsSync(DATA_FILE)) {
+        return { site: {}, home: {}, doctors: [], specialties: [], articles: [] };
+    }
     return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
 }
 
