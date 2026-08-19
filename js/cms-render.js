@@ -323,6 +323,19 @@
     }
 
     async function start() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("preview")) {
+            try {
+                const preview = JSON.parse(localStorage.getItem("here-dental-article-preview"));
+                if (preview && typeof preview === "object") {
+                    renderKnowledgeDetail({ articles: [{ ...preview, visible: true }] });
+                    return;
+                }
+            } catch (error) {
+                // Fall back to normal content loading.
+            }
+        }
+
         const content = await fetchContent();
         if (content) renderContent(content);
     }

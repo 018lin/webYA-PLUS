@@ -41,6 +41,10 @@ let consultations = [];
 let consultationsLoaded = false;
 let consultationsLoading = false;
 let consultationApiUrl = "../api/consultations";
+let articleSearch = "";
+let articleCategoryFilter = "all";
+let articleEditorIndex = null;
+let articleCoverValue = "";
 
 const apiUrls = ["../api/content", "/api/content"];
 const uploadUrls = ["../api/upload", "/api/upload"];
@@ -264,7 +268,7 @@ function render() {
     if (activeModule === "home") renderHome();
     if (activeModule === "doctors") renderCollection("doctors");
     if (activeModule === "specialties") renderCollection("specialties");
-    if (activeModule === "articles") renderCollection("articles");
+    if (activeModule === "articles") renderArticles();
     if (activeModule === "media") renderCollection("media");
     if (activeModule === "consultations") renderConsultations();
 }
@@ -414,24 +418,6 @@ function getCollectionConfig(type) {
             ],
             defaultItem: { name: "新专科", subtitle: "", cover: "", href: "specialties.html", tags: "", doctorNames: "", summary: "", visible: true },
             switches: [["显示", "visible"]]
-        },
-        articles: {
-            title: "科普文章",
-            desc: "维护口腔科普文章的标题、分类、封面、摘要和正文。",
-            addText: "添加文章",
-            titleKey: "title",
-            subKey: "category",
-            fields: [
-                ["文章标题", "title"],
-                ["详情标识", "topic"],
-                ["分类", "category"],
-                ["发布时间", "date"],
-                ["封面图", "image", "image"],
-                ["摘要", "summary", "textarea"],
-                ["正文", "body", "textarea"]
-            ],
-            defaultItem: { title: "新文章", topic: "", category: "口腔科普", date: new Date().toISOString().slice(0, 10), image: "", summary: "", body: "", visible: true },
-            switches: [["发布", "visible"]]
         },
         media: {
             title: "媒体资源",
@@ -616,6 +602,314 @@ function removeItem(path, index) {
     render();
 }
 
+const defaultArticleCategories = [
+    "口腔科普", "牙齿矫正", "牙齿种植", "牙齿修复", "牙齿美容",
+    "儿童牙科", "牙周治疗", "牙体牙髓", "微创拔牙", "牙齿全科"
+];
+
+function articleCategories() {
+    const seen = new Set(defaultArticleCategories);
+    const list = [...defaultArticleCategories];
+    content.articles.forEach(article => {
+        const category = article.category;
+        if (category && !seen.has(category)) {
+            seen.add(category);
+            list.push(category);
+        }
+    });
+    return list;
+}
+
+function filteredArticles() {
+    const keyword = articleSearch.trim().toLowerCase();
+    return content.articles
+        .map((article, index) => ({ article, index }))
+        .filter(({ article }) => !keyword || String(article.title || "").toLowerCase().includes(keyword))
+        .filter(({ article }) => articleCategoryFilter === "all" || article.category === articleCategoryFilter)
+        .sort((a, b) => String(b.article.date || "").localeCompare(String(a.article.date || "")));
+}
+
+function renderArticles() {
+    panelEl.innerHTML = `
+        ${panelHead("科普文章", "管理文章发布流程：新文章默认为草稿，发布后前台可见。", `
+            <button class="small-btn" type="button" data-article-add>
+                <i class="fas fa-plus"></i>
+                添加文章
+            </button>
+        `)}
+        <div class="list-toolbar">
+            <input type="search" id="articleSearch" placeholder="搜索文章标题…" value="${escapeAttr(articleSearch)}">
+            <select id="articleCategoryFilter">
+                <option value="all">全部分类</option>
+                ${articleCategories().map(category => `
+                    <option value="${escapeAttr(category)}" ${articleCategoryFilter === category ? "selected" : ""}>${escapeHtml(category)}</option>
+                `).join("")}
+            </select>
+        </div>
+        <div class="data-table-wrap">
+            <div id="articleTableContainer"></div>
+        </div>
+    `;
+    renderArticleTable();
+}
+
+function renderArticleTable() {
+    const container = document.getElementById("articleTableContainer");
+    if (!container) return;
+
+    const filtered = filteredArticles();
+    container.innerHTML = `
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>分类</th>
+                    <th>发布时间</th>
+                    <th>状态</th>
+                    <th class="col-actions">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${filtered.length ? filtered.map(({ article, index }) => `
+                    <tr>
+                        <td class="cell-title" title="${escapeAttr(article.title || "")}">${escapeHtml(article.title || "未命名文章")}</td>
+                        <td>${escapeHtml(article.category || "-")}</td>
+                        <td>${escapeHtml(article.date || "-")}</td>
+                        <td><span class="badge ${article.visible ? "badge-ok" : "badge-muted"}">${article.visible ? "已发布" : "草稿"}</span></td>
+                        <td class="col-actions">
+                            <button class="ghost-btn btn-sm" type="button" data-article-edit="${index}">
+                                <i class="fas fa-pen"></i> 编辑
+                            </button>
+                            <button class="danger-btn btn-sm" type="button" data-article-delete="${index}">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </td>
+                    </tr>
+                `).join("") : `
+                    <tr><td colspan="5" class="empty-row">没有匹配的文章</td></tr>
+                `}
+            </tbody>
+        </table>
+    `;
+}
+
+function openArticleEditor(index) {
+    articleEditorIndex = index == null ? null : Number(index);
+    renderArticleEditor();
+}
+
+function closeArticleEditor() {
+    articleEditorIndex = null;
+    document.removeEventListener("keydown", onArticleModalKeydown);
+    const modal = document.getElementById("articleModal");
+    if (modal) modal.remove();
+}
+
+function onArticleModalKeydown(event) {
+    if (event.key === "Escape") closeArticleEditor();
+}
+
+function renderArticleEditor() {
+    const editing = articleEditorIndex != null;
+    const article = editing ? content.articles[articleEditorIndex] : null;
+    articleCoverValue = (article && article.image) || "";
+    const categories = articleCategories();
+    const currentCategory = (article && article.category) || "口腔科普";
+    const coverSrc = articleCoverValue ? assetSrc(articleCoverValue) : "";
+
+    const modal = document.createElement("div");
+    modal.className = "modal-overlay";
+    modal.id = "articleModal";
+    modal.innerHTML = `
+        <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-head">
+                <div>
+                    <h3>${editing ? "编辑文章" : "添加文章"}</h3>
+                    <p>${editing ? "修改后保存，前台按发布状态更新。" : "新文章默认为草稿，保存后可随时发布。"}</p>
+                </div>
+                <button class="ghost-btn" type="button" id="articlePreviewBtn">
+                    <i class="fas fa-eye"></i> 预览
+                </button>
+            </div>
+            <div class="modal-body">
+                <label class="field field-wide">
+                    <span>文章标题</span>
+                    <input id="articleTitle" maxlength="100" value="${escapeAttr(article ? article.title : "")}" placeholder="请输入文章标题">
+                </label>
+                <label class="field">
+                    <span>文章分类</span>
+                    <select id="articleCategory">
+                        ${categories.map(category => `
+                            <option value="${escapeAttr(category)}" ${category === currentCategory ? "selected" : ""}>${escapeHtml(category)}</option>
+                        `).join("")}
+                    </select>
+                </label>
+                <div class="field field-wide image-field">
+                    <span>封面图</span>
+                    <div class="image-picker">
+                        <div class="image-preview" id="articleCoverPreview">
+                            ${coverSrc
+                                ? `<img src="${escapeAttr(coverSrc)}" alt="">`
+                                : `<div class="image-preview-empty"><i class="fas fa-image"></i></div>`}
+                        </div>
+                        <div class="image-picker-main">
+                            <div class="image-picker-actions">
+                                <label class="small-btn file-btn">
+                                    <i class="fas fa-folder-open"></i>
+                                    选择图片
+                                    <input class="image-file-input" type="file" id="articleCoverFile" accept="image/*">
+                                </label>
+                                <button class="ghost-btn" type="button" id="articleCoverClear" ${articleCoverValue ? "" : "hidden"}>
+                                    <i class="fas fa-xmark"></i> 清除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <label class="field field-wide">
+                    <span>摘要</span>
+                    <textarea id="articleSummary" rows="3" placeholder="用于列表页展示的简短介绍">${escapeHtml(article ? article.summary : "")}</textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>正文</span>
+                    <textarea id="articleBody" rows="14" placeholder="正文内容，空行分段">${escapeHtml(article ? article.body : "")}</textarea>
+                </label>
+                <label class="field">
+                    <span>发布时间</span>
+                    <input type="date" id="articleDate" value="${escapeAttr(article ? article.date : new Date().toISOString().slice(0, 10))}">
+                </label>
+            </div>
+            <div class="modal-foot">
+                <button class="ghost-btn" type="button" id="articleCancelBtn">取消</button>
+                <button class="ghost-btn" type="button" id="articleDraftBtn">
+                    <i class="fas fa-pen-to-square"></i> 保存草稿
+                </button>
+                <button class="primary-btn" type="button" id="articlePublishBtn">
+                    <i class="fas fa-paper-plane"></i> 发布文章
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    document.addEventListener("keydown", onArticleModalKeydown);
+
+    modal.addEventListener("click", event => {
+        if (event.target === modal) closeArticleEditor();
+    });
+    document.getElementById("articleCancelBtn").addEventListener("click", closeArticleEditor);
+    document.getElementById("articleDraftBtn").addEventListener("click", () => saveArticle(false));
+    document.getElementById("articlePublishBtn").addEventListener("click", () => saveArticle(true));
+    document.getElementById("articlePreviewBtn").addEventListener("click", previewArticle);
+    document.getElementById("articleCoverClear").addEventListener("click", () => {
+        articleCoverValue = "";
+        updateArticleCoverPreview();
+    });
+    document.getElementById("articleCoverFile").addEventListener("change", handleArticleCoverFile);
+    document.getElementById("articleTitle").focus();
+}
+
+function updateArticleCoverPreview() {
+    const preview = document.getElementById("articleCoverPreview");
+    const clearButton = document.getElementById("articleCoverClear");
+    if (preview) {
+        preview.innerHTML = articleCoverValue
+            ? `<img src="${escapeAttr(assetSrc(articleCoverValue))}" alt="">`
+            : `<div class="image-preview-empty"><i class="fas fa-image"></i></div>`;
+    }
+    if (clearButton) clearButton.hidden = !articleCoverValue;
+}
+
+async function handleArticleCoverFile(event) {
+    const file = event.target.files && event.target.files[0];
+    event.target.value = "";
+    if (!file) return;
+
+    if (!file.type || !file.type.startsWith("image/")) {
+        setState("请选择图片文件", "error");
+        return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+        setState("图片不能超过 10MB", "error");
+        return;
+    }
+    if (!apiMode) {
+        setState("请通过本地服务或部署后的后台上传图片", "error");
+        return;
+    }
+
+    setState("正在上传图片");
+    try {
+        articleCoverValue = await uploadImage(file);
+        updateArticleCoverPreview();
+        setState("图片已上传，保存文章后生效", "ok");
+    } catch (error) {
+        setState(error.message || "图片上传失败", "error");
+        console.error(error);
+    }
+}
+
+function readArticleForm() {
+    return {
+        title: document.getElementById("articleTitle").value.trim(),
+        category: document.getElementById("articleCategory").value,
+        date: document.getElementById("articleDate").value,
+        summary: document.getElementById("articleSummary").value,
+        body: document.getElementById("articleBody").value,
+        image: articleCoverValue
+    };
+}
+
+function articleFromForm(values, visible) {
+    const existing = articleEditorIndex != null ? { ...content.articles[articleEditorIndex] } : {};
+    return {
+        ...existing,
+        ...values,
+        visible,
+        topic: existing.topic || `art-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`
+    };
+}
+
+async function saveArticle(visible) {
+    const values = readArticleForm();
+    if (!values.title) {
+        setState("请填写文章标题", "error");
+        document.getElementById("articleTitle").focus();
+        return;
+    }
+
+    const article = articleFromForm(values, visible);
+    if (articleEditorIndex == null) {
+        content.articles.push(article);
+    } else {
+        content.articles[articleEditorIndex] = article;
+    }
+
+    closeArticleEditor();
+    await saveContent();
+    render();
+}
+
+function previewArticle() {
+    const values = readArticleForm();
+    const existing = articleEditorIndex != null ? content.articles[articleEditorIndex] : null;
+    const article = {
+        ...(existing || {}),
+        ...values,
+        title: values.title || "未命名文章",
+        sectionTitle: values.title || "未命名文章",
+        topic: (existing && existing.topic) || `art-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
+        visible: true
+    };
+    localStorage.setItem("here-dental-article-preview", JSON.stringify(article));
+    window.open(`../knowledge-detail.html?preview=1&t=${Date.now()}`, "_blank");
+}
+
+function removeArticle(index) {
+    if (!window.confirm("确定删除这篇文章？此操作不可恢复。")) return;
+    content.articles.splice(index, 1);
+    render();
+}
+
 function parentByPath(path) {
     const parts = path.split(".");
     parts.pop();
@@ -778,12 +1072,26 @@ async function removeConsultation(id) {
 }
 
 document.addEventListener("input", event => {
+    const searchInput = event.target.closest("#articleSearch");
+    if (searchInput) {
+        articleSearch = searchInput.value;
+        renderArticleTable();
+        return;
+    }
+
     const path = event.target.dataset.path;
     if (!path) return;
     setByPath(path, event.target.value);
 });
 
 document.addEventListener("change", event => {
+    const categoryFilter = event.target.closest("#articleCategoryFilter");
+    if (categoryFilter) {
+        articleCategoryFilter = categoryFilter.value;
+        renderArticleTable();
+        return;
+    }
+
     const imagePath = event.target.dataset.imagePath;
     if (imagePath) {
         handleImageSelection(event.target, imagePath);
@@ -812,6 +1120,24 @@ document.addEventListener("click", event => {
     const removeButton = event.target.closest("[data-remove]");
     if (removeButton) {
         removeItem(removeButton.dataset.remove, removeButton.dataset.index);
+        return;
+    }
+
+    const articleAddButton = event.target.closest("[data-article-add]");
+    if (articleAddButton) {
+        openArticleEditor(null);
+        return;
+    }
+
+    const articleEditButton = event.target.closest("[data-article-edit]");
+    if (articleEditButton) {
+        openArticleEditor(articleEditButton.dataset.articleEdit);
+        return;
+    }
+
+    const articleDeleteButton = event.target.closest("[data-article-delete]");
+    if (articleDeleteButton) {
+        removeArticle(Number(articleDeleteButton.dataset.articleDelete));
         return;
     }
 
