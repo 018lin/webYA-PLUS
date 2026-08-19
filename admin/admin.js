@@ -372,17 +372,25 @@ function showLoginOverlay(message = "") {
     overlay.id = "loginOverlay";
     overlay.innerHTML = `
         <div class="login-card" role="dialog" aria-modal="true">
-            <img src="../images/01_logo.png" alt="惠尔口腔">
+            <div class="login-brand">
+                <img src="../images/01_logo.png" alt="惠尔口腔">
+            </div>
             <h2>惠尔口腔 · 内容管理</h2>
             <p class="login-desc">请输入账号密码继续操作</p>
             <form id="loginForm">
-                <input type="text" id="loginUsername" placeholder="账号" autocomplete="username">
-                <input type="password" id="loginPassword" placeholder="密码" autocomplete="current-password">
-                <button class="primary-btn" type="submit">
+                <div class="login-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="loginUsername" placeholder="账号" autocomplete="username">
+                </div>
+                <div class="login-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="密码" autocomplete="current-password">
+                </div>
+                <button class="primary-btn login-submit" type="submit">
                     <i class="fas fa-unlock"></i> 进入后台
                 </button>
             </form>
-            <p class="login-error" id="loginError">${escapeHtml(message)}</p>
+            <p class="login-error" id="loginError"><i class="fas fa-circle-exclamation"></i><span>${escapeHtml(message)}</span></p>
         </div>
     `;
     document.body.appendChild(overlay);
@@ -392,9 +400,10 @@ function showLoginOverlay(message = "") {
     overlay.querySelector("#loginForm").addEventListener("submit", async event => {
         event.preventDefault();
         const errorEl = overlay.querySelector("#loginError");
+        const errorText = errorEl.querySelector("span");
         const submitButton = overlay.querySelector("button[type=submit]");
         submitButton.disabled = true;
-        errorEl.textContent = "";
+        errorText.textContent = "";
         try {
             await performLogin(usernameInput.value.trim(), passwordInput.value);
             overlay.remove();
@@ -402,7 +411,7 @@ function showLoginOverlay(message = "") {
             showCurrentUser();
             setState(`登录成功，当前用户：${authUser}`, "ok");
         } catch (error) {
-            errorEl.textContent = error.message || "登录失败";
+            errorText.textContent = error.message || "登录失败";
             passwordInput.select();
         } finally {
             submitButton.disabled = false;
