@@ -303,6 +303,69 @@ h1 {
     box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
 }
 
+.image-picker {
+    display: grid;
+    grid-template-columns: 108px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    background: #fbfcfa;
+}
+
+.image-preview {
+    width: 108px;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f3f5f2;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.image-preview-empty {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: #9aa5a1;
+    font-size: 22px;
+}
+
+.image-picker-main {
+    min-width: 0;
+    display: grid;
+    gap: 8px;
+}
+
+.image-path-readout[readonly] {
+    color: var(--muted);
+    background: #fff;
+    cursor: default;
+}
+
+.image-picker-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.file-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.image-file-input {
+    display: none;
+}
+
 .field-wide {
     grid-column: 1 / -1;
 }
@@ -442,5 +505,13 @@ h1 {
     .form-grid,
     .content-item.open .content-item-body {
         grid-template-columns: 1fr;
+    }
+
+    .image-picker {
+        grid-template-columns: 88px minmax(0, 1fr);
+    }
+
+    .image-preview {
+        width: 88px;
     }
 }

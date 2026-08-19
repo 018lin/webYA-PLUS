@@ -14,10 +14,7 @@ const fallbackContent = {
         phone: "0752-7820202",
         email: "hcjkqmz@163.com",
         address: "惠州市惠城区麦地东二路鸿润花园A栋102-106铺",
-        hours: "周一至周四09:00-20:00 周五至周日09:00-18:00",
-        icpText: "（备案号）",
-        mapLng: "114.409602",
-        mapLat: "23.06347"
+        hours: "周一至周四09:00-20:00 周五至周日09:00-18:00"
     },
     home: {
         heroSlides: [
@@ -41,6 +38,7 @@ let apiMode = false;
 let apiUrl = "../api/content";
 
 const apiUrls = ["../api/content", "/api/content"];
+const uploadUrls = ["../api/upload", "/api/upload"];
 const staticContentUrls = ["../data/site-content.json", "/data/site-content.json"];
 
 const navEl = document.getElementById("adminNav");
@@ -55,16 +53,42 @@ function clone(value) {
     return JSON.parse(JSON.stringify(value));
 }
 
+function escapeHtml(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function escapeAttr(value) {
+    return escapeHtml(value);
+}
+
+function assetSrc(value) {
+    const src = String(value || "").trim();
+    if (!src) return "";
+    if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|\/)/i.test(src)) return src;
+    return `../${src}`;
+}
+
 function setState(text, tone = "neutral") {
     stateEl.textContent = text;
     stateEl.style.color = tone === "error" ? "#b91c1c" : tone === "ok" ? "#0f766e" : "";
 }
 
 function normalizeContent(raw) {
+    const site = { ...fallbackContent.site, ...(raw.site || {}) };
+    delete site.icpText;
+    delete site.mapLng;
+    delete site.mapLat;
+
     return {
         ...clone(fallbackContent),
         ...raw,
-        site: { ...fallbackContent.site, ...(raw.site || {}) },
+        site,
         home: { ...fallbackContent.home, ...(raw.home || {}) },
         doctors: Array.isArray(raw.doctors) ? raw.doctors : [],
         specialties: Array.isArray(raw.specialties) ? raw.specialties : [],
@@ -240,7 +264,7 @@ function panelHead(title, desc, action = "") {
 }
 
 function field(label, value, path, type = "text", wide = false) {
-    const safeValue = value == null ? "" : String(value).replaceAll('"', "&quot;");
+    const safeValue = escapeAttr(value);
     return `
         <label class="field ${wide ? "field-wide" : ""}">
             <span>${label}</span>
@@ -253,14 +277,48 @@ function textarea(label, value, path, wide = true) {
     return `
         <label class="field ${wide ? "field-wide" : ""}">
             <span>${label}</span>
-            <textarea data-path="${path}">${value || ""}</textarea>
+            <textarea data-path="${path}">${escapeHtml(value)}</textarea>
         </label>
+    `;
+}
+
+function imageField(label, value, path, wide = false) {
+    const safePath = escapeAttr(path);
+    const safeValue = escapeAttr(value);
+    const src = assetSrc(value);
+    return `
+        <div class="field image-field ${wide ? "field-wide" : ""}">
+            <span>${label}</span>
+            <div class="image-picker">
+                <div class="image-preview">
+                    ${src
+                        ? `<img src="${escapeAttr(src)}" alt="">`
+                        : `<div class="image-preview-empty"><i class="fas fa-image"></i></div>`}
+                </div>
+                <div class="image-picker-main">
+                    <input class="image-path-readout" type="text" value="${safeValue}" readonly aria-label="${label}当前图片">
+                    <div class="image-picker-actions">
+                        <label class="small-btn file-btn">
+                            <i class="fas fa-folder-open"></i>
+                            选择图片
+                            <input class="image-file-input" type="file" accept="image/*" data-image-path="${safePath}">
+                        </label>
+                        ${value ? `
+                            <button class="ghost-btn" type="button" data-clear-image="${safePath}">
+                                <i class="fas fa-xmark"></i>
+                                清除
+                            </button>
+                        ` : ""}
+                    </div>
+                </div>
+            </div>
+        </div>
     `;
 }
 
 function renderSettings() {
     panelEl.innerHTML = `
-        ${panelHead("全站设置", "管理全站公共联系方式、地址、地图和备案内容。")}
+        ${panelHead("全站设置", "管理全站公共联系方式和地址。")}
         <div class="form-grid">
             ${field("网站名称", content.site.name, "site.name")}
             ${field("品牌口号", content.site.slogan, "site.slogan")}
@@ -268,9 +326,6 @@ function renderSettings() {
             ${field("电子邮箱", content.site.email, "site.email")}
             ${field("营业时间", content.site.hours, "site.hours", "text", true)}
             ${field("诊所地址", content.site.address, "site.address", "text", true)}
-            ${field("地图经度", content.site.mapLng, "site.mapLng")}
-            ${field("地图纬度", content.site.mapLat, "site.mapLat")}
-            ${field("备案文字", content.site.icpText, "site.icpText")}
         </div>
     `;
 }
@@ -292,7 +347,7 @@ function renderHome() {
         <div class="item-list">
             ${content.home.heroSlides.map((item, index) => renderItem("home.heroSlides", item, index, "title", [
                 ["轮播标题", "title"],
-                ["图片路径", "image"],
+                ["轮播图片", "image", "image"],
                 ["图片说明", "alt"]
             ], true)).join("")}
         </div>
@@ -310,7 +365,7 @@ function getCollectionConfig(type) {
             fields: [
                 ["姓名", "name"],
                 ["职称", "title"],
-                ["头像/海报路径", "avatar"],
+                ["头像/海报", "avatar", "image"],
                 ["详情页链接", "href"],
                 ["擅长标签（用逗号分隔）", "tags"],
                 ["简介", "summary", "textarea"]
@@ -327,7 +382,7 @@ function getCollectionConfig(type) {
             fields: [
                 ["专科名称", "name"],
                 ["副标题", "subtitle"],
-                ["封面图路径", "cover"],
+                ["封面图", "cover", "image"],
                 ["详情页链接", "href"],
                 ["标签（用逗号分隔）", "tags"],
                 ["关联医生（用逗号分隔）", "doctorNames"],
@@ -347,7 +402,7 @@ function getCollectionConfig(type) {
                 ["详情标识", "topic"],
                 ["分类", "category"],
                 ["发布时间", "date"],
-                ["封面图路径", "image"],
+                ["封面图", "image", "image"],
                 ["摘要", "summary", "textarea"],
                 ["正文", "body", "textarea"]
             ],
@@ -356,14 +411,14 @@ function getCollectionConfig(type) {
         },
         media: {
             title: "媒体资源",
-            desc: "维护网站常用图片路径和资源分类。",
+            desc: "维护网站常用图片和资源分类。",
             addText: "添加资源",
             titleKey: "name",
             subKey: "category",
             fields: [
                 ["资源名称", "name"],
                 ["分类", "category"],
-                ["文件路径", "path"],
+                ["图片文件", "path", "image"],
                 ["替代文字", "alt"]
             ],
             defaultItem: { name: "新图片", category: "未分类", path: "", alt: "", visible: true },
@@ -396,10 +451,10 @@ function renderItem(collectionPath, item, index, titleKey, fields, open = false,
     return `
         <article class="content-item ${open ? "open" : ""}" data-item="${collectionPath}.${index}">
             <div class="content-item-head">
-                ${collectionPath === "media" && item.path ? `<img class="content-item-thumb" src="../${item.path}" alt="">` : ""}
+                ${collectionPath === "media" && item.path ? `<img class="content-item-thumb" src="${escapeAttr(assetSrc(item.path))}" alt="">` : ""}
                 <div class="content-item-title">
-                    <strong>${item[titleKey] || "未命名内容"}</strong>
-                    <span>${sub || collectionPath}</span>
+                    <strong>${escapeHtml(item[titleKey] || "未命名内容")}</strong>
+                    <span>${escapeHtml(sub || collectionPath)}</span>
                 </div>
                 <div class="content-item-actions">
                     <button class="ghost-btn" type="button" data-toggle-item>
@@ -413,9 +468,9 @@ function renderItem(collectionPath, item, index, titleKey, fields, open = false,
             <div class="content-item-body">
                 ${fields.map(([label, key, kind]) => {
                     const path = `${collectionPath}.${index}.${key}`;
-                    return kind === "textarea"
-                        ? textarea(label, item[key], path)
-                        : field(label, item[key], path, "text", false);
+                    if (kind === "textarea") return textarea(label, item[key], path);
+                    if (kind === "image") return imageField(label, item[key], path, true);
+                    return field(label, item[key], path, "text", false);
                 }).join("")}
                 <div class="field-wide">
                     ${switches.map(([label, key]) => `
@@ -457,6 +512,101 @@ function removeItem(path, index) {
     render();
 }
 
+function parentByPath(path) {
+    const parts = path.split(".");
+    parts.pop();
+    let target = content;
+    for (const part of parts) {
+        if (target == null) return null;
+        target = target[part];
+    }
+    return target;
+}
+
+function applyUploadedImageMetadata(path, fileName) {
+    const parent = parentByPath(path);
+    if (!parent || typeof parent !== "object") return;
+
+    const baseName = String(fileName || "")
+        .replace(/\.[^.]+$/, "")
+        .trim();
+    if (!baseName) return;
+
+    if ("alt" in parent && !parent.alt) parent.alt = baseName;
+    if (path.startsWith("media.") && (!parent.name || parent.name === "新图片")) parent.name = baseName;
+}
+
+async function uploadImage(file) {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    let lastError = null;
+    for (const url of uploadUrls) {
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData
+            });
+            const text = await response.text();
+            let payload = {};
+            try {
+                payload = text ? JSON.parse(text) : {};
+            } catch (parseError) {
+                payload = {};
+            }
+
+            if (!response.ok) {
+                throw new Error(payload.error || text || "图片上传失败");
+            }
+
+            const imagePath = payload.path || payload.url;
+            if (!imagePath) throw new Error("上传接口没有返回图片地址");
+            return imagePath;
+        } catch (error) {
+            lastError = error;
+        }
+    }
+
+    throw lastError || new Error("图片上传失败");
+}
+
+async function handleImageSelection(input, path) {
+    const file = input.files && input.files[0];
+    if (!file) return;
+
+    if (!file.type || !file.type.startsWith("image/")) {
+        setState("请选择图片文件", "error");
+        input.value = "";
+        return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+        setState("图片不能超过 10MB", "error");
+        input.value = "";
+        return;
+    }
+
+    if (!apiMode) {
+        setState("请通过本地服务或部署后的后台上传图片", "error");
+        input.value = "";
+        return;
+    }
+
+    setState("正在上传图片");
+    try {
+        const imagePath = await uploadImage(file);
+        setByPath(path, imagePath);
+        applyUploadedImageMetadata(path, file.name);
+        setState("图片已上传，请保存内容", "ok");
+        render();
+    } catch (error) {
+        setState(error.message || "图片上传失败", "error");
+        console.error(error);
+    } finally {
+        input.value = "";
+    }
+}
+
 document.addEventListener("input", event => {
     const path = event.target.dataset.path;
     if (!path) return;
@@ -465,6 +615,12 @@ document.addEventListener("input", event => {
 });
 
 document.addEventListener("change", event => {
+    const imagePath = event.target.dataset.imagePath;
+    if (imagePath) {
+        handleImageSelection(event.target, imagePath);
+        return;
+    }
+
     const path = event.target.dataset.path;
     if (!path) return;
     setByPath(path, event.target.dataset.boolean ? event.target.checked : event.target.value);
@@ -488,6 +644,14 @@ document.addEventListener("click", event => {
     const removeButton = event.target.closest("[data-remove]");
     if (removeButton) {
         removeItem(removeButton.dataset.remove, removeButton.dataset.index);
+        return;
+    }
+
+    const clearImageButton = event.target.closest("[data-clear-image]");
+    if (clearImageButton) {
+        setByPath(clearImageButton.dataset.clearImage, "");
+        setState("图片已清除，请保存内容");
+        render();
         return;
     }
 

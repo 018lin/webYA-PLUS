@@ -1,12 +1,14 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const { URL } = require("url");
 
 const rootDir = __dirname;
 const dataDir = path.join(rootDir, "data");
 const dataFile = path.join(dataDir, "site-content.json");
 const backupDir = path.join(dataDir, "backups");
+const uploadDir = path.join(rootDir, "images", "uploads");
 const port = Number(process.env.PORT || 8080);
 
 const mimeTypes = {
@@ -19,7 +21,21 @@ const mimeTypes = {
     ".jpeg": "image/jpeg",
     ".gif": "image/gif",
     ".ico": "image/x-icon",
-    ".svg": "image/svg+xml"
+    ".svg": "image/svg+xml",
+    ".webp": "image/webp",
+    ".avif": "image/avif",
+    ".bmp": "image/bmp"
+};
+
+const imageExtensions = {
+    "image/jpeg": ".jpg",
+    "image/png": ".png",
+    "image/gif": ".gif",
+    "image/webp": ".webp",
+    "image/avif": ".avif",
+    "image/x-icon": ".ico",
+    "image/vnd.microsoft.icon": ".ico",
+    "image/bmp": ".bmp"
 };
 
 function send(res, status, body, type = "text/plain; charset=utf-8") {
@@ -49,9 +65,34 @@ function readBody(req) {
     });
 }
 
+function readBufferBody(req, limit = 10 * 1024 * 1024) {
+    if (Buffer.isBuffer(req.body)) return Promise.resolve(req.body);
+
+    return new Promise((resolve, reject) => {
+        const chunks = [];
+        let size = 0;
+
+        req.on("data", chunk => {
+            size += chunk.length;
+            if (size > limit) {
+                reject(new Error("Image is too large"));
+                req.destroy();
+                return;
+            }
+            chunks.push(chunk);
+        });
+        req.on("end", () => resolve(Buffer.concat(chunks)));
+        req.on("error", reject);
+    });
+}
+
 function ensureDataDirs() {
     fs.mkdirSync(dataDir, { recursive: true });
     fs.mkdirSync(backupDir, { recursive: true });
+}
+
+function ensureUploadDir() {
+    fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 function readContent() {
@@ -73,7 +114,114 @@ function writeContent(nextContent) {
     return content;
 }
 
+function multipartBoundary(contentType) {
+    const match = /boundary=(?:"([^"]+)"|([^;]+))/i.exec(contentType || "");
+    return match ? match[1] || match[2] : "";
+}
+
+function contentDispositionValue(header, key) {
+    const quoted = new RegExp(`${key}="([^"]*)"`, "i").exec(header || "");
+    if (quoted) return quoted[1];
+
+    const bare = new RegExp(`${key}=([^;\\s]+)`, "i").exec(header || "");
+    return bare ? bare[1] : "";
+}
+
+function parseMultipart(contentType, body) {
+    const boundaryText = multipartBoundary(contentType);
+    if (!boundaryText) throw new Error("Missing multipart boundary");
+
+    const boundary = Buffer.from(`--${boundaryText}`);
+    const headerSeparator = Buffer.from("\r\n\r\n");
+    const parts = [];
+    let cursor = body.indexOf(boundary);
+
+    while (cursor !== -1) {
+        cursor += boundary.length;
+
+        if (body[cursor] === 45 && body[cursor + 1] === 45) break;
+        if (body[cursor] === 13 && body[cursor + 1] === 10) cursor += 2;
+
+        const headerEnd = body.indexOf(headerSeparator, cursor);
+        if (headerEnd === -1) break;
+
+        const rawHeaders = body.slice(cursor, headerEnd).toString("latin1");
+        const headers = {};
+        rawHeaders.split(/\r\n/).forEach(line => {
+            const index = line.indexOf(":");
+            if (index === -1) return;
+            headers[line.slice(0, index).trim().toLowerCase()] = line.slice(index + 1).trim();
+        });
+
+        const dataStart = headerEnd + headerSeparator.length;
+        const nextBoundary = body.indexOf(boundary, dataStart);
+        if (nextBoundary === -1) break;
+
+        let dataEnd = nextBoundary;
+        if (body[dataEnd - 2] === 13 && body[dataEnd - 1] === 10) dataEnd -= 2;
+
+        const disposition = headers["content-disposition"] || "";
+        parts.push({
+            name: contentDispositionValue(disposition, "name"),
+            filename: contentDispositionValue(disposition, "filename"),
+            contentType: headers["content-type"] || "",
+            data: body.slice(dataStart, dataEnd)
+        });
+
+        cursor = nextBoundary;
+    }
+
+    return parts;
+}
+
+function imageExtension(contentType, filename) {
+    const normalizedType = String(contentType || "").toLowerCase();
+    if (imageExtensions[normalizedType]) return imageExtensions[normalizedType];
+
+    const ext = path.extname(filename || "").toLowerCase();
+    if (Object.values(imageExtensions).includes(ext)) return ext;
+    return "";
+}
+
+function saveUploadedImage(file) {
+    const extension = imageExtension(file.contentType, file.filename);
+    if (!extension || !file.data || !file.data.length) {
+        throw new Error("Only common image files can be uploaded");
+    }
+
+    ensureUploadDir();
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const token = crypto.randomBytes(4).toString("hex");
+    const fileName = `${stamp}-${token}${extension}`;
+    const targetPath = path.join(uploadDir, fileName);
+    fs.writeFileSync(targetPath, file.data);
+
+    return `images/uploads/${fileName}`;
+}
+
+async function handleUpload(req, res) {
+    if (req.method !== "POST") {
+        sendJson(res, 405, { error: "Method not allowed" });
+        return true;
+    }
+
+    try {
+        const body = await readBufferBody(req);
+        const parts = parseMultipart(req.headers["content-type"], body);
+        const image = parts.find(part => part.name === "image" && part.filename);
+        if (!image) throw new Error("No image file uploaded");
+
+        const imagePath = saveUploadedImage(image);
+        sendJson(res, 200, { path: imagePath });
+    } catch (error) {
+        sendJson(res, 400, { error: error.message || "Cannot upload image" });
+    }
+
+    return true;
+}
+
 async function handleApi(req, res, pathname) {
+    if (pathname === "/api/upload") return handleUpload(req, res);
     if (pathname !== "/api/content") return false;
 
     if (req.method === "GET") {
