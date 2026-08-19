@@ -1,3 +1,5 @@
+const { requireAuth, sendUnauthorized } = require("./_lib/auth");
+
 const EDIT_LOG_PREFIX = "cms/edit-log-";
 const BLOB_ACCESS = process.env.CMS_BLOB_ACCESS === "public" ? "public" : "private";
 
