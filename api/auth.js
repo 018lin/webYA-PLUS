@@ -1,6 +1,6 @@
 // 管理员登录接口：POST 校验账号密码并签发 token；GET 校验当前 token 是否有效。
 // 账号通过环境变量 SITE_ADMIN_USERS（多账号）或 SITE_ADMIN_PASSWORD（单账号）配置，不写入代码仓库。
-const { hasAnyAccount, authenticate, signToken, verifyToken, bearerToken, sendUnauthorized, TOKEN_TTL, recordLoginFailure, clearLoginFailures, loginLockRemaining } = require("./_lib/auth");
+const { hasAnyAccount, authenticate, signToken, verifyToken, bearerToken, sendUnauthorized, TOKEN_TTL, MAX_LOGIN_FAILURES, LOGIN_LOCK_MS, recordLoginFailure, clearLoginFailures, loginLockRemaining, loginFailureCount } = require("./_lib/auth");
 
 // 客户端 IP：Vercel 经 x-forwarded-for 传入真实来源地址
 function clientIp(req) {
@@ -77,7 +77,11 @@ module.exports = async function handler(req, res) {
             const user = authenticate(username, password);
             if (!user) {
                 recordLoginFailure(ip, username);
-                sendJson(res, 401, { error: "用户名或密码错误" });
+                const locked = loginLockRemaining(ip, username) > 0;
+                const message = locked
+                    ? `连续输错 ${MAX_LOGIN_FAILURES} 次，账号已锁定 ${Math.ceil(LOGIN_LOCK_MS / 60000)} 分钟`
+                    : `用户名或密码错误，还可尝试 ${MAX_LOGIN_FAILURES - loginFailureCount(ip, username)} 次`;
+                sendJson(res, 401, { error: message });
                 return;
             }
             clearLoginFailures(ip, username);

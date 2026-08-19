@@ -165,4 +165,14 @@ function loginLockRemaining(ip, username) {
     return entry.lockedUntil - Date.now();
 }
 
-module.exports = { adminPassword, adminUsers, hasAnyAccount, authenticate, signToken, verifyToken, bearerToken, requireAuth, sendUnauthorized, TOKEN_TTL, recordLoginFailure, clearLoginFailures, loginLockRemaining };
+// 窗口内当前连续失败次数（用于登录失败时提示剩余机会）
+function loginFailureCount(ip, username) {
+    const entry = loginFailures.get(loginKey(ip, username));
+    if (!entry) return 0;
+    const now = Date.now();
+    if (entry.lockedUntil && now > entry.lockedUntil) return 0;
+    if (entry.lastFailAt && now - entry.lastFailAt > LOGIN_LOCK_MS) return 0;
+    return entry.count;
+}
+
+module.exports = { adminPassword, adminUsers, hasAnyAccount, authenticate, signToken, verifyToken, bearerToken, requireAuth, sendUnauthorized, TOKEN_TTL, MAX_LOGIN_FAILURES, LOGIN_LOCK_MS, recordLoginFailure, clearLoginFailures, loginLockRemaining, loginFailureCount };
