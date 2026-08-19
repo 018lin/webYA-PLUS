@@ -101,27 +101,98 @@ function readContent() {
     return JSON.parse(fs.readFileSync(dataFile, "utf8"));
 }
 
-const moduleLabels = {
-    site: "全站设置",
-    home: "首页内容",
-    doctors: "医生管理",
-    specialties: "专科管理",
-    articles: "科普文章"
+const moduleConfig = {
+    site: { key: "site", type: "object", label: "全站设置" },
+    home: { key: "home", type: "object", label: "首页内容" },
+    doctors: { key: "doctors", type: "list", label: "医生管理", itemLabel: "医生", titleKey: "name" },
+    specialties: { key: "specialties", type: "list", label: "专科管理", itemLabel: "专科", titleKey: "name" },
+    articles: { key: "articles", type: "list", label: "科普文章", itemLabel: "文章", titleKey: "title" }
 };
+
+const moduleFieldLabels = {
+    site: { name: "网站名称", slogan: "品牌口号", phone: "联系电话", email: "电子邮箱", address: "诊所地址", hours: "营业时间", icpText: "备案信息", mapLng: "地图经度", mapLat: "地图纬度" },
+    home: { heroSlides: "轮播", philosophyTitle: "理念标题", philosophyText: "理念文案", ctaTitle: "底部预约标题", ctaButton: "预约按钮" },
+    doctors: { name: "姓名", title: "职称", avatar: "头像", tags: "擅长标签", summary: "简介", href: "详情页链接", visible: "显示状态" },
+    specialties: { name: "名称", subtitle: "副标题", cover: "封面图", href: "详情页链接", tags: "标签", doctorNames: "关联医生", summary: "简介", visible: "显示状态" },
+    articles: { title: "标题", category: "分类", date: "发布时间", image: "封面图", summary: "摘要", body: "正文", visible: "发布状态" }
+};
+
+function itemKey(item, index) {
+    const key = item && (item.name || item.title || item.topic);
+    return key ? String(key) : `#${index}`;
+}
+
+function escapeLabel(value) {
+    return String(value == null ? "" : value).replace(/[\r\n"「」]/g, "").slice(0, 30);
+}
+
+function diffList(previousList, nextList, config) {
+    const changes = [];
+    const before = Array.isArray(previousList) ? previousList : [];
+    const after = Array.isArray(nextList) ? nextList : [];
+    const beforeKeys = before.map((item, index) => itemKey(item, index));
+    const afterKeys = after.map((item, index) => itemKey(item, index));
+    const labels = moduleFieldLabels[config.key] || {};
+
+    before.forEach((item, index) => {
+        const key = beforeKeys[index];
+        if (!afterKeys.includes(key)) {
+            changes.push(`${config.label}：删除${config.itemLabel}「${escapeLabel(item[config.titleKey] || key)}」`);
+        }
+    });
+
+    after.forEach((item, index) => {
+        const key = afterKeys[index];
+        const prevIndex = beforeKeys.indexOf(key);
+        if (prevIndex === -1) {
+            changes.push(`${config.label}：新增${config.itemLabel}「${escapeLabel(item[config.titleKey] || key)}」`);
+            return;
+        }
+        const changedFields = Object.keys(labels)
+            .filter(field => JSON.stringify(before[prevIndex][field]) !== JSON.stringify(item[field]));
+        if (changedFields.length) {
+            changes.push(`${config.label}：修改${config.itemLabel}「${escapeLabel(item[config.titleKey] || key)}」（${changedFields.map(field => labels[field]).join("、")}）`);
+        }
+    });
+    return changes;
+}
+
+function diffObject(previousObj, nextObj, config) {
+    const changes = [];
+    const before = previousObj && typeof previousObj === "object" ? previousObj : {};
+    const after = nextObj && typeof nextObj === "object" ? nextObj : {};
+    const labels = moduleFieldLabels[config.key] || {};
+
+    if (Array.isArray(before.heroSlides) || Array.isArray(after.heroSlides)) {
+        changes.push(...diffList(
+            Array.isArray(before.heroSlides) ? before.heroSlides : [],
+            Array.isArray(after.heroSlides) ? after.heroSlides : [],
+            { key: "home", type: "list", label: "首页内容", itemLabel: "轮播", titleKey: "title" }
+        ));
+    }
+
+    const changedScalars = Object.keys(labels)
+        .filter(field => field !== "heroSlides" && JSON.stringify(before[field]) !== JSON.stringify(after[field]))
+        .map(field => labels[field])
+        .filter(Boolean);
+    if (changedScalars.length) {
+        changes.push(`${config.label}：修改（${changedScalars.join("、")}）`);
+    }
+    return changes;
+}
 
 function changedModules(previous, next) {
     const changes = [];
-    for (const [key, label] of Object.entries(moduleLabels)) {
-        const before = JSON.stringify(previous && previous[key]);
-        const after = JSON.stringify(next && next[key]);
-        if (before === after) continue;
-        const beforeList = Array.isArray(previous && previous[key]) ? previous[key].length : null;
-        const afterList = Array.isArray(next && next[key]) ? next[key].length : null;
-        changes.push(
-            beforeList != null && afterList != null && beforeList !== afterList
-                ? `${label} ${beforeList}→${afterList}`
-                : label
-        );
+    for (const config of Object.values(moduleConfig)) {
+        const before = previous && previous[config.key];
+        const after = next && next[config.key];
+        if (JSON.stringify(before) === JSON.stringify(after)) continue;
+
+        if (config.type === "list") {
+            changes.push(...diffList(before, after, config));
+        } else {
+            changes.push(...diffObject(before, after, config));
+        }
     }
     return changes;
 }

@@ -793,11 +793,37 @@ h1 {
     gap: 6px;
 }
 
-.edit-log-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
+.edit-log-changes {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 6px;
+}
+
+.edit-log-changes li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink);
+}
+
+.edit-log-changes li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brand);
+}
+
+.edit-log-empty {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 13px;
 }
 
 .muted-text {

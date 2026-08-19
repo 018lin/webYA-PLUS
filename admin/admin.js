@@ -1501,11 +1501,11 @@ function renderEditLogItem(item) {
                     <i class="fas fa-user-shield"></i> ${escapeHtml(item.user || "管理员")}
                 </span>
             </div>
-            <div class="edit-log-tags">
-                ${modules.length
-                    ? modules.map(module => `<span class="badge badge-ok">${escapeHtml(module)}</span>`).join("")
-                    : `<span class="muted-text">内容无实质变化</span>`}
-            </div>
+            ${modules.length
+                ? `<ul class="edit-log-changes">
+                    ${modules.map(module => `<li>${escapeHtml(module)}</li>`).join("")}
+                </ul>`
+                : `<p class="edit-log-empty">内容无实质变化</p>`}
         </article>
     `;
 }
