@@ -623,6 +623,10 @@ async function handleApi(req, res, requestUrl) {
         await require("./api/auth")(req, res);
         return true;
     }
+    if (pathname === "/api/change-password") {
+        await require("./api/change-password")(req, res);
+        return true;
+    }
     if (pathname === "/api/consultations") return handleConsultations(req, res, requestUrl);
     if (pathname === "/api/upload") return handleUpload(req, res);
     if (pathname === "/api/backups") return handleBackups(req, res);

@@ -67,6 +67,7 @@ const uploadUrls = ["../api/upload", "/api/upload"];
 const consultationUrls = ["../api/consultations", "/api/consultations"];
 const editLogUrls = ["../api/edit-log", "/api/edit-log"];
 const backupUrls = ["../api/backups", "/api/backups"];
+const changePasswordUrls = ["../api/change-password", "/api/change-password"];
 const staticContentUrls = ["../data/site-content.json", "/data/site-content.json"];
 
 const navEl = document.getElementById("adminNav");
@@ -76,6 +77,7 @@ const stateEl = document.getElementById("saveState");
 const saveBtn = document.getElementById("saveBtn");
 const reloadBtn = document.getElementById("reloadBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+const changePasswordBtn = document.getElementById("changePasswordBtn");
 const currentUserEl = document.getElementById("currentUser");
 const currentUserNameEl = document.getElementById("currentUserName");
 
@@ -168,6 +170,103 @@ function confirmDialog(message, { okText = "确定", danger = true } = {}) {
         overlay.querySelector("[data-confirm-cancel]").addEventListener("click", () => close(false));
         overlay.querySelector("[data-confirm-ok]").addEventListener("click", () => close(true));
     });
+}
+
+function openChangePasswordDialog() {
+    if (document.getElementById("changePasswordModal")) return;
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+    overlay.id = "changePasswordModal";
+    overlay.innerHTML = `
+        <div class="modal change-password-modal" role="dialog" aria-modal="true">
+            <div class="modal-head">
+                <div>
+                    <h3>修改密码</h3>
+                    <p>当前用户：${escapeHtml(authUser || "")}</p>
+                </div>
+                <button class="ghost-btn" type="button" data-cp-close aria-label="关闭">
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label class="field">
+                    <span>当前密码</span>
+                    <input type="password" id="cpOld" autocomplete="current-password">
+                </label>
+                <label class="field">
+                    <span>新密码（8-64 个字符）</span>
+                    <input type="password" id="cpNew" autocomplete="new-password">
+                </label>
+                <label class="field">
+                    <span>确认新密码</span>
+                    <input type="password" id="cpConfirm" autocomplete="new-password">
+                </label>
+                <p class="modal-error" id="cpError"></p>
+            </div>
+            <div class="modal-foot">
+                <button class="ghost-btn" type="button" data-cp-close>取消</button>
+                <button class="primary-btn" type="button" id="cpSubmit">
+                    <i class="fas fa-key"></i> 确认修改
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const onKey = event => {
+        if (event.key === "Escape") close();
+    };
+    const close = () => {
+        overlay.remove();
+        document.removeEventListener("keydown", onKey);
+    };
+    document.addEventListener("keydown", onKey);
+    overlay.querySelectorAll("[data-cp-close]").forEach(el => el.addEventListener("click", close));
+    overlay.addEventListener("click", event => {
+        if (event.target === overlay) close();
+    });
+
+    const errorEl = overlay.querySelector("#cpError");
+    const submit = overlay.querySelector("#cpSubmit");
+    submit.addEventListener("click", async () => {
+        const oldPassword = overlay.querySelector("#cpOld").value;
+        const newPassword = overlay.querySelector("#cpNew").value;
+        const confirmPassword = overlay.querySelector("#cpConfirm").value;
+        errorEl.textContent = "";
+        if (newPassword !== confirmPassword) {
+            errorEl.textContent = "两次输入的新密码不一致";
+            return;
+        }
+        submit.disabled = true;
+        try {
+            let lastError = null;
+            for (const url of changePasswordUrls) {
+                try {
+                    const response = await fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", ...authHeaders() },
+                        body: JSON.stringify({ oldPassword, newPassword })
+                    });
+                    const data = await response.json().catch(() => ({}));
+                    if (response.ok) {
+                        close();
+                        setState("密码已修改，下次登录请使用新密码", "ok");
+                        return;
+                    }
+                    throw new Error(data.error || "修改密码失败");
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+            throw lastError || new Error("修改密码失败");
+        } catch (error) {
+            errorEl.textContent = error.message || "修改密码失败";
+        } finally {
+            submit.disabled = false;
+        }
+    });
+
+    overlay.querySelector("#cpOld").focus();
 }
 
 function viewSiteLink(href, label = "查看前台页面") {
@@ -362,6 +461,7 @@ async function performLogin(username, password) {
 function handleUnauthorized() {
     clearAuth();
     logoutBtn.hidden = true;
+    changePasswordBtn.hidden = true;
     showLoginOverlay("登录已过期，请重新输入密码");
 }
 
@@ -408,6 +508,7 @@ function showLoginOverlay(message = "") {
             await performLogin(usernameInput.value.trim(), passwordInput.value);
             overlay.remove();
             logoutBtn.hidden = false;
+            changePasswordBtn.hidden = false;
             showCurrentUser();
             setState(`登录成功，当前用户：${authUser}`, "ok");
         } catch (error) {
@@ -1989,9 +2090,14 @@ if (modules.some(item => item.id === initialHash)) {
     activeModule = initialHash;
 }
 
+changePasswordBtn.addEventListener("click", () => {
+    openChangePasswordDialog();
+});
+
 logoutBtn.addEventListener("click", () => {
     clearAuth();
     logoutBtn.hidden = true;
+    changePasswordBtn.hidden = true;
     showCurrentUser();
     setState("已退出登录", "warn");
     showLoginOverlay();
@@ -2003,6 +2109,7 @@ logoutBtn.addEventListener("click", () => {
     const loggedIn = await checkAuthStatus();
     if (bootOverlay) bootOverlay.remove();
     logoutBtn.hidden = !authRequired || !authToken;
+    changePasswordBtn.hidden = !authRequired || !authToken;
     showCurrentUser();
     if (authRequired && !loggedIn) {
         showLoginOverlay();

@@ -74,7 +74,7 @@ module.exports = async function handler(req, res) {
                 return;
             }
 
-            const user = authenticate(username, password);
+            const user = await authenticate(username, password);
             if (!user) {
                 recordLoginFailure(ip, username);
                 const locked = loginLockRemaining(ip, username) > 0;

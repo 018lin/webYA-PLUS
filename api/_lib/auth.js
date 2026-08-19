@@ -33,15 +33,29 @@ function hasAnyAccount() {
 
 // 校验用户名密码，通过返回该用户在编辑记录中显示的名字，否则返回 null。
 // 单账号模式不校验用户名，登录者统一记为「管理员」。
-function authenticate(username, password) {
+// 后台自助改密码后，覆盖层密码优先于环境变量密码。
+async function authenticate(username, password) {
     const users = adminUsers();
     const given = Buffer.from(String(password || ""));
     const match = (a, b) => a.length === b.length && crypto.timingSafeEqual(a, b);
 
+    // 覆盖层密码（后台修改过密码的账号）
+    const { readOverrides, verifyPasswordHash } = require("./passwords");
+    const overrides = await readOverrides();
+
     if (users) {
-        const user = users.find(entry => entry.name === String(username || "").trim());
+        const name = String(username || "").trim();
+        const user = users.find(entry => entry.name === name);
         if (!user) return null;
+        if (overrides[name]) {
+            return verifyPasswordHash(password, overrides[name]) ? user.name : null;
+        }
         return match(given, Buffer.from(user.password)) ? user.name : null;
+    }
+
+    // 单账号模式：覆盖层条目名为「管理员」
+    if (overrides["管理员"]) {
+        return verifyPasswordHash(password, overrides["管理员"]) ? "管理员" : null;
     }
 
     return match(given, Buffer.from(adminPassword())) ? "管理员" : null;

@@ -858,6 +858,22 @@ h1 {
     gap: 16px;
 }
 
+/* 修改密码弹窗：单列表单 */
+.change-password-modal {
+    width: min(420px, 100%);
+}
+
+.change-password-modal .modal-body {
+    grid-template-columns: 1fr;
+}
+
+.modal-error {
+    min-height: 18px;
+    margin: 0;
+    color: var(--danger);
+    font-size: 12.5px;
+}
+
 .modal-foot {
     padding: 16px 22px;
     display: flex;
