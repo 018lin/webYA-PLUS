@@ -101,17 +101,88 @@ function readContent() {
     return JSON.parse(fs.readFileSync(dataFile, "utf8"));
 }
 
+const moduleLabels = {
+    site: "全站设置",
+    home: "首页内容",
+    doctors: "医生管理",
+    specialties: "专科管理",
+    articles: "科普文章"
+};
+
+function changedModules(previous, next) {
+    const changes = [];
+    for (const [key, label] of Object.entries(moduleLabels)) {
+        const before = JSON.stringify(previous && previous[key]);
+        const after = JSON.stringify(next && next[key]);
+        if (before === after) continue;
+        const beforeList = Array.isArray(previous && previous[key]) ? previous[key].length : null;
+        const afterList = Array.isArray(next && next[key]) ? next[key].length : null;
+        changes.push(
+            beforeList != null && afterList != null && beforeList !== afterList
+                ? `${label} ${beforeList}→${afterList}`
+                : label
+        );
+    }
+    return changes;
+}
+
+function appendEditLog(previous, next) {
+    const changes = changedModules(previous, next);
+    if (!changes.length) return;
+
+    ensureDataDirs();
+    const logFile = path.join(dataDir, "edit-log.json");
+    let items = [];
+    try {
+        items = JSON.parse(fs.readFileSync(logFile, "utf8")).items || [];
+    } catch (error) {
+        items = [];
+    }
+
+    items.unshift({
+        id: `${Date.now()}-${crypto.randomBytes(4).toString("hex")}`,
+        time: new Date().toISOString(),
+        modules: changes,
+        user: "管理员"
+    });
+    items = items.slice(0, 200);
+
+    fs.writeFileSync(logFile, JSON.stringify({ items, updatedAt: new Date().toISOString() }, null, 2), "utf8");
+}
+
+function readEditLog() {
+    ensureDataDirs();
+    const logFile = path.join(dataDir, "edit-log.json");
+    if (!fs.existsSync(logFile)) return { items: [], updatedAt: null };
+    try {
+        const data = JSON.parse(fs.readFileSync(logFile, "utf8"));
+        return {
+            items: Array.isArray(data.items) ? data.items : [],
+            updatedAt: data.updatedAt || null
+        };
+    } catch (error) {
+        return { items: [], updatedAt: null };
+    }
+}
+
 function writeContent(nextContent) {
     ensureDataDirs();
+    let previous = {};
     if (fs.existsSync(dataFile)) {
         const stamp = new Date().toISOString().replace(/[:.]/g, "-");
         fs.copyFileSync(dataFile, path.join(backupDir, `site-content-${stamp}.json`));
+        try {
+            previous = JSON.parse(fs.readFileSync(dataFile, "utf8"));
+        } catch (parseError) {
+            previous = {};
+        }
     }
     const content = {
         ...nextContent,
         updatedAt: new Date().toISOString()
     };
     fs.writeFileSync(dataFile, JSON.stringify(content, null, 2), "utf8");
+    appendEditLog(previous, content);
     return content;
 }
 
@@ -412,11 +483,25 @@ async function handleBackups(req, res) {
     return true;
 }
 
+async function handleEditLog(req, res) {
+    if (req.method !== "GET") {
+        sendJson(res, 405, { error: "Method not allowed" });
+        return true;
+    }
+    try {
+        sendJson(res, 200, readEditLog());
+    } catch (error) {
+        sendJson(res, 500, { error: "Cannot read edit log" });
+    }
+    return true;
+}
+
 async function handleApi(req, res, requestUrl) {
     const pathname = requestUrl.pathname;
     if (pathname === "/api/consultations") return handleConsultations(req, res, requestUrl);
     if (pathname === "/api/upload") return handleUpload(req, res);
     if (pathname === "/api/backups") return handleBackups(req, res);
+    if (pathname === "/api/edit-log") return handleEditLog(req, res);
     if (pathname !== "/api/content") return false;
 
     if (req.method === "GET") {

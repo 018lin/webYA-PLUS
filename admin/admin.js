@@ -4,7 +4,8 @@ const modules = [
     { id: "doctors", label: "医生管理", icon: "fa-user-doctor" },
     { id: "specialties", label: "专科管理", icon: "fa-tooth" },
     { id: "articles", label: "科普文章", icon: "fa-book-medical" },
-    { id: "consultations", label: "咨询信息", icon: "fa-inbox" }
+    { id: "consultations", label: "咨询信息", icon: "fa-inbox" },
+    { id: "editLog", label: "编辑记录", icon: "fa-history" }
 ];
 
 const fallbackContent = {
@@ -51,14 +52,14 @@ let consultationFilter = "all";
 let consultationSearch = "";
 let articleSearchTimer = null;
 let consultationSearchTimer = null;
-let backupApiUrl = "../api/backups";
-let backups = [];
-let backupsFailed = false;
+let editLogItems = [];
+let editLogLoading = false;
+let editLogLoaded = false;
 
 const apiUrls = ["../api/content", "/api/content"];
 const uploadUrls = ["../api/upload", "/api/upload"];
 const consultationUrls = ["../api/consultations", "/api/consultations"];
-const backupUrls = ["../api/backups", "/api/backups"];
+const editLogUrls = ["../api/edit-log", "/api/edit-log"];
 const staticContentUrls = ["../data/site-content.json", "/data/site-content.json"];
 
 const navEl = document.getElementById("adminNav");
@@ -412,7 +413,7 @@ function render() {
     renderNav();
     const module = modules.find(item => item.id === activeModule);
     titleEl.textContent = module ? module.label : "内容管理";
-    saveBtn.hidden = activeModule === "consultations";
+    saveBtn.hidden = activeModule === "consultations" || activeModule === "editLog";
 
     if (activeModule === "settings") renderSettings();
     if (activeModule === "home") renderHome();
@@ -420,6 +421,7 @@ function render() {
     if (activeModule === "specialties") renderCollection("specialties");
     if (activeModule === "articles") renderArticles();
     if (activeModule === "consultations") renderConsultations();
+    if (activeModule === "editLog") renderEditLog();
 }
 
 function renderNav() {
@@ -506,16 +508,6 @@ function renderSettings() {
             ${field("电子邮箱", content.site.email, "site.email")}
             ${field("营业时间", content.site.hours, "site.hours", "text", true)}
             ${field("诊所地址", content.site.address, "site.address", "text", true)}
-        </div>
-        <div class="backup-section">
-            <div>
-                <h3>数据备份</h3>
-                <p>每次保存内容时，服务器都会自动保留一份历史备份，可随时恢复。</p>
-            </div>
-            <button class="small-btn" type="button" data-show-backups>
-                <i class="fas fa-clock-rotate-left"></i>
-                查看历史备份
-            </button>
         </div>
     `;
 }
@@ -808,13 +800,6 @@ function renderCollection(type) {
             }).join("") : `<div class="empty-state">暂无内容</div>`}
         </div>
     `;
-}
-
-function formatSize(bytes) {
-    if (!Number.isFinite(bytes)) return "-";
-    return bytes >= 1024 * 1024
-        ? `${(bytes / 1024 / 1024).toFixed(1)} MB`
-        : `${Math.max(1, Math.round(bytes / 1024))} KB`;
 }
 
 function formatDateTime(value) {
@@ -1461,113 +1446,68 @@ async function requestConsultations(method, payload = null, id = "") {
     throw lastError || new Error("咨询信息操作失败");
 }
 
-async function openBackups() {
-    setState("正在读取备份列表");
+async function loadEditLog(showState = true) {
+    editLogLoading = true;
+    if (showState) setState("正在读取编辑记录");
+
     try {
-        const response = await fetchFirstJson(backupUrls);
-        backupApiUrl = response.url;
-        backups = Array.isArray(response.data && response.data.backups) ? response.data.backups : [];
-        backupsFailed = false;
-        setState(backups.length ? `找到 ${backups.length} 份备份` : "暂无备份记录", "ok");
+        const response = await fetchFirstJson(editLogUrls);
+        const data = response.data || {};
+        editLogItems = Array.isArray(data.items) ? data.items : [];
+        editLogLoaded = true;
+        if (showState) setState(editLogItems.length ? `共有 ${editLogItems.length} 条编辑记录` : "暂无编辑记录", "ok");
     } catch (error) {
-        backups = [];
-        backupsFailed = true;
-        setState("备份列表读取失败，当前环境可能不支持", "error");
+        editLogItems = [];
+        editLogLoaded = true;
+        if (showState) setState("编辑记录读取失败，当前环境可能不支持", "error");
+    } finally {
+        editLogLoading = false;
+        if (activeModule === "editLog") renderEditLog();
     }
-    renderBackupsModal();
 }
 
-function renderBackupsModal() {
-    const rows = backups.length
-        ? backups.map(backup => `
-            <tr>
-                <td>${escapeHtml(formatDateTime(backup.modifiedAt))}</td>
-                <td class="cell-title" title="${escapeAttr(backup.name)}">${escapeHtml(backup.name)}</td>
-                <td>${escapeHtml(formatSize(backup.size))}</td>
-                <td class="col-actions">
-                    <button class="small-btn btn-sm" type="button" data-restore-backup="${escapeAttr(backup.name)}">
-                        <i class="fas fa-rotate-left"></i> 恢复
-                    </button>
-                </td>
-            </tr>
-        `).join("")
-        : `<tr><td colspan="4" class="empty-row">${backupsFailed ? "备份列表读取失败" : "暂无备份记录"}</td></tr>`;
+function renderEditLog() {
+    if (!editLogLoaded && !editLogLoading) {
+        loadEditLog();
+    }
 
-    const modal = document.createElement("div");
-    modal.className = "modal-overlay";
-    modal.id = "backupsModal";
-    modal.innerHTML = `
-        <div class="modal" role="dialog" aria-modal="true">
-            <div class="modal-head">
-                <div>
-                    <h3>历史备份</h3>
-                    <p>恢复会先把当前内容自动备份一次，再写入所选版本。</p>
-                </div>
-            </div>
-            <div class="modal-body backups-body">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>时间</th>
-                            <th>备份文件</th>
-                            <th>大小</th>
-                            <th class="col-actions">操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>${rows}</tbody>
-                </table>
-            </div>
-            <div class="modal-foot">
-                <button class="ghost-btn" type="button" id="backupsCloseBtn">关闭</button>
-            </div>
-        </div>
+    const action = `
+        <button class="small-btn" type="button" data-refresh-edit-log>
+            <i class="fas fa-rotate-right"></i>
+            刷新
+        </button>
     `;
-    document.body.appendChild(modal);
-    document.addEventListener("keydown", onBackupsModalKeydown);
-    modal.addEventListener("click", event => {
-        if (event.target === modal) closeBackupsModal();
-    });
-    document.getElementById("backupsCloseBtn").addEventListener("click", closeBackupsModal);
+
+    const body = editLogLoading
+        ? `<div class="empty-state">正在读取编辑记录</div>`
+        : editLogItems.length
+            ? `<div class="edit-log-list">${editLogItems.map(renderEditLogItem).join("")}</div>`
+            : `<div class="empty-state">暂无编辑记录</div>`;
+
+    panelEl.innerHTML = `
+        ${panelHead("编辑记录", "每次保存内容都会自动留下一条记录，方便回溯改动历史。", action)}
+        ${body}
+    `;
 }
 
-function closeBackupsModal() {
-    document.removeEventListener("keydown", onBackupsModalKeydown);
-    const modal = document.getElementById("backupsModal");
-    if (modal) modal.remove();
-}
-
-function onBackupsModalKeydown(event) {
-    if (event.key === "Escape") closeBackupsModal();
-}
-
-async function restoreBackup(name) {
-    const backup = backups.find(item => item.name === name);
-    const timeText = backup ? formatDateTime(backup.modifiedAt) : name;
-    if (!(await confirmDialog(`确定恢复到「${timeText}」的内容吗？恢复前会自动备份当前内容。`, { okText: "恢复" }))) return;
-
-    setState("正在恢复备份");
-    try {
-        const response = await fetch(backupApiUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ action: "restore", file: name })
-        });
-        if (!response.ok) {
-            const text = await response.text();
-            let message = text;
-            try {
-                message = JSON.parse(text).error || message;
-            } catch (parseError) {
-                // Keep the raw response text.
-            }
-            throw new Error(message);
-        }
-        closeBackupsModal();
-        await loadContent();
-        setState("已恢复到所选备份", "ok");
-    } catch (error) {
-        setState(error.message || "备份恢复失败", "error");
-    }
+function renderEditLogItem(item) {
+    const timeText = formatDateTime(item.time);
+    const modules = Array.isArray(item.modules) ? item.modules : [];
+    return `
+        <article class="edit-log-item">
+            <div class="edit-log-head">
+                <strong>${escapeHtml(timeText)}</strong>
+                <span class="edit-log-user">
+                    <i class="fas fa-user-shield"></i> ${escapeHtml(item.user || "管理员")}
+                </span>
+            </div>
+            <div class="edit-log-tags">
+                ${modules.length
+                    ? modules.map(module => `<span class="badge badge-ok">${escapeHtml(module)}</span>`).join("")
+                    : `<span class="muted-text">内容无实质变化</span>`}
+            </div>
+        </article>
+    `;
 }
 
 async function updateConsultationStatus(id, status) {
@@ -1735,15 +1675,9 @@ document.addEventListener("click", async event => {
         return;
     }
 
-    const showBackupsButton = event.target.closest("[data-show-backups]");
-    if (showBackupsButton) {
-        openBackups();
-        return;
-    }
-
-    const restoreBackupButton = event.target.closest("[data-restore-backup]");
-    if (restoreBackupButton) {
-        restoreBackup(restoreBackupButton.dataset.restoreBackup);
+    const refreshEditLogButton = event.target.closest("[data-refresh-edit-log]");
+    if (refreshEditLogButton) {
+        loadEditLog();
         return;
     }
 
@@ -1772,6 +1706,10 @@ saveBtn.addEventListener("click", saveContent);
 reloadBtn.addEventListener("click", async () => {
     if (activeModule === "consultations") {
         loadConsultations();
+        return;
+    }
+    if (activeModule === "editLog") {
+        loadEditLog();
         return;
     }
     if (!(await confirmDiscard("重新读取将丢弃未保存的修改，确定继续吗？"))) return;

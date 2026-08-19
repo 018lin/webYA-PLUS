@@ -759,13 +759,21 @@ h1 {
     line-height: 1.7;
 }
 
-/* 历史备份 */
-.backup-section {
-    margin: 0 22px 22px;
+/* 编辑记录 */
+.edit-log-list {
+    display: grid;
+    gap: 10px;
+    padding: 22px;
+}
+
+.edit-log-item {
     border: 1px solid var(--line);
     border-radius: 8px;
-    background: #fbfcfa;
+    background: #fff;
     padding: 14px 16px;
+}
+
+.edit-log-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -773,20 +781,28 @@ h1 {
     flex-wrap: wrap;
 }
 
-.backup-section h3 {
-    margin: 0;
+.edit-log-head strong {
     font-size: 15px;
 }
 
-.backup-section p {
-    margin: 4px 0 0;
+.edit-log-user {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.backups-body {
-    display: block;
-    padding: 14px 22px 22px;
+.edit-log-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.muted-text {
+    color: var(--muted);
+    font-size: 13px;
 }
 
 /* 前台页面入口链接 */

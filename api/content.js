@@ -117,6 +117,72 @@ async function readContent() {
     return readSeedContent();
 }
 
+const EDIT_LOG_PREFIX = "cms/edit-log-";
+
+const moduleLabels = {
+    site: "全站设置",
+    home: "首页内容",
+    doctors: "医生管理",
+    specialties: "专科管理",
+    articles: "科普文章"
+};
+
+function changedModules(previous, next) {
+    const changes = [];
+    for (const [key, label] of Object.entries(moduleLabels)) {
+        const before = JSON.stringify(previous && previous[key]);
+        const after = JSON.stringify(next && next[key]);
+        if (before === after) continue;
+        const beforeList = Array.isArray(previous && previous[key]) ? previous[key].length : null;
+        const afterList = Array.isArray(next && next[key]) ? next[key].length : null;
+        changes.push(
+            beforeList != null && afterList != null && beforeList !== afterList
+                ? `${label} ${beforeList}→${afterList}`
+                : label
+        );
+    }
+    return changes;
+}
+
+async function appendEditLogBlob(previous, next) {
+    const changes = changedModules(previous, next);
+    if (!changes.length) return;
+
+    const sdk = await getBlobSdk();
+    if (!sdk) return;
+
+    let items = [];
+    try {
+        const result = await sdk.list({ prefix: EDIT_LOG_PREFIX, limit: 100 });
+        const latest = (result.blobs || [])
+            .filter(blob => blob.pathname && blob.pathname.endsWith(".json"))
+            .sort((a, b) => new Date(b.uploadedAt || 0) - new Date(a.uploadedAt || 0))[0];
+        if (latest) {
+            const blob = await sdk.get(latest.pathname, { access: BLOB_ACCESS, useCache: false });
+            if (blob && blob.statusCode === 200) {
+                const parsed = JSON.parse(await streamToText(blob.stream));
+                items = Array.isArray(parsed.items) ? parsed.items : [];
+            }
+        }
+    } catch (error) {
+        items = [];
+    }
+
+    items.unshift({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+        time: new Date().toISOString(),
+        modules: changes,
+        user: "管理员"
+    });
+    items = items.slice(0, 200);
+
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+    await sdk.put(`${EDIT_LOG_PREFIX}${stamp}.json`, JSON.stringify({ items, updatedAt: new Date().toISOString() }, null, 2), {
+        access: BLOB_ACCESS,
+        contentType: "application/json; charset=utf-8"
+    });
+}
+
 async function writeContent(payload) {
     const content = {
         ...payload,
@@ -124,7 +190,15 @@ async function writeContent(payload) {
     };
 
     if (process.env.VERCEL) {
-        return writeBlobContent(content);
+        let previous = {};
+        try {
+            previous = (await readLatestBlobContent()) || {};
+        } catch (error) {
+            previous = {};
+        }
+        await writeBlobContent(content);
+        await appendEditLogBlob(previous, content);
+        return content;
     }
 
     fs.writeFileSync(DATA_FILE, JSON.stringify(content, null, 2) + "\n", "utf8");
