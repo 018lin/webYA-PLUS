@@ -45,6 +45,12 @@ let articleEditorIndex = null;
 let articleCoverValue = "";
 let carouselEditorIndex = null;
 let carouselImageValue = "";
+let dirty = false;
+let revision = 0;
+let consultationFilter = "all";
+let consultationSearch = "";
+let articleSearchTimer = null;
+let consultationSearchTimer = null;
 
 const apiUrls = ["../api/content", "/api/content"];
 const uploadUrls = ["../api/upload", "/api/upload"];
@@ -85,7 +91,64 @@ function assetSrc(value) {
 
 function setState(text, tone = "neutral") {
     stateEl.textContent = text;
-    stateEl.style.color = tone === "error" ? "#b91c1c" : tone === "ok" ? "#0f766e" : "";
+    stateEl.style.color = tone === "error" ? "#b91c1c" : tone === "ok" ? "#0f766e" : tone === "warn" ? "#b45309" : "";
+}
+
+function markDirty() {
+    revision++;
+    if (dirty) return;
+    dirty = true;
+    saveBtn.classList.add("is-dirty");
+    setState("有未保存的修改", "warn");
+}
+
+function clearDirty() {
+    dirty = false;
+    saveBtn.classList.remove("is-dirty");
+}
+
+function confirmDiscard(message) {
+    return !dirty || window.confirm(message);
+}
+
+function getByPath(path) {
+    const parts = path.split(".");
+    let target = content;
+    while (parts.length > 1) {
+        const part = parts.shift();
+        if (target == null) return undefined;
+        target = target[part];
+    }
+    return target ? target[parts[0]] : undefined;
+}
+
+function refreshImageField(path, value) {
+    const input = document.querySelector(`input[data-image-path="${CSS.escape(path)}"]`);
+    if (!input) return;
+    const picker = input.closest(".image-picker");
+    if (!picker) return;
+
+    const preview = picker.querySelector(".image-preview");
+    const src = assetSrc(value);
+    if (preview) {
+        preview.innerHTML = src
+            ? `<img src="${escapeAttr(src)}" alt="">`
+            : `<div class="image-preview-empty"><i class="fas fa-image"></i></div>`;
+    }
+
+    const actions = picker.querySelector(".image-picker-actions");
+    if (!actions) return;
+    const clearButton = actions.querySelector("[data-clear-image]");
+    if (value && !clearButton) {
+        const button = document.createElement("button");
+        button.className = "ghost-btn";
+        button.type = "button";
+        button.dataset.clearImage = path;
+        button.innerHTML = `<i class="fas fa-xmark"></i> 清除`;
+        actions.appendChild(button);
+    } else if (!value && clearButton) {
+        clearButton.remove();
+    }
 }
 
 function normalizeContent(raw) {
@@ -184,11 +247,14 @@ async function loadConsultations(showState = true) {
         }
     } finally {
         consultationsLoading = false;
+        renderNav();
         if (activeModule === "consultations") renderConsultations();
     }
 }
 
 async function loadContent() {
+    dirty = false;
+    saveBtn.classList.remove("is-dirty");
     setState("正在读取内容");
     try {
         const apiContent = await fetchFirstJson(apiUrls);
@@ -225,8 +291,11 @@ async function loadContent() {
 
 async function saveContent() {
     content.updatedAt = new Date().toISOString();
+    const saveRevision = revision;
     if (!apiMode) {
         localStorage.setItem("here-dental-admin-content", JSON.stringify(content));
+        dirty = false;
+        saveBtn.classList.remove("is-dirty");
         setState("本地草稿已保存，未写入服务器", "error");
         return;
     }
@@ -249,7 +318,12 @@ async function saveContent() {
             throw new Error(message);
         }
         content = normalizeContent(await response.json());
-        setState("内容已保存", "ok");
+        if (revision === saveRevision) {
+            clearDirty();
+            setState("内容已保存", "ok");
+        } else {
+            setState("内容已保存，保存期间的新修改还未保存", "warn");
+        }
     } catch (error) {
         setState(error.message || "保存失败", "error");
         console.error(error);
@@ -257,6 +331,11 @@ async function saveContent() {
 }
 
 function render() {
+    try {
+        history.replaceState(null, "", `#${activeModule}`);
+    } catch (hashError) {
+        // 静态文件环境下 history 可能受限，忽略即可
+    }
     renderNav();
     const module = modules.find(item => item.id === activeModule);
     titleEl.textContent = module ? module.label : "内容管理";
@@ -271,10 +350,12 @@ function render() {
 }
 
 function renderNav() {
+    const unhandledCount = consultations.filter(item => item.status !== "handled").length;
     navEl.innerHTML = modules.map(item => `
         <button type="button" class="${activeModule === item.id ? "active" : ""}" data-module="${item.id}">
             <i class="fas ${item.icon}"></i>
             ${item.label}
+            ${item.id === "consultations" && unhandledCount > 0 ? `<span class="nav-badge">${unhandledCount}</span>` : ""}
         </button>
     `).join("");
 }
@@ -405,6 +486,12 @@ function renderCarouselTable() {
                         <td>${escapeHtml(slide.alt || "-")}</td>
                         <td><span class="badge ${slide.visible ? "badge-ok" : "badge-muted"}">${slide.visible ? "显示" : "隐藏"}</span></td>
                         <td class="col-actions">
+                            <button class="ghost-btn btn-sm" type="button" data-carousel-move="${index}" data-dir="-1" ${index === 0 ? "disabled" : ""} title="上移">
+                                <i class="fas fa-arrow-up"></i>
+                            </button>
+                            <button class="ghost-btn btn-sm" type="button" data-carousel-move="${index}" data-dir="1" ${index === slides.length - 1 ? "disabled" : ""} title="下移">
+                                <i class="fas fa-arrow-down"></i>
+                            </button>
                             <button class="ghost-btn btn-sm" type="button" data-carousel-edit="${index}">
                                 <i class="fas fa-pen"></i> 编辑
                             </button>
@@ -577,6 +664,7 @@ async function saveCarouselSlide() {
 function removeCarouselSlide(index) {
     if (!window.confirm("确定删除这张轮播图？此操作不可恢复。")) return;
     content.home.heroSlides.splice(index, 1);
+    markDirty();
     render();
 }
 
@@ -651,6 +739,22 @@ function formatDateTime(value) {
     }).format(date);
 }
 
+function filteredConsultations() {
+    const keyword = consultationSearch.trim().toLowerCase();
+    return consultations
+        .filter(item => {
+            if (consultationFilter === "new" && item.status === "handled") return false;
+            if (consultationFilter === "handled" && item.status !== "handled") return false;
+            if (keyword) {
+                const name = String(item.name || "").toLowerCase();
+                const phone = String(item.phone || "").toLowerCase();
+                if (!name.includes(keyword) && !phone.includes(keyword)) return false;
+            }
+            return true;
+        })
+        .sort((a, b) => (a.status === "handled" ? 1 : 0) - (b.status === "handled" ? 1 : 0));
+}
+
 function renderConsultations() {
     if (!consultationsLoaded && !consultationsLoading) {
         loadConsultations();
@@ -663,14 +767,25 @@ function renderConsultations() {
         </button>
     `;
 
+    const filtered = filteredConsultations();
     const body = consultationsLoading
         ? `<div class="empty-state">正在读取咨询信息</div>`
-        : consultations.length
-            ? `<div class="consultation-list">${consultations.map(renderConsultationItem).join("")}</div>`
-            : `<div class="empty-state">暂无咨询信息</div>`;
+        : filtered.length
+            ? `<div class="consultation-list">${filtered.map(renderConsultationItem).join("")}</div>`
+            : consultations.length
+                ? `<div class="empty-state">没有匹配的咨询信息</div>`
+                : `<div class="empty-state">暂无咨询信息</div>`;
 
     panelEl.innerHTML = `
         ${panelHead("咨询信息", "接收前台在线预约提交的姓名、电话、项目、期望日期和备注。", action)}
+        <div class="list-toolbar">
+            <input type="search" id="consultationSearch" placeholder="搜索姓名或电话…" value="${escapeAttr(consultationSearch)}">
+            <select id="consultationFilter">
+                <option value="all" ${consultationFilter === "all" ? "selected" : ""}>全部状态</option>
+                <option value="new" ${consultationFilter === "new" ? "selected" : ""}>未处理</option>
+                <option value="handled" ${consultationFilter === "handled" ? "selected" : ""}>已处理</option>
+            </select>
+        </div>
         ${body}
     `;
 }
@@ -728,8 +843,14 @@ function renderItem(collectionPath, item, index, titleKey, fields, open = false,
                     <span>${escapeHtml(sub || collectionPath)}</span>
                 </div>
                 <div class="content-item-actions">
-                    <button class="ghost-btn" type="button" data-toggle-item>
-                        <i class="fas fa-pen"></i>
+                    <button class="ghost-btn" type="button" data-toggle-item title="编辑">
+                        <i class="fas fa-pen"></i> 编辑
+                    </button>
+                    <button class="ghost-btn" type="button" data-move="${collectionPath}" data-index="${index}" data-dir="-1" ${index === 0 ? "disabled" : ""} title="上移">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="ghost-btn" type="button" data-move="${collectionPath}" data-index="${index}" data-dir="1" ${index === content[collectionPath].length - 1 ? "disabled" : ""} title="下移">
+                        <i class="fas fa-arrow-down"></i>
                     </button>
                     <button class="danger-btn" type="button" data-remove="${collectionPath}" data-index="${index}">
                         <i class="fas fa-trash"></i>
@@ -768,14 +889,36 @@ function setByPath(path, value) {
 
 function addItem(path) {
     content[path].push(clone(getCollectionConfig(path).defaultItem));
+    markDirty();
     render();
+    const items = panelEl.querySelectorAll(".content-item");
+    const last = items[items.length - 1];
+    if (last) {
+        last.classList.add("open");
+        last.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
 }
 
 function removeItem(path, index) {
+    const label = path === "doctors" ? "这位医生" : path === "specialties" ? "这个专科" : "这项内容";
+    if (!window.confirm(`确定删除${label}？此操作不可恢复。`)) return;
+
     const segments = path.split(".");
     let list = content;
     segments.forEach(segment => { list = list[segment]; });
     list.splice(Number(index), 1);
+    markDirty();
+    render();
+}
+
+function moveItem(path, index, direction) {
+    const segments = path.split(".");
+    let list = content;
+    segments.forEach(segment => { list = list[segment]; });
+    const target = index + direction;
+    if (target < 0 || target >= list.length) return;
+    [list[index], list[target]] = [list[target], list[index]];
+    markDirty();
     render();
 }
 
@@ -1081,6 +1224,7 @@ function previewArticle() {
 function removeArticle(index) {
     if (!window.confirm("确定删除这篇文章？此操作不可恢复。")) return;
     content.articles.splice(index, 1);
+    markDirty();
     render();
 }
 
@@ -1168,8 +1312,9 @@ async function handleImageSelection(input, path) {
         const imagePath = await uploadImage(file);
         setByPath(path, imagePath);
         applyUploadedImageMetadata(path, file.name);
+        refreshImageField(path, imagePath);
+        markDirty();
         setState("图片已上传，请保存内容", "ok");
-        render();
     } catch (error) {
         setState(error.message || "图片上传失败", "error");
         console.error(error);
@@ -1212,6 +1357,7 @@ async function requestConsultations(method, payload = null, id = "") {
             consultationApiUrl = url;
             consultations = normalizeConsultations(data);
             consultationsLoaded = true;
+            renderNav();
             renderConsultations();
             return data;
         } catch (error) {
@@ -1248,13 +1394,23 @@ document.addEventListener("input", event => {
     const searchInput = event.target.closest("#articleSearch");
     if (searchInput) {
         articleSearch = searchInput.value;
-        renderArticleTable();
+        clearTimeout(articleSearchTimer);
+        articleSearchTimer = setTimeout(renderArticleTable, 250);
+        return;
+    }
+
+    const consultationSearchInput = event.target.closest("#consultationSearch");
+    if (consultationSearchInput) {
+        consultationSearch = consultationSearchInput.value;
+        clearTimeout(consultationSearchTimer);
+        consultationSearchTimer = setTimeout(renderConsultations, 250);
         return;
     }
 
     const path = event.target.dataset.path;
     if (!path) return;
     setByPath(path, event.target.value);
+    markDirty();
 });
 
 document.addEventListener("change", event => {
@@ -1262,6 +1418,13 @@ document.addEventListener("change", event => {
     if (categoryFilter) {
         articleCategoryFilter = categoryFilter.value;
         renderArticleTable();
+        return;
+    }
+
+    const consultationFilterEl = event.target.closest("#consultationFilter");
+    if (consultationFilterEl) {
+        consultationFilter = consultationFilterEl.value;
+        renderConsultations();
         return;
     }
 
@@ -1274,13 +1437,35 @@ document.addEventListener("change", event => {
     const path = event.target.dataset.path;
     if (!path) return;
     setByPath(path, event.target.dataset.boolean ? event.target.checked : event.target.value);
+    markDirty();
 });
 
 document.addEventListener("click", event => {
     const navButton = event.target.closest("[data-module]");
     if (navButton) {
+        if (!confirmDiscard("有未保存的修改，切换模块会丢失。确定继续吗？")) return;
         activeModule = navButton.dataset.module;
         render();
+        return;
+    }
+
+    const moveButton = event.target.closest("[data-move]");
+    if (moveButton) {
+        moveItem(moveButton.dataset.move, Number(moveButton.dataset.index), Number(moveButton.dataset.dir));
+        return;
+    }
+
+    const carouselMoveButton = event.target.closest("[data-carousel-move]");
+    if (carouselMoveButton) {
+        const index = Number(carouselMoveButton.dataset.carouselMove);
+        const direction = Number(carouselMoveButton.dataset.dir);
+        const target = index + direction;
+        if (target >= 0 && target < content.home.heroSlides.length) {
+            const slides = content.home.heroSlides;
+            [slides[index], slides[target]] = [slides[target], slides[index]];
+            markDirty();
+            renderCarouselTable();
+        }
         return;
     }
 
@@ -1334,9 +1519,11 @@ document.addEventListener("click", event => {
 
     const clearImageButton = event.target.closest("[data-clear-image]");
     if (clearImageButton) {
-        setByPath(clearImageButton.dataset.clearImage, "");
-        setState("图片已清除，请保存内容");
-        render();
+        const path = clearImageButton.dataset.clearImage;
+        setByPath(path, "");
+        refreshImageField(path, "");
+        markDirty();
+        setState("图片已清除，请保存内容", "warn");
         return;
     }
 
@@ -1371,9 +1558,60 @@ saveBtn.addEventListener("click", saveContent);
 reloadBtn.addEventListener("click", () => {
     if (activeModule === "consultations") {
         loadConsultations();
-    } else {
-        loadContent();
+        return;
     }
+    if (!confirmDiscard("重新读取将丢弃未保存的修改，确定继续吗？")) return;
+    loadContent();
 });
+
+const siteLink = document.querySelector(".site-link");
+if (siteLink) {
+    siteLink.addEventListener("click", event => {
+        if (!confirmDiscard("有未保存的修改，返回网站将丢失。确定离开吗？")) {
+            event.preventDefault();
+        }
+    });
+}
+
+document.addEventListener("keydown", event => {
+    if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== "s") return;
+    event.preventDefault();
+    if (document.getElementById("articleModal")) {
+        saveArticle(false);
+        return;
+    }
+    if (document.getElementById("carouselModal")) {
+        saveCarouselSlide();
+        return;
+    }
+    if (activeModule !== "consultations") saveContent();
+});
+
+window.addEventListener("hashchange", () => {
+    const hash = location.hash.replace(/^#/, "");
+    const module = modules.find(item => item.id === hash);
+    if (!module || module.id === activeModule) return;
+    if (!confirmDiscard("有未保存的修改，切换模块会丢失。确定继续吗？")) {
+        try {
+            history.replaceState(null, "", `#${activeModule}`);
+        } catch (hashError) {
+            // ignore
+        }
+        return;
+    }
+    activeModule = module.id;
+    render();
+});
+
+window.addEventListener("beforeunload", event => {
+    if (!dirty) return;
+    event.preventDefault();
+    event.returnValue = "";
+});
+
+const initialHash = location.hash.replace(/^#/, "");
+if (modules.some(item => item.id === initialHash)) {
+    activeModule = initialHash;
+}
 
 loadContent();
