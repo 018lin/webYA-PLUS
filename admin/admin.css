@@ -206,32 +206,6 @@ h1 {
     color: var(--brand);
 }
 
-.admin-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.summary-card {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 8px 24px rgba(36, 51, 47, 0.05);
-}
-
-.summary-card span {
-    display: block;
-    color: var(--muted);
-    font-size: 12px;
-    margin-bottom: 8px;
-}
-
-.summary-card strong {
-    font-size: 24px;
-}
-
 .editor-panel {
     background: var(--panel);
     border: 1px solid var(--line);
@@ -543,10 +517,6 @@ h1 {
 }
 
 @media (max-width: 1080px) {
-    .admin-summary {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .admin-shell {
         grid-template-columns: 220px minmax(0, 1fr);
     }

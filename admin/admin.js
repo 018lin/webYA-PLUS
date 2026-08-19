@@ -50,7 +50,6 @@ const staticContentUrls = ["../data/site-content.json", "/data/site-content.json
 const navEl = document.getElementById("adminNav");
 const titleEl = document.getElementById("moduleTitle");
 const panelEl = document.getElementById("editorPanel");
-const summaryEl = document.getElementById("adminSummary");
 const stateEl = document.getElementById("saveState");
 const saveBtn = document.getElementById("saveBtn");
 const reloadBtn = document.getElementById("reloadBtn");
@@ -183,7 +182,6 @@ async function loadConsultations(showState = true) {
         }
     } finally {
         consultationsLoading = false;
-        renderSummary();
         if (activeModule === "consultations") renderConsultations();
     }
 }
@@ -228,7 +226,6 @@ async function saveContent() {
     if (!apiMode) {
         localStorage.setItem("here-dental-admin-content", JSON.stringify(content));
         setState("本地草稿已保存，未写入服务器", "error");
-        renderSummary();
         return;
     }
 
@@ -251,7 +248,6 @@ async function saveContent() {
         }
         content = normalizeContent(await response.json());
         setState("内容已保存", "ok");
-        renderSummary();
     } catch (error) {
         setState(error.message || "保存失败", "error");
         console.error(error);
@@ -260,7 +256,6 @@ async function saveContent() {
 
 function render() {
     renderNav();
-    renderSummary();
     const module = modules.find(item => item.id === activeModule);
     titleEl.textContent = module ? module.label : "内容管理";
     saveBtn.hidden = activeModule === "consultations";
@@ -280,24 +275,6 @@ function renderNav() {
             <i class="fas ${item.icon}"></i>
             ${item.label}
         </button>
-    `).join("");
-}
-
-function renderSummary() {
-    const pendingConsultations = consultations.filter(item => item.status !== "handled").length;
-    const cards = [
-        ["医生", content.doctors.length],
-        ["专科", content.specialties.length],
-        ["文章", content.articles.length],
-        ["轮播", content.home.heroSlides.length],
-        ["媒体", content.media.length],
-        ["待处理咨询", pendingConsultations]
-    ];
-    summaryEl.innerHTML = cards.map(([label, value]) => `
-        <div class="summary-card">
-            <span>${label}</span>
-            <strong>${value}</strong>
-        </div>
     `).join("");
 }
 
@@ -768,7 +745,6 @@ async function requestConsultations(method, payload = null, id = "") {
             consultationApiUrl = url;
             consultations = normalizeConsultations(data);
             consultationsLoaded = true;
-            renderSummary();
             renderConsultations();
             return data;
         } catch (error) {
@@ -805,7 +781,6 @@ document.addEventListener("input", event => {
     const path = event.target.dataset.path;
     if (!path) return;
     setByPath(path, event.target.value);
-    renderSummary();
 });
 
 document.addEventListener("change", event => {
@@ -818,7 +793,6 @@ document.addEventListener("change", event => {
     const path = event.target.dataset.path;
     if (!path) return;
     setByPath(path, event.target.dataset.boolean ? event.target.checked : event.target.value);
-    renderSummary();
 });
 
 document.addEventListener("click", event => {
