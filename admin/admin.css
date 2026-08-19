@@ -339,70 +339,6 @@ h1 {
     grid-column: 1 / -1;
 }
 
-.item-list {
-    display: grid;
-    gap: 12px;
-    padding: 22px;
-}
-
-.content-item {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #fff;
-    overflow: hidden;
-}
-
-.content-item-head {
-    min-height: 52px;
-    padding: 10px 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    background: #fbfcfa;
-    border-bottom: 1px solid var(--line);
-}
-
-.content-item-title {
-    min-width: 0;
-    flex: 1;
-}
-
-.content-item-title strong,
-.content-item-title span {
-    display: block;
-}
-
-.content-item-title strong {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.content-item-title span {
-    color: var(--muted);
-    font-size: 12px;
-    margin-top: 3px;
-}
-
-.content-item-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-}
-
-.content-item-body {
-    display: none;
-    padding: 16px;
-}
-
-.content-item.open .content-item-body {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-}
-
 .switch-field {
     display: flex;
     align-items: center;
@@ -422,15 +358,15 @@ h1 {
     text-align: center;
 }
 
-/* 医生缩略名片 */
-.doctor-grid {
+/* 缩略名片（医生 / 专科） */
+.card-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
     padding: 22px;
 }
 
-.doctor-card {
+.mini-card {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -441,58 +377,67 @@ h1 {
     transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.doctor-card:not(.doctor-card-expanded) {
+.mini-card:not(.mini-card-expanded) {
     cursor: pointer;
 }
 
-.doctor-card:not(.doctor-card-expanded):hover {
+.mini-card:not(.mini-card-expanded):hover {
     border-color: var(--brand);
     box-shadow: 0 4px 14px rgba(15, 118, 110, 0.08);
 }
 
-.doctor-card-head {
+.mini-card-head {
     display: flex;
     align-items: center;
     gap: 14px;
 }
 
-.doctor-avatar {
-    width: 60px;
-    height: 60px;
+.mini-card-media {
     flex-shrink: 0;
-    border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--line);
     background: #eef4f0;
 }
 
-.doctor-avatar-empty {
+.mini-card-media.round {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.mini-card-media.square {
+    width: 88px;
+    height: 66px;
+    border-radius: 8px;
+}
+
+.mini-card-media-empty {
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--muted);
-    font-size: 22px;
+    font-size: 20px;
 }
 
-.doctor-card-info {
+.mini-card-info {
     flex: 1;
     min-width: 0;
 }
 
-.doctor-card-title {
+.mini-card-title {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.doctor-card-title strong {
+.mini-card-title strong {
     font-size: 15px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.doctor-card-sub {
+.mini-card-sub {
     color: var(--muted);
     font-size: 12px;
     margin-top: 4px;
@@ -501,13 +446,13 @@ h1 {
     white-space: nowrap;
 }
 
-.doctor-tags {
+.mini-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
 }
 
-.doctor-tags span {
+.mini-tags span {
     font-size: 11px;
     color: var(--brand-dark);
     background: #e8f3ef;
@@ -516,14 +461,14 @@ h1 {
     padding: 2px 9px;
 }
 
-.doctor-tags .doctor-tags-empty {
+.mini-tags .mini-tags-empty {
     color: var(--muted);
     background: none;
     border: none;
     padding: 2px 0;
 }
 
-.doctor-card-summary {
+.mini-card-summary {
     margin: 0;
     font-size: 12px;
     line-height: 1.6;
@@ -534,7 +479,7 @@ h1 {
     overflow: hidden;
 }
 
-.doctor-card-actions {
+.mini-card-actions {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -542,19 +487,19 @@ h1 {
     border-top: 1px dashed var(--line);
 }
 
-.doctor-card-hint {
+.mini-card-hint {
     flex: 1;
     font-size: 12px;
     color: var(--muted);
 }
 
-.doctor-card-expanded {
+.mini-card-expanded {
     grid-column: 1 / -1;
     border-color: var(--brand);
     box-shadow: 0 4px 16px rgba(15, 118, 110, 0.10);
 }
 
-.doctor-detail-head {
+.detail-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -563,21 +508,21 @@ h1 {
     border-bottom: 1px solid var(--line);
 }
 
-.doctor-detail-head strong {
+.detail-head strong {
     font-size: 15px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.doctor-detail-actions {
+.detail-actions {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
 }
 
-.doctor-card-expanded .form-grid {
+.mini-card-expanded .form-grid {
     padding: 16px 0 0;
 }
 
@@ -885,7 +830,7 @@ h1 {
 }
 
 /* 排序按钮禁用态 */
-.content-item-actions .ghost-btn[disabled],
+.mini-card-actions .ghost-btn[disabled],
 .data-table .ghost-btn[disabled] {
     opacity: 0.35;
     cursor: not-allowed;
@@ -1040,12 +985,11 @@ a.small-btn {
     }
 
     .form-grid,
-    .content-item.open .content-item-body,
     .modal-body {
         grid-template-columns: 1fr;
     }
 
-    .doctor-grid {
+    .card-grid {
         grid-template-columns: 1fr;
     }
 

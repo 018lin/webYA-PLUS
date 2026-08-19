@@ -47,7 +47,7 @@ let articleCoverValue = "";
 let carouselEditorIndex = null;
 let carouselImageValue = "";
 let dirty = false;
-let doctorOpenIndex = null;
+let collectionOpenIndex = null;
 let revision = 0;
 let consultationFilter = "all";
 let consultationSearch = "";
@@ -419,8 +419,7 @@ function render() {
 
     if (activeModule === "settings") renderSettings();
     if (activeModule === "home") renderHome();
-    if (activeModule === "doctors") renderDoctors();
-    if (activeModule === "specialties") renderCollection("specialties");
+    if (activeModule === "doctors" || activeModule === "specialties") renderCollectionCards(activeModule);
     if (activeModule === "articles") renderArticles();
     if (activeModule === "consultations") renderConsultations();
     if (activeModule === "editLog") renderEditLog();
@@ -750,10 +749,13 @@ function getCollectionConfig(type) {
     return {
         doctors: {
             title: "医生管理",
-            desc: "维护医生列表、简介、标签、头像和显示状态。",
+            desc: "医生以缩略名片展示，点击名片展开详情编辑。",
             addText: "添加医生",
             titleKey: "name",
             subKey: "title",
+            mediaKey: "avatar",
+            mediaShape: "round",
+            mediaIcon: "fa-user-doctor",
             fields: [
                 ["姓名", "name"],
                 ["职称", "title"],
@@ -766,10 +768,13 @@ function getCollectionConfig(type) {
         },
         specialties: {
             title: "专科管理",
-            desc: "维护特色专科项目、封面、简介、标签和关联医生。",
+            desc: "专科以缩略名片展示，点击名片展开详情编辑。",
             addText: "添加专科",
             titleKey: "name",
             subKey: "subtitle",
+            mediaKey: "cover",
+            mediaShape: "square",
+            mediaIcon: "fa-tooth",
             fields: [
                 ["专科名称", "name"],
                 ["副标题", "subtitle"],
@@ -785,8 +790,10 @@ function getCollectionConfig(type) {
     }[type];
 }
 
-function renderCollection(type) {
+function renderCollectionCards(type) {
     const config = getCollectionConfig(type);
+    const list = content[type];
+    if (collectionOpenIndex != null && collectionOpenIndex >= list.length) collectionOpenIndex = null;
     panelEl.innerHTML = `
         ${panelHead(config.title, config.desc, `
             <button class="small-btn" type="button" data-add="${type}">
@@ -795,67 +802,51 @@ function renderCollection(type) {
             </button>
             ${viewSiteLink(type === "doctors" ? "../team.html" : "../specialties.html")}
         `)}
-        <div class="item-list">
-            ${content[type].length ? content[type].map((item, index) => {
-                const openByDefault = content[type].length <= 12;
-                return renderItem(type, item, index, config.titleKey, config.fields, openByDefault, config);
-            }).join("") : `<div class="empty-state">暂无内容</div>`}
-        </div>
-    `;
-}
-
-function renderDoctors() {
-    const list = content.doctors;
-    if (doctorOpenIndex != null && doctorOpenIndex >= list.length) doctorOpenIndex = null;
-    panelEl.innerHTML = `
-        ${panelHead("医生管理", "医生以缩略名片展示，点击名片展开详情编辑。", `
-            <button class="small-btn" type="button" data-add="doctors">
-                <i class="fas fa-plus"></i>
-                添加医生
-            </button>
-            ${viewSiteLink("../team.html")}
-        `)}
-        <div class="doctor-grid">
+        <div class="card-grid">
             ${list.length ? list.map((item, index) =>
-                index === doctorOpenIndex ? renderDoctorDetail(item, index) : renderDoctorCard(item, index)
-            ).join("") : `<div class="empty-state">暂无医生，点击右上角「添加医生」创建。</div>`}
+                index === collectionOpenIndex
+                    ? renderCollectionDetail(type, item, index, config)
+                    : renderCollectionCard(type, item, index, config)
+            ).join("") : `<div class="empty-state">暂无${config.title}，点击右上角「${config.addText}」创建。</div>`}
         </div>
     `;
 }
 
-function renderDoctorCard(item, index) {
+function renderCollectionCard(type, item, index, config) {
     const visible = item.visible !== false;
-    const avatarSrc = assetSrc(item.avatar);
+    const mediaSrc = assetSrc(item[config.mediaKey]);
+    const mediaShape = config.mediaShape === "round" ? "round" : "square";
     const tags = String(item.tags || "").split(",").map(tag => tag.trim()).filter(Boolean);
+    const sub = config.subKey ? item[config.subKey] || "" : "";
     return `
-        <article class="doctor-card" data-doctor-toggle="${index}">
-            <div class="doctor-card-head">
-                ${avatarSrc
-                    ? `<img class="doctor-avatar" src="${escapeAttr(avatarSrc)}" alt="">`
-                    : `<div class="doctor-avatar doctor-avatar-empty"><i class="fas fa-user-doctor"></i></div>`}
-                <div class="doctor-card-info">
-                    <div class="doctor-card-title">
-                        <strong>${escapeHtml(item.name || "未命名医生")}</strong>
+        <article class="mini-card" data-card-toggle="${index}">
+            <div class="mini-card-head">
+                ${mediaSrc
+                    ? `<img class="mini-card-media ${mediaShape}" src="${escapeAttr(mediaSrc)}" alt="">`
+                    : `<div class="mini-card-media ${mediaShape} mini-card-media-empty"><i class="fas ${config.mediaIcon}"></i></div>`}
+                <div class="mini-card-info">
+                    <div class="mini-card-title">
+                        <strong>${escapeHtml(item.name || "未命名内容")}</strong>
                         <span class="badge ${visible ? "badge-ok" : "badge-muted"}">${visible ? "显示" : "隐藏"}</span>
                     </div>
-                    ${item.title ? `<div class="doctor-card-sub">${escapeHtml(item.title)}</div>` : ""}
+                    ${sub ? `<div class="mini-card-sub">${escapeHtml(sub)}</div>` : ""}
                 </div>
             </div>
-            <div class="doctor-tags">
+            <div class="mini-tags">
                 ${tags.length
                     ? tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join("")
-                    : `<span class="doctor-tags-empty">暂无标签</span>`}
+                    : `<span class="mini-tags-empty">暂无标签</span>`}
             </div>
-            ${item.summary ? `<p class="doctor-card-summary">${escapeHtml(item.summary)}</p>` : ""}
-            <div class="doctor-card-actions">
-                <button class="ghost-btn btn-sm" type="button" data-move="doctors" data-index="${index}" data-dir="-1" ${index === 0 ? "disabled" : ""} title="上移">
+            ${item.summary ? `<p class="mini-card-summary">${escapeHtml(item.summary)}</p>` : ""}
+            <div class="mini-card-actions">
+                <button class="ghost-btn btn-sm" type="button" data-move="${type}" data-index="${index}" data-dir="-1" ${index === 0 ? "disabled" : ""} title="上移">
                     <i class="fas fa-arrow-up"></i>
                 </button>
-                <button class="ghost-btn btn-sm" type="button" data-move="doctors" data-index="${index}" data-dir="1" ${index === content.doctors.length - 1 ? "disabled" : ""} title="下移">
+                <button class="ghost-btn btn-sm" type="button" data-move="${type}" data-index="${index}" data-dir="1" ${index === content[type].length - 1 ? "disabled" : ""} title="下移">
                     <i class="fas fa-arrow-down"></i>
                 </button>
-                <span class="doctor-card-hint"><i class="fas fa-chevron-down"></i> 点击展开详情</span>
-                <button class="danger-btn btn-sm" type="button" data-remove="doctors" data-index="${index}">
+                <span class="mini-card-hint"><i class="fas fa-chevron-down"></i> 点击展开详情</span>
+                <button class="danger-btn btn-sm" type="button" data-remove="${type}" data-index="${index}">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
@@ -863,24 +854,23 @@ function renderDoctorCard(item, index) {
     `;
 }
 
-function renderDoctorDetail(item, index) {
-    const config = getCollectionConfig("doctors");
+function renderCollectionDetail(type, item, index, config) {
     return `
-        <article class="doctor-card doctor-card-expanded" data-doctor-detail-index="${index}">
-            <div class="doctor-detail-head">
-                <strong><i class="fas fa-user-doctor"></i> ${escapeHtml(item.name || "未命名医生")} · 编辑详情</strong>
-                <div class="doctor-detail-actions">
-                    <button class="danger-btn btn-sm" type="button" data-remove="doctors" data-index="${index}">
+        <article class="mini-card mini-card-expanded">
+            <div class="detail-head">
+                <strong><i class="fas ${config.mediaIcon}"></i> ${escapeHtml(item.name || "未命名内容")} · 编辑详情</strong>
+                <div class="detail-actions">
+                    <button class="danger-btn btn-sm" type="button" data-remove="${type}" data-index="${index}">
                         <i class="fas fa-trash"></i> 删除
                     </button>
-                    <button class="ghost-btn btn-sm" type="button" data-doctor-close>
+                    <button class="ghost-btn btn-sm" type="button" data-card-close>
                         <i class="fas fa-chevron-up"></i> 收起
                     </button>
                 </div>
             </div>
             <div class="form-grid">
                 ${config.fields.map(([label, key, kind]) => {
-                    const path = `doctors.${index}.${key}`;
+                    const path = `${type}.${index}.${key}`;
                     if (kind === "textarea") return textarea(label, item[key], path);
                     if (kind === "image") return imageField(label, item[key], path, true);
                     return field(label, item[key], path, "text", false);
@@ -888,7 +878,7 @@ function renderDoctorDetail(item, index) {
                 <div class="field-wide">
                     ${config.switches.map(([label, key]) => `
                         <label class="switch-field">
-                            <input type="checkbox" ${item[key] ? "checked" : ""} data-path="doctors.${index}.${key}" data-boolean="true">
+                            <input type="checkbox" ${item[key] ? "checked" : ""} data-path="${type}.${index}.${key}" data-boolean="true">
                             ${label}
                         </label>
                     `).join("")}
@@ -898,11 +888,11 @@ function renderDoctorDetail(item, index) {
     `;
 }
 
-function toggleDoctor(index) {
-    doctorOpenIndex = doctorOpenIndex === index ? null : index;
-    renderDoctors();
-    if (doctorOpenIndex != null) {
-        const detail = panelEl.querySelector(".doctor-card-expanded");
+function toggleCollectionCard(type, index) {
+    collectionOpenIndex = collectionOpenIndex === index ? null : index;
+    renderCollectionCards(type);
+    if (collectionOpenIndex != null) {
+        const detail = panelEl.querySelector(".mini-card-expanded");
         if (detail) detail.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 }
@@ -1014,51 +1004,6 @@ function renderConsultationItem(item) {
     `;
 }
 
-function renderItem(collectionPath, item, index, titleKey, fields, open = false, config = null) {
-    const sub = config && config.subKey ? item[config.subKey] || "" : "";
-    const switches = config && config.switches ? config.switches : [["显示", "visible"]];
-    return `
-        <article class="content-item ${open ? "open" : ""}" data-item="${collectionPath}.${index}">
-            <div class="content-item-head">
-                <div class="content-item-title">
-                    <strong>${escapeHtml(item[titleKey] || "未命名内容")}</strong>
-                    <span>${escapeHtml(sub || collectionPath)}</span>
-                </div>
-                <div class="content-item-actions">
-                    <button class="ghost-btn" type="button" data-toggle-item title="编辑">
-                        <i class="fas fa-pen"></i> 编辑
-                    </button>
-                    <button class="ghost-btn" type="button" data-move="${collectionPath}" data-index="${index}" data-dir="-1" ${index === 0 ? "disabled" : ""} title="上移">
-                        <i class="fas fa-arrow-up"></i>
-                    </button>
-                    <button class="ghost-btn" type="button" data-move="${collectionPath}" data-index="${index}" data-dir="1" ${index === content[collectionPath].length - 1 ? "disabled" : ""} title="下移">
-                        <i class="fas fa-arrow-down"></i>
-                    </button>
-                    <button class="danger-btn" type="button" data-remove="${collectionPath}" data-index="${index}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="content-item-body">
-                ${fields.map(([label, key, kind]) => {
-                    const path = `${collectionPath}.${index}.${key}`;
-                    if (kind === "textarea") return textarea(label, item[key], path);
-                    if (kind === "image") return imageField(label, item[key], path, true);
-                    return field(label, item[key], path, "text", false);
-                }).join("")}
-                <div class="field-wide">
-                    ${switches.map(([label, key]) => `
-                        <label class="switch-field">
-                            <input type="checkbox" ${item[key] ? "checked" : ""} data-path="${collectionPath}.${index}.${key}" data-boolean="true">
-                            ${label}
-                        </label>
-                    `).join("")}
-                </div>
-            </div>
-        </article>
-    `;
-}
-
 function setByPath(path, value) {
     const parts = path.split(".");
     let target = content;
@@ -1071,15 +1016,12 @@ function setByPath(path, value) {
 
 function addItem(path) {
     content[path].push(clone(getCollectionConfig(path).defaultItem));
-    if (path === "doctors") doctorOpenIndex = content.doctors.length - 1;
+    if (path === "doctors" || path === "specialties") collectionOpenIndex = content[path].length - 1;
     markDirty();
     render();
-    const items = panelEl.querySelectorAll(path === "doctors" ? ".doctor-card-expanded" : ".content-item");
+    const items = panelEl.querySelectorAll(".mini-card-expanded");
     const last = items[items.length - 1];
-    if (last) {
-        if (path !== "doctors") last.classList.add("open");
-        last.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    if (last) last.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 async function removeItem(path, index) {
@@ -1733,6 +1675,7 @@ document.addEventListener("click", async event => {
     if (navButton) {
         if (!(await confirmDiscard("有未保存的修改，切换模块会丢失。确定继续吗？"))) return;
         activeModule = navButton.dataset.module;
+        collectionOpenIndex = null;
         render();
         return;
     }
@@ -1848,23 +1791,19 @@ document.addEventListener("click", async event => {
         return;
     }
 
-    const doctorCloseButton = event.target.closest("[data-doctor-close]");
-    if (doctorCloseButton) {
-        doctorOpenIndex = null;
-        renderDoctors();
+    const cardCloseButton = event.target.closest("[data-card-close]");
+    if (cardCloseButton) {
+        collectionOpenIndex = null;
+        renderCollectionCards(activeModule);
         return;
     }
 
-    const doctorToggleCard = event.target.closest("[data-doctor-toggle]");
-    if (doctorToggleCard) {
-        toggleDoctor(Number(doctorToggleCard.dataset.doctorToggle));
+    const cardToggle = event.target.closest("[data-card-toggle]");
+    if (cardToggle) {
+        toggleCollectionCard(activeModule, Number(cardToggle.dataset.cardToggle));
         return;
     }
 
-    const toggleButton = event.target.closest("[data-toggle-item]");
-    if (toggleButton) {
-        toggleButton.closest(".content-item").classList.toggle("open");
-    }
 });
 
 saveBtn.addEventListener("click", saveContent);
@@ -1919,6 +1858,7 @@ window.addEventListener("hashchange", async () => {
         return;
     }
     activeModule = module.id;
+    collectionOpenIndex = null;
     render();
 });
 
