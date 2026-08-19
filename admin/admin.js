@@ -380,7 +380,7 @@ function showLoginOverlay(message = "") {
             <form id="loginForm">
                 <div class="login-field">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="loginUsername" placeholder="账号" autocomplete="username">
+                    <input type="text" id="loginUsername" placeholder="用户" autocomplete="username">
                 </div>
                 <div class="login-field">
                     <i class="fas fa-lock"></i>
@@ -1998,11 +1998,14 @@ logoutBtn.addEventListener("click", () => {
 });
 
 (async function init() {
+    // 首屏 boot 遮罩先遮挡后台内容，检查完登录状态再移除，避免内容闪现
+    const bootOverlay = document.getElementById("bootOverlay");
     const loggedIn = await checkAuthStatus();
+    if (bootOverlay) bootOverlay.remove();
     logoutBtn.hidden = !authRequired || !authToken;
     showCurrentUser();
-    loadContent();
     if (authRequired && !loggedIn) {
         showLoginOverlay();
     }
+    loadContent();
 })();

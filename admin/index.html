@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
+    <!-- 首屏加载遮罩：登录状态检查完成前遮挡后台内容，避免闪现 -->
+    <div class="login-overlay" id="bootOverlay">
+        <div class="login-brand">
+            <img src="../images/01_logo.png" alt="惠尔口腔">
+        </div>
+        <p class="boot-text">正在进入后台…</p>
+    </div>
+
     <div class="admin-shell">
         <aside class="admin-sidebar">
             <a class="admin-brand" href="index.html">
