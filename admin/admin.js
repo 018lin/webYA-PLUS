@@ -834,9 +834,6 @@ function renderCollectionCard(type, item, index, config) {
             ${item.summary ? `<p class="mini-card-summary">${escapeHtml(item.summary)}</p>` : ""}
             <div class="mini-card-actions">
                 <span class="mini-card-hint"><i class="fas fa-chevron-down"></i> 点击展开详情</span>
-                <button class="danger-btn btn-sm" type="button" data-remove="${type}" data-index="${index}">
-                    <i class="fas fa-trash"></i>
-                </button>
             </div>
         </article>
     `;
