@@ -778,13 +778,7 @@ h1 {
     margin-top: 10px;
     color: var(--danger);
     font-size: 12.5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
 }
-
-.login-error i { font-size: 13px; }
 
 /* 文章编辑弹窗 */
 .modal-overlay {

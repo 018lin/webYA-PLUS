@@ -390,7 +390,7 @@ function showLoginOverlay(message = "") {
                     <i class="fas fa-unlock"></i> 进入后台
                 </button>
             </form>
-            <p class="login-error" id="loginError"><i class="fas fa-circle-exclamation"></i><span>${escapeHtml(message)}</span></p>
+            <p class="login-error" id="loginError"><span>${escapeHtml(message)}</span></p>
         </div>
     `;
     document.body.appendChild(overlay);
