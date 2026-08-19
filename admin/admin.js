@@ -51,10 +51,14 @@ let consultationFilter = "all";
 let consultationSearch = "";
 let articleSearchTimer = null;
 let consultationSearchTimer = null;
+let backupApiUrl = "../api/backups";
+let backups = [];
+let backupsFailed = false;
 
 const apiUrls = ["../api/content", "/api/content"];
 const uploadUrls = ["../api/upload", "/api/upload"];
 const consultationUrls = ["../api/consultations", "/api/consultations"];
+const backupUrls = ["../api/backups", "/api/backups"];
 const staticContentUrls = ["../data/site-content.json", "/data/site-content.json"];
 
 const navEl = document.getElementById("adminNav");
@@ -107,8 +111,74 @@ function clearDirty() {
     saveBtn.classList.remove("is-dirty");
 }
 
-function confirmDiscard(message) {
-    return !dirty || window.confirm(message);
+async function confirmDiscard(message) {
+    if (!dirty) return true;
+    return confirmDialog(message, { okText: "放弃修改", danger: false });
+}
+
+function confirmDialog(message, { okText = "确定", danger = true } = {}) {
+    return new Promise(resolve => {
+        const overlay = document.createElement("div");
+        overlay.className = "modal-overlay";
+        overlay.id = "confirmModal";
+        overlay.innerHTML = `
+            <div class="modal confirm-modal" role="alertdialog" aria-modal="true">
+                <div class="modal-head">
+                    <div>
+                        <h3>确认操作</h3>
+                    </div>
+                </div>
+                <div class="modal-body confirm-body">
+                    <p>${escapeHtml(message)}</p>
+                </div>
+                <div class="modal-foot">
+                    <button class="ghost-btn" type="button" data-confirm-cancel>取消</button>
+                    <button class="${danger ? "danger-btn" : "primary-btn"}" type="button" data-confirm-ok>
+                        <i class="fas ${danger ? "fa-trash" : "fa-check"}"></i> ${okText}
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        const onKey = event => {
+            if (event.key === "Escape") close(false);
+        };
+        const close = result => {
+            overlay.remove();
+            document.removeEventListener("keydown", onKey);
+            resolve(result);
+        };
+
+        document.addEventListener("keydown", onKey);
+        overlay.addEventListener("click", event => {
+            if (event.target === overlay) close(false);
+        });
+        overlay.querySelector("[data-confirm-cancel]").addEventListener("click", () => close(false));
+        overlay.querySelector("[data-confirm-ok]").addEventListener("click", () => close(true));
+    });
+}
+
+function viewSiteLink(href, label = "查看前台页面") {
+    return `
+        <a class="small-btn" href="${escapeAttr(href)}" target="_blank" rel="noopener">
+            <i class="fas fa-arrow-up-right-from-square"></i> ${label}
+        </a>
+    `;
+}
+
+function saveTimeText() {
+    return new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
+}
+
+function normalizeCommaFields() {
+    content.doctors.forEach(doctor => {
+        if (typeof doctor.tags === "string") doctor.tags = doctor.tags.replace(/，/g, ",");
+    });
+    content.specialties.forEach(item => {
+        if (typeof item.tags === "string") item.tags = item.tags.replace(/，/g, ",");
+        if (typeof item.doctorNames === "string") item.doctorNames = item.doctorNames.replace(/，/g, ",");
+    });
 }
 
 function getByPath(path) {
@@ -261,7 +331,7 @@ async function loadContent() {
         apiUrl = apiContent.url;
         content = normalizeContent(apiContent.data);
         apiMode = true;
-        setState("已连接保存接口", "ok");
+        setState("已连接保存服务", "ok");
     } catch (error) {
         apiMode = false;
 
@@ -279,10 +349,10 @@ async function loadContent() {
             const staticContent = normalizeContent((await fetchFirstJson(staticContentUrls)).data);
             const useLocalDraft = shouldUseLocalDraft(localDraft, staticContent);
             content = useLocalDraft ? localDraft : staticContent;
-            setState(useLocalDraft ? "仅本地草稿，前台/其他设备不会同步" : "已读取静态内容，保存仅本地草稿", "error");
+            setState(useLocalDraft ? "修改只保存在本机，前台和其他设备不会同步" : "已读取静态内容，保存仅留在本机", "error");
         } catch (staticError) {
             content = localDraft || normalizeContent(fallbackContent);
-            setState(localDraft ? "仅本地草稿，前台/其他设备不会同步" : "使用默认空数据", "error");
+            setState(localDraft ? "修改只保存在本机，前台和其他设备不会同步" : "数据读取失败，已使用默认内容", "error");
         }
     }
     render();
@@ -290,13 +360,14 @@ async function loadContent() {
 }
 
 async function saveContent() {
+    normalizeCommaFields();
     content.updatedAt = new Date().toISOString();
     const saveRevision = revision;
     if (!apiMode) {
         localStorage.setItem("here-dental-admin-content", JSON.stringify(content));
         dirty = false;
         saveBtn.classList.remove("is-dirty");
-        setState("本地草稿已保存，未写入服务器", "error");
+        setState(`本地草稿已保存（${saveTimeText()}），未写入服务器`, "error");
         return;
     }
 
@@ -320,12 +391,14 @@ async function saveContent() {
         content = normalizeContent(await response.json());
         if (revision === saveRevision) {
             clearDirty();
-            setState("内容已保存", "ok");
+            setState(`内容已保存（${saveTimeText()}）`, "ok");
         } else {
-            setState("内容已保存，保存期间的新修改还未保存", "warn");
+            setState(`内容已保存（${saveTimeText()}），保存期间的新修改还未保存`, "warn");
         }
     } catch (error) {
         setState(error.message || "保存失败", "error");
+        saveBtn.classList.add("save-error");
+        setTimeout(() => saveBtn.classList.remove("save-error"), 2500);
         console.error(error);
     }
 }
@@ -425,7 +498,7 @@ function imageField(label, value, path, wide = false) {
 
 function renderSettings() {
     panelEl.innerHTML = `
-        ${panelHead("全站设置", "管理全站公共联系方式和地址。")}
+        ${panelHead("全站设置", "管理全站公共联系方式和地址。", viewSiteLink("../home.html"))}
         <div class="form-grid">
             ${field("网站名称", content.site.name, "site.name")}
             ${field("品牌口号", content.site.slogan, "site.slogan")}
@@ -433,6 +506,16 @@ function renderSettings() {
             ${field("电子邮箱", content.site.email, "site.email")}
             ${field("营业时间", content.site.hours, "site.hours", "text", true)}
             ${field("诊所地址", content.site.address, "site.address", "text", true)}
+        </div>
+        <div class="backup-section">
+            <div>
+                <h3>数据备份</h3>
+                <p>每次保存内容时，服务器都会自动保留一份历史备份，可随时恢复。</p>
+            </div>
+            <button class="small-btn" type="button" data-show-backups>
+                <i class="fas fa-clock-rotate-left"></i>
+                查看历史备份
+            </button>
         </div>
     `;
 }
@@ -444,6 +527,7 @@ function renderHome() {
                 <i class="fas fa-plus"></i>
                 添加轮播
             </button>
+            ${viewSiteLink("../home.html")}
         `)}
         <div class="form-grid">
             ${field("理念标题", content.home.philosophyTitle, "home.philosophyTitle")}
@@ -661,8 +745,8 @@ async function saveCarouselSlide() {
     render();
 }
 
-function removeCarouselSlide(index) {
-    if (!window.confirm("确定删除这张轮播图？此操作不可恢复。")) return;
+async function removeCarouselSlide(index) {
+    if (!(await confirmDialog("确定删除这张轮播图？此操作不可恢复。", { okText: "删除" }))) return;
     content.home.heroSlides.splice(index, 1);
     markDirty();
     render();
@@ -715,6 +799,7 @@ function renderCollection(type) {
                 <i class="fas fa-plus"></i>
                 ${config.addText}
             </button>
+            ${viewSiteLink(type === "doctors" ? "../team.html" : "../specialties.html")}
         `)}
         <div class="item-list">
             ${content[type].length ? content[type].map((item, index) => {
@@ -723,6 +808,13 @@ function renderCollection(type) {
             }).join("") : `<div class="empty-state">暂无内容</div>`}
         </div>
     `;
+}
+
+function formatSize(bytes) {
+    if (!Number.isFinite(bytes)) return "-";
+    return bytes >= 1024 * 1024
+        ? `${(bytes / 1024 / 1024).toFixed(1)} MB`
+        : `${Math.max(1, Math.round(bytes / 1024))} KB`;
 }
 
 function formatDateTime(value) {
@@ -899,9 +991,9 @@ function addItem(path) {
     }
 }
 
-function removeItem(path, index) {
+async function removeItem(path, index) {
     const label = path === "doctors" ? "这位医生" : path === "specialties" ? "这个专科" : "这项内容";
-    if (!window.confirm(`确定删除${label}？此操作不可恢复。`)) return;
+    if (!(await confirmDialog(`确定删除${label}？此操作不可恢复。`, { okText: "删除" }))) return;
 
     const segments = path.split(".");
     let list = content;
@@ -956,6 +1048,7 @@ function renderArticles() {
                 <i class="fas fa-plus"></i>
                 添加文章
             </button>
+            ${viewSiteLink("../knowledge.html")}
         `)}
         <div class="list-toolbar">
             <input type="search" id="articleSearch" placeholder="搜索文章标题…" value="${escapeAttr(articleSearch)}">
@@ -1221,8 +1314,8 @@ function previewArticle() {
     window.open(`../knowledge-detail.html?preview=1&t=${Date.now()}`, "_blank");
 }
 
-function removeArticle(index) {
-    if (!window.confirm("确定删除这篇文章？此操作不可恢复。")) return;
+async function removeArticle(index) {
+    if (!(await confirmDialog("确定删除这篇文章？此操作不可恢复。", { okText: "删除" }))) return;
     content.articles.splice(index, 1);
     markDirty();
     render();
@@ -1368,6 +1461,115 @@ async function requestConsultations(method, payload = null, id = "") {
     throw lastError || new Error("咨询信息操作失败");
 }
 
+async function openBackups() {
+    setState("正在读取备份列表");
+    try {
+        const response = await fetchFirstJson(backupUrls);
+        backupApiUrl = response.url;
+        backups = Array.isArray(response.data && response.data.backups) ? response.data.backups : [];
+        backupsFailed = false;
+        setState(backups.length ? `找到 ${backups.length} 份备份` : "暂无备份记录", "ok");
+    } catch (error) {
+        backups = [];
+        backupsFailed = true;
+        setState("备份列表读取失败，当前环境可能不支持", "error");
+    }
+    renderBackupsModal();
+}
+
+function renderBackupsModal() {
+    const rows = backups.length
+        ? backups.map(backup => `
+            <tr>
+                <td>${escapeHtml(formatDateTime(backup.modifiedAt))}</td>
+                <td class="cell-title" title="${escapeAttr(backup.name)}">${escapeHtml(backup.name)}</td>
+                <td>${escapeHtml(formatSize(backup.size))}</td>
+                <td class="col-actions">
+                    <button class="small-btn btn-sm" type="button" data-restore-backup="${escapeAttr(backup.name)}">
+                        <i class="fas fa-rotate-left"></i> 恢复
+                    </button>
+                </td>
+            </tr>
+        `).join("")
+        : `<tr><td colspan="4" class="empty-row">${backupsFailed ? "备份列表读取失败" : "暂无备份记录"}</td></tr>`;
+
+    const modal = document.createElement("div");
+    modal.className = "modal-overlay";
+    modal.id = "backupsModal";
+    modal.innerHTML = `
+        <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-head">
+                <div>
+                    <h3>历史备份</h3>
+                    <p>恢复会先把当前内容自动备份一次，再写入所选版本。</p>
+                </div>
+            </div>
+            <div class="modal-body backups-body">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>备份文件</th>
+                            <th>大小</th>
+                            <th class="col-actions">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+            <div class="modal-foot">
+                <button class="ghost-btn" type="button" id="backupsCloseBtn">关闭</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    document.addEventListener("keydown", onBackupsModalKeydown);
+    modal.addEventListener("click", event => {
+        if (event.target === modal) closeBackupsModal();
+    });
+    document.getElementById("backupsCloseBtn").addEventListener("click", closeBackupsModal);
+}
+
+function closeBackupsModal() {
+    document.removeEventListener("keydown", onBackupsModalKeydown);
+    const modal = document.getElementById("backupsModal");
+    if (modal) modal.remove();
+}
+
+function onBackupsModalKeydown(event) {
+    if (event.key === "Escape") closeBackupsModal();
+}
+
+async function restoreBackup(name) {
+    const backup = backups.find(item => item.name === name);
+    const timeText = backup ? formatDateTime(backup.modifiedAt) : name;
+    if (!(await confirmDialog(`确定恢复到「${timeText}」的内容吗？恢复前会自动备份当前内容。`, { okText: "恢复" }))) return;
+
+    setState("正在恢复备份");
+    try {
+        const response = await fetch(backupApiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "restore", file: name })
+        });
+        if (!response.ok) {
+            const text = await response.text();
+            let message = text;
+            try {
+                message = JSON.parse(text).error || message;
+            } catch (parseError) {
+                // Keep the raw response text.
+            }
+            throw new Error(message);
+        }
+        closeBackupsModal();
+        await loadContent();
+        setState("已恢复到所选备份", "ok");
+    } catch (error) {
+        setState(error.message || "备份恢复失败", "error");
+    }
+}
+
 async function updateConsultationStatus(id, status) {
     setState("正在更新咨询状态");
     try {
@@ -1379,7 +1581,7 @@ async function updateConsultationStatus(id, status) {
 }
 
 async function removeConsultation(id) {
-    if (!window.confirm("确定删除这条咨询信息？")) return;
+    if (!(await confirmDialog("确定删除这条咨询信息？", { okText: "删除" }))) return;
 
     setState("正在删除咨询信息");
     try {
@@ -1440,10 +1642,10 @@ document.addEventListener("change", event => {
     markDirty();
 });
 
-document.addEventListener("click", event => {
+document.addEventListener("click", async event => {
     const navButton = event.target.closest("[data-module]");
     if (navButton) {
-        if (!confirmDiscard("有未保存的修改，切换模块会丢失。确定继续吗？")) return;
+        if (!(await confirmDiscard("有未保存的修改，切换模块会丢失。确定继续吗？"))) return;
         activeModule = navButton.dataset.module;
         render();
         return;
@@ -1533,6 +1735,18 @@ document.addEventListener("click", event => {
         return;
     }
 
+    const showBackupsButton = event.target.closest("[data-show-backups]");
+    if (showBackupsButton) {
+        openBackups();
+        return;
+    }
+
+    const restoreBackupButton = event.target.closest("[data-restore-backup]");
+    if (restoreBackupButton) {
+        restoreBackup(restoreBackupButton.dataset.restoreBackup);
+        return;
+    }
+
     const consultationStatusButton = event.target.closest("[data-consultation-status]");
     if (consultationStatusButton) {
         updateConsultationStatus(
@@ -1555,20 +1769,22 @@ document.addEventListener("click", event => {
 });
 
 saveBtn.addEventListener("click", saveContent);
-reloadBtn.addEventListener("click", () => {
+reloadBtn.addEventListener("click", async () => {
     if (activeModule === "consultations") {
         loadConsultations();
         return;
     }
-    if (!confirmDiscard("重新读取将丢弃未保存的修改，确定继续吗？")) return;
+    if (!(await confirmDiscard("重新读取将丢弃未保存的修改，确定继续吗？"))) return;
     loadContent();
 });
 
 const siteLink = document.querySelector(".site-link");
 if (siteLink) {
-    siteLink.addEventListener("click", event => {
-        if (!confirmDiscard("有未保存的修改，返回网站将丢失。确定离开吗？")) {
-            event.preventDefault();
+    siteLink.addEventListener("click", async event => {
+        if (!dirty) return;
+        event.preventDefault();
+        if (await confirmDiscard("有未保存的修改，返回网站将丢失。确定离开吗？")) {
+            window.location.href = siteLink.getAttribute("href");
         }
     });
 }
@@ -1587,11 +1803,11 @@ document.addEventListener("keydown", event => {
     if (activeModule !== "consultations") saveContent();
 });
 
-window.addEventListener("hashchange", () => {
+window.addEventListener("hashchange", async () => {
     const hash = location.hash.replace(/^#/, "");
     const module = modules.find(item => item.id === hash);
     if (!module || module.id === activeModule) return;
-    if (!confirmDiscard("有未保存的修改，切换模块会丢失。确定继续吗？")) {
+    if (!(await confirmDiscard("有未保存的修改，切换模块会丢失。确定继续吗？"))) {
         try {
             history.replaceState(null, "", `#${activeModule}`);
         } catch (hashError) {

@@ -355,10 +355,68 @@ async function handleUpload(req, res) {
     return true;
 }
 
+function backupTimestamp(name) {
+    // 文件名形如 site-content-2026-08-18T08-52-08-935Z.json，还原冒号后即为可排序的 ISO 字符串。
+    // 不依赖文件系统 mtime：git checkout / 拷贝会打乱 mtime，文件名时间戳才是最可靠的时间。
+    const match = /^site-content-(.+?)\.json$/.exec(name);
+    if (!match) return "";
+    return String(match[1]).replace(/-(\d{2})-(\d{2})-(\d{3})Z$/, ":$1:$2.$3Z").replace("T", "T");
+}
+
+function listBackups() {
+    ensureDataDirs();
+    if (!fs.existsSync(backupDir)) return [];
+    return fs.readdirSync(backupDir)
+        .filter(name => /^site-content-\d{4}-\d{2}-\d{2}.*\.json$/.test(name))
+        .map(name => {
+            const stat = fs.statSync(path.join(backupDir, name));
+            return {
+                name,
+                size: stat.size,
+                modifiedAt: backupTimestamp(name) || stat.mtime.toISOString()
+            };
+        })
+        .sort((a, b) => String(b.modifiedAt).localeCompare(String(a.modifiedAt)));
+}
+
+async function handleBackups(req, res) {
+    if (req.method === "GET") {
+        try {
+            sendJson(res, 200, { backups: listBackups() });
+        } catch (error) {
+            sendJson(res, 500, { error: "Cannot list backups" });
+        }
+        return true;
+    }
+
+    if (req.method === "POST") {
+        try {
+            const payload = JSON.parse(await readBody(req) || "{}");
+            if (payload.action !== "restore") throw new Error("Unknown action");
+            const name = String(payload.file || "");
+            if (!/^site-content-[\w.-]+\.json$/.test(name)) throw new Error("Invalid backup file name");
+            const source = path.join(backupDir, name);
+            if (!source.startsWith(backupDir) || !fs.existsSync(source)) {
+                throw new Error("Backup file not found");
+            }
+            // writeContent 会先把当前内容再备份一次，再覆盖写入，恢复操作本身安全
+            const restored = writeContent(JSON.parse(fs.readFileSync(source, "utf8")));
+            sendJson(res, 200, { restored: true, content: restored });
+        } catch (error) {
+            sendJson(res, 400, { error: error.message || "Cannot restore backup" });
+        }
+        return true;
+    }
+
+    sendJson(res, 405, { error: "Method not allowed" });
+    return true;
+}
+
 async function handleApi(req, res, requestUrl) {
     const pathname = requestUrl.pathname;
     if (pathname === "/api/consultations") return handleConsultations(req, res, requestUrl);
     if (pathname === "/api/upload") return handleUpload(req, res);
+    if (pathname === "/api/backups") return handleBackups(req, res);
     if (pathname !== "/api/content") return false;
 
     if (req.method === "GET") {

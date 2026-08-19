@@ -733,6 +733,67 @@ h1 {
     pointer-events: none;
 }
 
+/* 保存失败时按钮短暂变红 */
+#saveBtn.save-error {
+    background: var(--danger);
+    animation: none;
+}
+
+#saveBtn.save-error:hover {
+    background: #7f1d1d;
+}
+
+/* 自定义确认弹窗 */
+.confirm-modal {
+    width: min(420px, 100%);
+}
+
+.confirm-body {
+    display: block;
+    padding: 24px 22px;
+}
+
+.confirm-body p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* 历史备份 */
+.backup-section {
+    margin: 0 22px 22px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fbfcfa;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.backup-section h3 {
+    margin: 0;
+    font-size: 15px;
+}
+
+.backup-section p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.backups-body {
+    display: block;
+    padding: 14px 22px 22px;
+}
+
+/* 前台页面入口链接 */
+a.small-btn {
+    text-decoration: none;
+}
+
 @media (max-width: 1080px) {
     .admin-shell {
         grid-template-columns: 220px minmax(0, 1fr);
