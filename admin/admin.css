@@ -342,14 +342,8 @@ h1 {
 
 .image-picker-main {
     min-width: 0;
-    display: grid;
-    gap: 8px;
-}
-
-.image-path-readout[readonly] {
-    color: var(--muted);
-    background: #fff;
-    cursor: default;
+    display: flex;
+    align-items: center;
 }
 
 .image-picker-actions {

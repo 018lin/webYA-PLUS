@@ -334,7 +334,6 @@ function textarea(label, value, path, wide = true) {
 
 function imageField(label, value, path, wide = false) {
     const safePath = escapeAttr(path);
-    const safeValue = escapeAttr(value);
     const src = assetSrc(value);
     return `
         <div class="field image-field ${wide ? "field-wide" : ""}">
@@ -346,7 +345,6 @@ function imageField(label, value, path, wide = false) {
                         : `<div class="image-preview-empty"><i class="fas fa-image"></i></div>`}
                 </div>
                 <div class="image-picker-main">
-                    <input class="image-path-readout" type="text" value="${safeValue}" readonly aria-label="${label}当前图片">
                     <div class="image-picker-actions">
                         <label class="small-btn file-btn">
                             <i class="fas fa-folder-open"></i>
