@@ -1,7 +1,6 @@
-// 管理员登录接口：POST 校验密码并签发 token；GET 校验当前 token 是否有效。
-// 密码通过环境变量 SITE_ADMIN_PASSWORD 配置，不写入代码仓库。
-const crypto = require("crypto");
-const { adminPassword, signToken, verifyToken, bearerToken, sendUnauthorized, TOKEN_TTL } = require("./_lib/auth");
+// 管理员登录接口：POST 校验账号密码并签发 token；GET 校验当前 token 是否有效。
+// 账号通过环境变量 SITE_ADMIN_USERS（多账号）或 SITE_ADMIN_PASSWORD（单账号）配置，不写入代码仓库。
+const { hasAnyAccount, authenticate, signToken, verifyToken, bearerToken, sendUnauthorized, TOKEN_TTL } = require("./_lib/auth");
 
 function sendJson(res, status, value) {
     res.statusCode = status;
@@ -41,8 +40,8 @@ function readBody(req) {
 }
 
 module.exports = async function handler(req, res) {
-    if (!adminPassword()) {
-        sendJson(res, 503, { error: "管理员密码尚未配置，请设置环境变量 SITE_ADMIN_PASSWORD 后重新部署" });
+    if (!hasAnyAccount()) {
+        sendJson(res, 503, { error: "管理员账号尚未配置，请设置环境变量 SITE_ADMIN_USERS 或 SITE_ADMIN_PASSWORD 后重新部署" });
         return;
     }
 
@@ -58,17 +57,17 @@ module.exports = async function handler(req, res) {
     if (req.method === "POST") {
         try {
             const payload = await readBody(req);
+            const username = String((payload && payload.username) || "").trim();
             const password = String((payload && payload.password) || "");
-            const given = Buffer.from(password);
-            const expected = Buffer.from(adminPassword());
-            const ok = given.length === expected.length && crypto.timingSafeEqual(given, expected);
-            if (!ok) {
-                sendJson(res, 401, { error: "密码错误" });
+            const user = authenticate(username, password);
+            if (!user) {
+                sendJson(res, 401, { error: "用户名或密码错误" });
                 return;
             }
             sendJson(res, 200, {
-                token: signToken(),
-                expiresAt: Date.now() + TOKEN_TTL
+                token: signToken(user),
+                expiresAt: Date.now() + TOKEN_TTL,
+                user
             });
         } catch (error) {
             sendJson(res, 400, { error: "请求格式错误" });

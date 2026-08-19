@@ -219,7 +219,7 @@ function changedModules(previous, next) {
     return changes;
 }
 
-async function appendEditLogBlob(previous, next, previousBlobName) {
+async function appendEditLogBlob(previous, next, previousBlobName, user) {
     const changes = changedModules(previous, next);
     if (!changes.length) return;
 
@@ -247,7 +247,7 @@ async function appendEditLogBlob(previous, next, previousBlobName) {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
         time: new Date().toISOString(),
         modules: changes,
-        user: "管理员",
+        user: user || "管理员",
         backup: previousBlobName || null
     });
     items = items.slice(0, 200);
@@ -259,7 +259,7 @@ async function appendEditLogBlob(previous, next, previousBlobName) {
     });
 }
 
-async function writeContent(payload) {
+async function writeContent(payload, user) {
     const content = {
         ...payload,
         updatedAt: new Date().toISOString()
@@ -278,7 +278,7 @@ async function writeContent(payload) {
             previous = {};
         }
         await writeBlobContent(content);
-        await appendEditLogBlob(previous, content, previousBlobName);
+        await appendEditLogBlob(previous, content, previousBlobName, user);
         return content;
     }
 
@@ -297,10 +297,11 @@ module.exports = async function handler(req, res) {
     }
 
     if (req.method === "POST") {
-        if (!requireAuth(req)) return sendUnauthorized(res);
+        const user = requireAuth(req);
+        if (!user) return sendUnauthorized(res);
         try {
             const payload = await readRequestBody(req);
-            const saved = await writeContent(payload);
+            const saved = await writeContent(payload, user);
             sendJson(res, 200, saved);
         } catch (error) {
             const message = process.env.VERCEL

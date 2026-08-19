@@ -211,7 +211,7 @@ function pruneBackups(keep = 100) {
     });
 }
 
-function appendEditLog(previous, next, backupName) {
+function appendEditLog(previous, next, backupName, user) {
     const changes = changedModules(previous, next);
     if (!changes.length) return;
 
@@ -228,7 +228,7 @@ function appendEditLog(previous, next, backupName) {
         id: `${Date.now()}-${crypto.randomBytes(4).toString("hex")}`,
         time: new Date().toISOString(),
         modules: changes,
-        user: "管理员",
+        user: user || "管理员",
         backup: backupName || null
     });
     items = items.slice(0, 200);
@@ -251,7 +251,7 @@ function readEditLog() {
     }
 }
 
-function writeContent(nextContent) {
+function writeContent(nextContent, user) {
     ensureDataDirs();
     let previous = {};
     let backupName = null;
@@ -270,7 +270,7 @@ function writeContent(nextContent) {
         updatedAt: new Date().toISOString()
     };
     fs.writeFileSync(dataFile, JSON.stringify(content, null, 2), "utf8");
-    appendEditLog(previous, content, backupName);
+    appendEditLog(previous, content, backupName, user);
     pruneBackups();
     return content;
 }
@@ -563,7 +563,8 @@ async function handleBackups(req, res) {
     }
 
     if (req.method === "POST") {
-        if (!requireAuth(req)) {
+        const restoreUser = requireAuth(req);
+        if (!restoreUser) {
             sendUnauthorized(res);
             return true;
         }
@@ -577,7 +578,7 @@ async function handleBackups(req, res) {
                 throw new Error("Backup file not found");
             }
             // writeContent 会先把当前内容再备份一次，再覆盖写入，恢复操作本身安全
-            const restored = writeContent(JSON.parse(fs.readFileSync(source, "utf8")));
+            const restored = writeContent(JSON.parse(fs.readFileSync(source, "utf8")), restoreUser);
             sendJson(res, 200, { restored: true, content: restored });
         } catch (error) {
             sendJson(res, 400, { error: error.message || "Cannot restore backup" });
@@ -624,14 +625,15 @@ async function handleApi(req, res, requestUrl) {
     }
 
     if (req.method === "POST") {
-        if (!requireAuth(req)) {
+        const saveUser = requireAuth(req);
+        if (!saveUser) {
             sendUnauthorized(res);
             return true;
         }
         try {
             const body = await readBody(req);
             const payload = JSON.parse(body);
-            const saved = writeContent(payload);
+            const saved = writeContent(payload, saveUser);
             sendJson(res, 200, saved);
         } catch (error) {
             sendJson(res, 400, { error: error.message || "Cannot save content data" });
@@ -684,7 +686,9 @@ const server = http.createServer(async (req, res) => {
 server.listen(port, () => {
     console.log(`Here Dental site running at http://localhost:${port}/`);
     console.log(`Admin console running at http://localhost:${port}/admin/`);
-    console.log(process.env.SITE_ADMIN_PASSWORD
-        ? "Admin auth: using SITE_ADMIN_PASSWORD environment variable"
-        : `Admin auth: using default password "admin123" (set SITE_ADMIN_PASSWORD to override)`);
+    console.log(process.env.SITE_ADMIN_USERS
+        ? "Admin auth: using SITE_ADMIN_USERS (multi-account)"
+        : process.env.SITE_ADMIN_PASSWORD
+            ? "Admin auth: using SITE_ADMIN_PASSWORD (single account)"
+            : `Admin auth: using default account admin/admin123 (set SITE_ADMIN_USERS or SITE_ADMIN_PASSWORD to override)`);
 });

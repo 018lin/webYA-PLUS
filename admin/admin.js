@@ -50,6 +50,7 @@ let dirty = false;
 let collectionOpenIndex = null;
 let authToken = localStorage.getItem("here-dental-auth-token") || "";
 let authExpiresAt = Number(localStorage.getItem("here-dental-auth-expires") || 0);
+let authUser = localStorage.getItem("here-dental-auth-user") || "";
 let authRequired = false;
 let revision = 0;
 let consultationFilter = "all";
@@ -75,6 +76,8 @@ const stateEl = document.getElementById("saveState");
 const saveBtn = document.getElementById("saveBtn");
 const reloadBtn = document.getElementById("reloadBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+const currentUserEl = document.getElementById("currentUser");
+const currentUserNameEl = document.getElementById("currentUserName");
 
 function clone(value) {
     return JSON.parse(JSON.stringify(value));
@@ -275,8 +278,19 @@ function authHeaders(extra = {}) {
 function clearAuth() {
     authToken = "";
     authExpiresAt = 0;
+    authUser = "";
     localStorage.removeItem("here-dental-auth-token");
     localStorage.removeItem("here-dental-auth-expires");
+    localStorage.removeItem("here-dental-auth-user");
+}
+
+function showCurrentUser() {
+    if (!authRequired || !authUser) {
+        currentUserEl.hidden = true;
+        return;
+    }
+    currentUserEl.hidden = false;
+    currentUserNameEl.textContent = authUser;
 }
 
 // 探测服务端鉴权状态：已登录返回 true；需要登录返回 false（并弹遮罩）；
@@ -309,14 +323,14 @@ async function checkAuthStatus() {
     return true;
 }
 
-async function performLogin(password) {
+async function performLogin(username, password) {
     let lastError = null;
     for (const url of authUrls) {
         try {
             const response = await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ password })
+                body: JSON.stringify({ username, password })
             });
             const text = await response.text();
             let data = {};
@@ -328,9 +342,11 @@ async function performLogin(password) {
             if (!response.ok) throw new Error(data.error || "登录失败");
             authToken = data.token || "";
             authExpiresAt = Number(data.expiresAt || 0);
+            authUser = data.user || "管理员";
             if (authToken) {
                 localStorage.setItem("here-dental-auth-token", authToken);
                 localStorage.setItem("here-dental-auth-expires", String(authExpiresAt));
+                localStorage.setItem("here-dental-auth-user", authUser);
             }
             authRequired = true;
             return true;
@@ -356,9 +372,10 @@ function showLoginOverlay(message = "") {
         <div class="login-card" role="dialog" aria-modal="true">
             <img src="../images/01_logo.png" alt="惠尔口腔">
             <h2>惠尔口腔 · 内容管理</h2>
-            <p class="login-desc">请输入管理密码继续操作</p>
+            <p class="login-desc">请输入账号密码继续操作</p>
             <form id="loginForm">
-                <input type="password" id="loginPassword" placeholder="管理密码" autocomplete="current-password">
+                <input type="text" id="loginUsername" placeholder="账号" autocomplete="username">
+                <input type="password" id="loginPassword" placeholder="密码" autocomplete="current-password">
                 <button class="primary-btn" type="submit">
                     <i class="fas fa-unlock"></i> 进入后台
                 </button>
@@ -368,6 +385,7 @@ function showLoginOverlay(message = "") {
     `;
     document.body.appendChild(overlay);
 
+    const usernameInput = overlay.querySelector("#loginUsername");
     const passwordInput = overlay.querySelector("#loginPassword");
     overlay.querySelector("#loginForm").addEventListener("submit", async event => {
         event.preventDefault();
@@ -376,10 +394,11 @@ function showLoginOverlay(message = "") {
         submitButton.disabled = true;
         errorEl.textContent = "";
         try {
-            await performLogin(passwordInput.value);
+            await performLogin(usernameInput.value.trim(), passwordInput.value);
             overlay.remove();
             logoutBtn.hidden = false;
-            setState("登录成功，可以保存内容了", "ok");
+            showCurrentUser();
+            setState(`登录成功，当前用户：${authUser}`, "ok");
         } catch (error) {
             errorEl.textContent = error.message || "登录失败";
             passwordInput.select();
@@ -387,7 +406,7 @@ function showLoginOverlay(message = "") {
             submitButton.disabled = false;
         }
     });
-    passwordInput.focus();
+    usernameInput.focus();
 }
 
 function contentScore(value) {
@@ -1962,6 +1981,7 @@ if (modules.some(item => item.id === initialHash)) {
 logoutBtn.addEventListener("click", () => {
     clearAuth();
     logoutBtn.hidden = true;
+    showCurrentUser();
     setState("已退出登录", "warn");
     showLoginOverlay();
 });
@@ -1969,6 +1989,7 @@ logoutBtn.addEventListener("click", () => {
 (async function init() {
     const loggedIn = await checkAuthStatus();
     logoutBtn.hidden = !authRequired || !authToken;
+    showCurrentUser();
     loadContent();
     if (authRequired && !loggedIn) {
         showLoginOverlay();

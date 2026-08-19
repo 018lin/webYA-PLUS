@@ -163,6 +163,20 @@ h1 {
     text-align: right;
 }
 
+.topbar-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--brand-dark);
+    background: #e8f3ef;
+    border: 1px solid #d3e7df;
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 .primary-btn,
 .ghost-btn,
 .danger-btn,
