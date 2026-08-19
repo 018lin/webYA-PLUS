@@ -1,4 +1,5 @@
 const modules = [
+    { id: "pageviews", label: "访问统计", icon: "fa-chart-line" },
     { id: "settings", label: "全站设置", icon: "fa-gear" },
     { id: "home", label: "首页内容", icon: "fa-house" },
     { id: "doctors", label: "医生管理", icon: "fa-user-doctor" },
@@ -33,7 +34,7 @@ const fallbackContent = {
 };
 
 let content = JSON.parse(JSON.stringify(fallbackContent));
-let activeModule = "settings";
+let activeModule = "pageviews";
 let apiMode = false;
 let apiUrl = "../api/content";
 let consultations = [];
@@ -60,6 +61,12 @@ let consultationSearchTimer = null;
 let editLogItems = [];
 let editLogLoading = false;
 let editLogLoaded = false;
+let pageViewsItems = [];
+let pageViewsDays = [];
+let pageViewsTotal = 0;
+let pageViewsLoaded = false;
+let pageViewsLoading = false;
+let pageViewsDayFilter = "";
 
 const apiUrls = ["../api/content", "/api/content"];
 const authUrls = ["../api/auth", "/api/auth"];
@@ -67,6 +74,7 @@ const uploadUrls = ["../api/upload", "/api/upload"];
 const consultationUrls = ["../api/consultations", "/api/consultations"];
 const editLogUrls = ["../api/edit-log", "/api/edit-log"];
 const backupUrls = ["../api/backups", "/api/backups"];
+const pageViewUrls = ["../api/pageviews", "/api/pageviews"];
 const changePasswordUrls = ["../api/change-password", "/api/change-password"];
 const staticContentUrls = ["../data/site-content.json", "/data/site-content.json"];
 
@@ -583,6 +591,38 @@ async function loadConsultations(showState = true) {
     }
 }
 
+async function loadPageViews(showState = true) {
+    if (pageViewsLoading) return; // 已在加载中，避免首屏与预加载重复请求
+    pageViewsLoading = true;
+    if (showState) setState("正在读取访问统计");
+
+    try {
+        const apiPageViews = await fetchFirstJson(pageViewUrls);
+        const data = apiPageViews.data || {};
+        pageViewsItems = Array.isArray(data.items) ? data.items : [];
+        pageViewsDays = Array.isArray(data.days) ? data.days : [];
+        pageViewsTotal = Number(data.total || 0);
+        pageViewsLoaded = true;
+        // 刷新后原筛选日可能已不存在（数据被修剪），重置回「全部」
+        if (pageViewsDayFilter && !pageViewsDays.some(day => day.date === pageViewsDayFilter)) {
+            pageViewsDayFilter = "";
+        }
+        if (showState) setState(pageViewsTotal ? `共有 ${pageViewsTotal} 条浏览记录` : "暂无浏览记录", "ok");
+    } catch (error) {
+        pageViewsItems = [];
+        pageViewsDays = [];
+        pageViewsTotal = 0;
+        pageViewsLoaded = showState || activeModule === "pageviews";
+        if (showState || activeModule === "pageviews") {
+            setState(error.message || "访问统计读取失败", "error");
+        }
+    } finally {
+        pageViewsLoading = false;
+        renderNav();
+        if (activeModule === "pageviews") renderPageViews();
+    }
+}
+
 async function loadContent() {
     dirty = false;
     saveBtn.classList.remove("is-dirty");
@@ -618,6 +658,7 @@ async function loadContent() {
     }
     render();
     loadConsultations(false);
+    loadPageViews(false);
 }
 
 async function saveContent() {
@@ -674,8 +715,9 @@ function render() {
     renderNav();
     const module = modules.find(item => item.id === activeModule);
     titleEl.textContent = module ? module.label : "内容管理";
-    saveBtn.hidden = activeModule === "consultations" || activeModule === "editLog";
+    saveBtn.hidden = activeModule === "consultations" || activeModule === "editLog" || activeModule === "pageviews";
 
+    if (activeModule === "pageviews") renderPageViews();
     if (activeModule === "settings") renderSettings();
     if (activeModule === "home") renderHome();
     if (activeModule === "doctors" || activeModule === "specialties") renderCollectionCards(activeModule);
@@ -1245,6 +1287,102 @@ function renderConsultationItem(item) {
                 </button>
             </div>
         </article>
+    `;
+}
+
+function localDayString(offsetDays) {
+    const date = new Date();
+    date.setDate(date.getDate() + offsetDays);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function pageViewDayCount(date) {
+    const day = pageViewsDays.find(entry => entry.date === date);
+    return day ? day.count : 0;
+}
+
+function statCard(label, value) {
+    return `
+        <div class="stat-card">
+            <div class="stat-value">${value}</div>
+            <div class="stat-label">${label}</div>
+        </div>
+    `;
+}
+
+function renderPageViews() {
+    if (!pageViewsLoaded && !pageViewsLoading) {
+        loadPageViews();
+    }
+
+    const action = `
+        <button class="small-btn" type="button" data-refresh-pageviews>
+            <i class="fas fa-rotate-right"></i>
+            刷新
+        </button>
+    `;
+
+    const today = localDayString(0);
+    const filteredItems = pageViewsDayFilter
+        ? pageViewsItems.filter(item => item.day === pageViewsDayFilter)
+        : pageViewsItems;
+    const recordRows = filteredItems.slice(0, 300);
+
+    const body = pageViewsLoading
+        ? `<div class="empty-state">正在读取访问统计</div>`
+        : pageViewsItems.length
+            ? `
+                <div class="stat-cards-wrap">
+                    <div class="stat-cards">
+                        ${statCard("今日浏览", pageViewDayCount(today))}
+                        ${statCard("昨日浏览", pageViewDayCount(localDayString(-1)))}
+                        ${statCard("累计浏览", pageViewsTotal)}
+                        ${statCard("浏览记录数", pageViewsItems.length)}
+                    </div>
+                </div>
+                <div class="panel-section">
+                    <h3 class="section-title">每日浏览量 <span class="section-hint">点击日期查看当天记录</span></h3>
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>日期</th><th>浏览量</th></tr>
+                            </thead>
+                            <tbody>
+                                ${pageViewsDays.map(day => `
+                                    <tr class="${day.date === pageViewsDayFilter ? "filtered" : ""}" data-day-filter="${escapeAttr(day.date)}">
+                                        <td>${escapeHtml(day.date)}${day.date === today ? ` <span class="badge badge-ok">今天</span>` : ""}</td>
+                                        <td>${day.count}</td>
+                                    </tr>
+                                `).join("")}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-section">
+                    <h3 class="section-title">浏览记录${pageViewsDayFilter ? `（${escapeHtml(pageViewsDayFilter)}）` : ""}</h3>
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>时间</th><th>访问页面</th></tr>
+                            </thead>
+                            <tbody>
+                                ${recordRows.length ? recordRows.map(item => `
+                                    <tr>
+                                        <td>${formatDateTime(item.time)}</td>
+                                        <td class="cell-title" title="${escapeAttr(item.page || "")}">${escapeHtml(item.page || "/")}</td>
+                                    </tr>
+                                `).join("") : `<tr><td colspan="2" class="empty-row">${pageViewsDayFilter ? "当天暂无浏览记录" : "暂无浏览记录"}</td></tr>`}
+                            </tbody>
+                        </table>
+                        ${filteredItems.length > 300 ? `<p class="stat-note">仅显示最近 300 条记录</p>` : ""}
+                    </div>
+                </div>
+            `
+            : `<div class="empty-state">暂无浏览记录，访客打开网站页面后会自动记录</div>`;
+
+    panelEl.innerHTML = `
+        ${panelHead("访问统计", "记录前台各页面的浏览情况，按天统计浏览量。", action)}
+        ${body}
     `;
 }
 
@@ -1981,6 +2119,19 @@ document.addEventListener("click", async event => {
         return;
     }
 
+    const refreshPageViewsButton = event.target.closest("[data-refresh-pageviews]");
+    if (refreshPageViewsButton) {
+        loadPageViews();
+        return;
+    }
+
+    const dayFilterButton = event.target.closest("[data-day-filter]");
+    if (dayFilterButton) {
+        pageViewsDayFilter = pageViewsDayFilter === dayFilterButton.dataset.dayFilter ? "" : dayFilterButton.dataset.dayFilter;
+        renderPageViews();
+        return;
+    }
+
     const refreshEditLogButton = event.target.closest("[data-refresh-edit-log]");
     if (refreshEditLogButton) {
         loadEditLog();
@@ -2033,6 +2184,10 @@ reloadBtn.addEventListener("click", async () => {
         loadEditLog();
         return;
     }
+    if (activeModule === "pageviews") {
+        loadPageViews();
+        return;
+    }
     if (!(await confirmDiscard("重新读取将丢弃未保存的修改，确定继续吗？"))) return;
     loadContent();
 });
@@ -2059,7 +2214,7 @@ document.addEventListener("keydown", event => {
         saveCarouselSlide();
         return;
     }
-    if (activeModule !== "consultations") saveContent();
+    if (activeModule !== "consultations" && activeModule !== "pageviews" && activeModule !== "editLog") saveContent();
 });
 
 window.addEventListener("hashchange", async () => {

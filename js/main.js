@@ -1,3 +1,32 @@
+// ======================== Page View Tracking (访问统计上报) ========================
+// 所有前台页面都引入本文件，每次打开页面向 /api/pageviews 上报一条浏览记录（后台统计用）。
+// 上报是 fire-and-forget：两个 URL 顺序尝试（兼容子路径部署），成功即停，失败静默。
+(async function trackPageView() {
+    if (location.protocol === "file:") return;             // 本地直接打开文件不统计
+    if (/^\/admin(\/|$)/.test(location.pathname)) return;  // 后台页面不统计（双保险）
+
+    var d = new Date();
+    var day = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0")
+        + "-" + String(d.getDate()).padStart(2, "0");      // 访客本地日期，按天分组用
+    var payload = JSON.stringify({ page: location.pathname + location.search, day: day });
+    var urls = ["api/pageviews", "/api/pageviews"];
+
+    for (var i = 0; i < urls.length; i += 1) {
+        try {
+            var response = await fetch(urls[i], {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: payload,
+                keepalive: true
+            });
+            if (!response.ok) throw new Error(String(response.status));
+            break; // 成功即停，避免根路径下两个 URL 都可达导致重复计数
+        } catch (error) {
+            // 尝试下一个 URL，全部失败则静默结束
+        }
+    }
+})();
+
 // ======================== Mobile Nav Toggle (side drawer) ========================
 function toggleNav() {
     const nav = document.getElementById('nav');
