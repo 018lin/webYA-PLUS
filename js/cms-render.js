@@ -272,7 +272,8 @@
 
     function selectArticle(articles) {
         const params = new URLSearchParams(window.location.search);
-        const byIndex = Number(params.get("article"));
+        const articleParam = params.get("article");
+        const byIndex = articleParam !== null && articleParam !== "" ? Number(articleParam) : NaN;
         if (Number.isInteger(byIndex) && articles[byIndex]) return articles[byIndex];
 
         const topic = params.get("topic");
