@@ -60,6 +60,7 @@ const apiUrls = ["../api/content", "/api/content"];
 const uploadUrls = ["../api/upload", "/api/upload"];
 const consultationUrls = ["../api/consultations", "/api/consultations"];
 const editLogUrls = ["../api/edit-log", "/api/edit-log"];
+const backupUrls = ["../api/backups", "/api/backups"];
 const staticContentUrls = ["../data/site-content.json", "/data/site-content.json"];
 
 const navEl = document.getElementById("adminNav");
@@ -1496,10 +1497,17 @@ function renderEditLogItem(item) {
     return `
         <article class="edit-log-item">
             <div class="edit-log-head">
-                <strong>${escapeHtml(timeText)}</strong>
-                <span class="edit-log-user">
-                    <i class="fas fa-user-shield"></i> ${escapeHtml(item.user || "管理员")}
-                </span>
+                <div class="edit-log-title">
+                    <strong>${escapeHtml(timeText)}</strong>
+                    <span class="edit-log-user">
+                        <i class="fas fa-user-shield"></i> ${escapeHtml(item.user || "管理员")}
+                    </span>
+                </div>
+                ${item.backup ? `
+                    <button class="small-btn" type="button" data-rollback="${escapeAttr(item.id)}" title="回退到这次修改之前的内容">
+                        <i class="fas fa-rotate-left"></i> 回退到修改前
+                    </button>
+                ` : ""}
             </div>
             ${modules.length
                 ? `<ul class="edit-log-changes">
@@ -1508,6 +1516,39 @@ function renderEditLogItem(item) {
                 : `<p class="edit-log-empty">内容无实质变化</p>`}
         </article>
     `;
+}
+
+async function rollbackEditLogItem(id) {
+    const item = editLogItems.find(entry => entry.id === id);
+    if (!item || !item.backup) return;
+    const timeText = formatDateTime(item.time);
+
+    if (!(await confirmDialog(`确定回退到 ${timeText} 修改之前的内容吗？当前内容会先自动备份一份，之后还可以改回来。`, { okText: "回退", danger: true }))) return;
+
+    setState("正在回退");
+    try {
+        const endpoint = await fetchFirstJson(backupUrls);
+        const response = await fetch(endpoint.url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "restore", file: item.backup })
+        });
+        if (!response.ok) {
+            const text = await response.text();
+            let message = text;
+            try {
+                message = JSON.parse(text).error || message;
+            } catch (parseError) {
+                // Keep the raw response text.
+            }
+            throw new Error(message);
+        }
+        await loadContent();
+        await loadEditLog(false);
+        setState(`已回退到 ${timeText} 修改之前的内容`, "ok");
+    } catch (error) {
+        setState(error.message || "回退失败，请确认当前环境支持回退", "error");
+    }
 }
 
 async function updateConsultationStatus(id, status) {
@@ -1678,6 +1719,12 @@ document.addEventListener("click", async event => {
     const refreshEditLogButton = event.target.closest("[data-refresh-edit-log]");
     if (refreshEditLogButton) {
         loadEditLog();
+        return;
+    }
+
+    const rollbackButton = event.target.closest("[data-rollback]");
+    if (rollbackButton) {
+        rollbackEditLogItem(rollbackButton.dataset.rollback);
         return;
     }
 

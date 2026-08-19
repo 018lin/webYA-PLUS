@@ -781,6 +781,15 @@ h1 {
     flex-wrap: wrap;
 }
 
+.edit-log-title {
+    min-width: 0;
+}
+
+.edit-log-title strong {
+    display: block;
+    font-size: 15px;
+}
+
 .edit-log-head strong {
     font-size: 15px;
 }

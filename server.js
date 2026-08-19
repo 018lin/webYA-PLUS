@@ -197,7 +197,20 @@ function changedModules(previous, next) {
     return changes;
 }
 
-function appendEditLog(previous, next) {
+function pruneBackups(keep = 100) {
+    ensureDataDirs();
+    if (!fs.existsSync(backupDir)) return;
+    const names = listBackups().map(backup => backup.name);
+    names.slice(keep).forEach(name => {
+        try {
+            fs.unlinkSync(path.join(backupDir, name));
+        } catch (error) {
+            // 忽略删除失败
+        }
+    });
+}
+
+function appendEditLog(previous, next, backupName) {
     const changes = changedModules(previous, next);
     if (!changes.length) return;
 
@@ -214,7 +227,8 @@ function appendEditLog(previous, next) {
         id: `${Date.now()}-${crypto.randomBytes(4).toString("hex")}`,
         time: new Date().toISOString(),
         modules: changes,
-        user: "管理员"
+        user: "管理员",
+        backup: backupName || null
     });
     items = items.slice(0, 200);
 
@@ -239,9 +253,11 @@ function readEditLog() {
 function writeContent(nextContent) {
     ensureDataDirs();
     let previous = {};
+    let backupName = null;
     if (fs.existsSync(dataFile)) {
         const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-        fs.copyFileSync(dataFile, path.join(backupDir, `site-content-${stamp}.json`));
+        backupName = `site-content-${stamp}.json`;
+        fs.copyFileSync(dataFile, path.join(backupDir, backupName));
         try {
             previous = JSON.parse(fs.readFileSync(dataFile, "utf8"));
         } catch (parseError) {
@@ -253,7 +269,8 @@ function writeContent(nextContent) {
         updatedAt: new Date().toISOString()
     };
     fs.writeFileSync(dataFile, JSON.stringify(content, null, 2), "utf8");
-    appendEditLog(previous, content);
+    appendEditLog(previous, content, backupName);
+    pruneBackups();
     return content;
 }
 

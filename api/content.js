@@ -87,7 +87,10 @@ async function readLatestBlobContent() {
     });
     if (!blob || blob.statusCode !== 200) return null;
 
-    return JSON.parse(await streamToText(blob.stream));
+    return {
+        content: JSON.parse(await streamToText(blob.stream)),
+        pathname: latest.pathname
+    };
 }
 
 async function writeBlobContent(content) {
@@ -109,7 +112,7 @@ async function writeBlobContent(content) {
 async function readContent() {
     try {
         const blobContent = await readLatestBlobContent();
-        if (blobContent) return blobContent;
+        if (blobContent) return blobContent.content;
     } catch (error) {
         console.error("CMS Blob read failed:", error);
     }
@@ -215,7 +218,7 @@ function changedModules(previous, next) {
     return changes;
 }
 
-async function appendEditLogBlob(previous, next) {
+async function appendEditLogBlob(previous, next, previousBlobName) {
     const changes = changedModules(previous, next);
     if (!changes.length) return;
 
@@ -243,7 +246,8 @@ async function appendEditLogBlob(previous, next) {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
         time: new Date().toISOString(),
         modules: changes,
-        user: "管理员"
+        user: "管理员",
+        backup: previousBlobName || null
     });
     items = items.slice(0, 200);
 
@@ -262,13 +266,18 @@ async function writeContent(payload) {
 
     if (process.env.VERCEL) {
         let previous = {};
+        let previousBlobName = "";
         try {
-            previous = (await readLatestBlobContent()) || {};
+            const latest = await readLatestBlobContent();
+            if (latest) {
+                previous = latest.content || {};
+                previousBlobName = String(latest.pathname || "").split("/").pop();
+            }
         } catch (error) {
             previous = {};
         }
         await writeBlobContent(content);
-        await appendEditLogBlob(previous, content);
+        await appendEditLogBlob(previous, content, previousBlobName);
         return content;
     }
 
