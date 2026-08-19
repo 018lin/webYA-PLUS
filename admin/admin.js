@@ -563,12 +563,6 @@ function renderCarouselTable() {
                         <td>${escapeHtml(slide.alt || "-")}</td>
                         <td><span class="badge ${slide.visible ? "badge-ok" : "badge-muted"}">${slide.visible ? "显示" : "隐藏"}</span></td>
                         <td class="col-actions">
-                            <button class="ghost-btn btn-sm" type="button" data-carousel-move="${index}" data-dir="-1" ${index === 0 ? "disabled" : ""} title="上移">
-                                <i class="fas fa-arrow-up"></i>
-                            </button>
-                            <button class="ghost-btn btn-sm" type="button" data-carousel-move="${index}" data-dir="1" ${index === slides.length - 1 ? "disabled" : ""} title="下移">
-                                <i class="fas fa-arrow-down"></i>
-                            </button>
                             <button class="ghost-btn btn-sm" type="button" data-carousel-edit="${index}">
                                 <i class="fas fa-pen"></i> 编辑
                             </button>
@@ -839,12 +833,6 @@ function renderCollectionCard(type, item, index, config) {
             </div>
             ${item.summary ? `<p class="mini-card-summary">${escapeHtml(item.summary)}</p>` : ""}
             <div class="mini-card-actions">
-                <button class="ghost-btn btn-sm" type="button" data-move="${type}" data-index="${index}" data-dir="-1" ${index === 0 ? "disabled" : ""} title="上移">
-                    <i class="fas fa-arrow-up"></i>
-                </button>
-                <button class="ghost-btn btn-sm" type="button" data-move="${type}" data-index="${index}" data-dir="1" ${index === content[type].length - 1 ? "disabled" : ""} title="下移">
-                    <i class="fas fa-arrow-down"></i>
-                </button>
                 <span class="mini-card-hint"><i class="fas fa-chevron-down"></i> 点击展开详情</span>
                 <button class="danger-btn btn-sm" type="button" data-remove="${type}" data-index="${index}">
                     <i class="fas fa-trash"></i>
@@ -1032,17 +1020,6 @@ async function removeItem(path, index) {
     let list = content;
     segments.forEach(segment => { list = list[segment]; });
     list.splice(Number(index), 1);
-    markDirty();
-    render();
-}
-
-function moveItem(path, index, direction) {
-    const segments = path.split(".");
-    let list = content;
-    segments.forEach(segment => { list = list[segment]; });
-    const target = index + direction;
-    if (target < 0 || target >= list.length) return;
-    [list[index], list[target]] = [list[target], list[index]];
     markDirty();
     render();
 }
@@ -1677,26 +1654,6 @@ document.addEventListener("click", async event => {
         activeModule = navButton.dataset.module;
         collectionOpenIndex = null;
         render();
-        return;
-    }
-
-    const moveButton = event.target.closest("[data-move]");
-    if (moveButton) {
-        moveItem(moveButton.dataset.move, Number(moveButton.dataset.index), Number(moveButton.dataset.dir));
-        return;
-    }
-
-    const carouselMoveButton = event.target.closest("[data-carousel-move]");
-    if (carouselMoveButton) {
-        const index = Number(carouselMoveButton.dataset.carouselMove);
-        const direction = Number(carouselMoveButton.dataset.dir);
-        const target = index + direction;
-        if (target >= 0 && target < content.home.heroSlides.length) {
-            const slides = content.home.heroSlides;
-            [slides[index], slides[target]] = [slides[target], slides[index]];
-            markDirty();
-            renderCarouselTable();
-        }
         return;
     }
 

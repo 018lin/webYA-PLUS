@@ -829,14 +829,6 @@ h1 {
     text-align: center;
 }
 
-/* 排序按钮禁用态 */
-.mini-card-actions .ghost-btn[disabled],
-.data-table .ghost-btn[disabled] {
-    opacity: 0.35;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
 /* 保存失败时按钮短暂变红 */
 #saveBtn.save-error {
     background: var(--danger);
