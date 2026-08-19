@@ -103,4 +103,58 @@ function sendUnauthorized(res) {
     res.end(JSON.stringify({ error: "Unauthorized" }));
 }
 
-module.exports = { adminPassword, adminUsers, hasAnyAccount, authenticate, signToken, verifyToken, bearerToken, requireAuth, sendUnauthorized, TOKEN_TTL };
+// ---- 登录限流（内存版）：连续失败 MAX_LOGIN_FAILURES 次后锁定 LOGIN_LOCK_MS ----
+// 说明：Vercel serverless 多实例各自独立计数，本限流是尽力而为；
+// 高安全要求建议接入 Vercel KV 等外部存储做全局限流。
+const MAX_LOGIN_FAILURES = 5;
+const LOGIN_LOCK_MS = 15 * 60 * 1000;
+
+const loginFailures = new Map(); // key: `${ip}:${username}` -> { count, lockedUntil }
+
+function loginKey(ip, username) {
+    return `${ip || "unknown"}:${String(username || "").trim().toLowerCase()}`;
+}
+
+// 防止攻击者用大量不同 IP/用户名把 Map 撑爆（内存 DoS）
+function trimLoginFailures() {
+    if (loginFailures.size < 5000) return;
+    const now = Date.now();
+    for (const [key, entry] of loginFailures) {
+        // lockedUntil 为 0 表示未锁定，直接清理；已锁定但过期的也清理
+        if (!entry.lockedUntil || now > entry.lockedUntil) loginFailures.delete(key);
+    }
+}
+
+function recordLoginFailure(ip, username) {
+    trimLoginFailures();
+    const key = loginKey(ip, username);
+    const entry = loginFailures.get(key) || { count: 0, lockedUntil: 0 };
+    // 仅在已锁定且已过期时重置计数（lockedUntil 为 0 表示从未锁定）
+    if (entry.lockedUntil && Date.now() > entry.lockedUntil) {
+        entry.count = 0;
+        entry.lockedUntil = 0;
+    }
+    entry.count += 1;
+    if (entry.count >= MAX_LOGIN_FAILURES) {
+        entry.lockedUntil = Date.now() + LOGIN_LOCK_MS;
+    }
+    loginFailures.set(key, entry);
+}
+
+function clearLoginFailures(ip, username) {
+    loginFailures.delete(loginKey(ip, username));
+}
+
+// 返回剩余锁定毫秒数，未锁定返回 0
+function loginLockRemaining(ip, username) {
+    const entry = loginFailures.get(loginKey(ip, username));
+    if (!entry) return 0;
+    if (!entry.lockedUntil) return 0; // 有失败记录但未锁定
+    if (Date.now() > entry.lockedUntil) {
+        loginFailures.delete(loginKey(ip, username));
+        return 0;
+    }
+    return entry.lockedUntil - Date.now();
+}
+
+module.exports = { adminPassword, adminUsers, hasAnyAccount, authenticate, signToken, verifyToken, bearerToken, requireAuth, sendUnauthorized, TOKEN_TTL, recordLoginFailure, clearLoginFailures, loginLockRemaining };

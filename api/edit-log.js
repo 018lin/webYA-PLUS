@@ -58,6 +58,8 @@ module.exports = async function handler(req, res) {
         return;
     }
 
+    if (!requireAuth(req)) return sendUnauthorized(res);
+
     try {
         sendJson(res, 200, await readLatestEditLog());
     } catch (error) {

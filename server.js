@@ -43,7 +43,8 @@ const imageExtensions = {
 function send(res, status, body, type = "text/plain; charset=utf-8") {
     res.writeHead(status, {
         "Content-Type": type,
-        "Cache-Control": "no-store"
+        "Cache-Control": "no-store",
+        "X-Frame-Options": "DENY"
     });
     res.end(body);
 }
@@ -347,6 +348,11 @@ function createConsultation(payload) {
 
 async function handleConsultations(req, res, requestUrl) {
     if (req.method === "GET") {
+        // 咨询记录含患者姓名、手机号等个人信息，仅后台可读
+        if (!requireAuth(req)) {
+            sendUnauthorized(res);
+            return true;
+        }
         try {
             sendJson(res, 200, readConsultations());
         } catch (error) {
@@ -554,6 +560,10 @@ function listBackups() {
 
 async function handleBackups(req, res) {
     if (req.method === "GET") {
+        if (!requireAuth(req)) {
+            sendUnauthorized(res);
+            return true;
+        }
         try {
             sendJson(res, 200, { backups: listBackups() });
         } catch (error) {
@@ -593,6 +603,10 @@ async function handleBackups(req, res) {
 async function handleEditLog(req, res) {
     if (req.method !== "GET") {
         sendJson(res, 405, { error: "Method not allowed" });
+        return true;
+    }
+    if (!requireAuth(req)) {
+        sendUnauthorized(res);
         return true;
     }
     try {
@@ -670,7 +684,10 @@ function serveStatic(req, res, pathname) {
             return;
         }
         const type = mimeTypes[path.extname(filePath).toLowerCase()] || "application/octet-stream";
-        res.writeHead(200, { "Content-Type": type });
+        res.writeHead(200, {
+            "Content-Type": type,
+            "X-Frame-Options": "DENY"
+        });
         res.end(data);
     });
 }
@@ -678,6 +695,12 @@ function serveStatic(req, res, pathname) {
 const server = http.createServer(async (req, res) => {
     const requestUrl = new URL(req.url, `http://${req.headers.host}`);
     const pathname = requestUrl.pathname;
+
+    if (pathname.startsWith("/data/")) {
+        // data/ 目录存放内容、咨询记录与备份，禁止静态直接访问
+        send(res, 404, "Not found");
+        return;
+    }
 
     if (await handleApi(req, res, requestUrl)) return;
     serveStatic(req, res, pathname);

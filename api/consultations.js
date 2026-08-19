@@ -190,6 +190,8 @@ function consultationUrl(req) {
 
 module.exports = async function handler(req, res) {
     if (req.method === "GET") {
+        // 咨询记录含患者姓名、手机号等个人信息，仅后台可读
+        if (!requireAuth(req)) return sendUnauthorized(res);
         try {
             sendJson(res, 200, await readConsultations());
         } catch (error) {

@@ -254,7 +254,9 @@ function normalizeContent(raw) {
 }
 
 async function fetchJson(url) {
-    const response = await fetch(url, { cache: "no-store" });
+    // 带上登录 token：consultations/edit-log/backups 等接口已要求鉴权；
+    // 对公开接口（api/content）携带 token 无副作用
+    const response = await fetch(url, { cache: "no-store", headers: authHeaders() });
     if (!response.ok) throw new Error(`Cannot load ${url}`);
     return response.json();
 }

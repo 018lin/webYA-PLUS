@@ -1,6 +1,13 @@
 // 管理员登录接口：POST 校验账号密码并签发 token；GET 校验当前 token 是否有效。
 // 账号通过环境变量 SITE_ADMIN_USERS（多账号）或 SITE_ADMIN_PASSWORD（单账号）配置，不写入代码仓库。
-const { hasAnyAccount, authenticate, signToken, verifyToken, bearerToken, sendUnauthorized, TOKEN_TTL } = require("./_lib/auth");
+const { hasAnyAccount, authenticate, signToken, verifyToken, bearerToken, sendUnauthorized, TOKEN_TTL, recordLoginFailure, clearLoginFailures, loginLockRemaining } = require("./_lib/auth");
+
+// 客户端 IP：Vercel 经 x-forwarded-for 传入真实来源地址
+function clientIp(req) {
+    const forwarded = req.headers && req.headers["x-forwarded-for"];
+    if (forwarded) return String(forwarded).split(",")[0].trim();
+    return (req.socket && req.socket.remoteAddress) || "";
+}
 
 function sendJson(res, status, value) {
     res.statusCode = status;
@@ -59,11 +66,21 @@ module.exports = async function handler(req, res) {
             const payload = await readBody(req);
             const username = String((payload && payload.username) || "").trim();
             const password = String((payload && payload.password) || "");
+            const ip = clientIp(req);
+
+            const lockRemaining = loginLockRemaining(ip, username);
+            if (lockRemaining > 0) {
+                sendJson(res, 429, { error: `尝试次数过多，请 ${Math.ceil(lockRemaining / 60000)} 分钟后再试` });
+                return;
+            }
+
             const user = authenticate(username, password);
             if (!user) {
+                recordLoginFailure(ip, username);
                 sendJson(res, 401, { error: "用户名或密码错误" });
                 return;
             }
+            clearLoginFailures(ip, username);
             sendJson(res, 200, {
                 token: signToken(user),
                 expiresAt: Date.now() + TOKEN_TTL,

@@ -101,6 +101,7 @@ async function restoreBlobBackup(name) {
 
 module.exports = async function handler(req, res) {
     if (req.method === "GET") {
+        if (!requireAuth(req)) return sendUnauthorized(res);
         try {
             sendJson(res, 200, { backups: await listBlobBackups() });
         } catch (error) {
