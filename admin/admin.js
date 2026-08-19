@@ -43,6 +43,8 @@ let articleSearch = "";
 let articleCategoryFilter = "all";
 let articleEditorIndex = null;
 let articleCoverValue = "";
+let carouselEditorIndex = null;
+let carouselImageValue = "";
 
 const apiUrls = ["../api/content", "/api/content"];
 const uploadUrls = ["../api/upload", "/api/upload"];
@@ -357,7 +359,7 @@ function renderSettings() {
 function renderHome() {
     panelEl.innerHTML = `
         ${panelHead("首页内容", "管理首页轮播、品牌理念和预约引导。", `
-            <button class="small-btn" type="button" data-add="home.heroSlides">
+            <button class="small-btn" type="button" data-carousel-add>
                 <i class="fas fa-plus"></i>
                 添加轮播
             </button>
@@ -368,14 +370,214 @@ function renderHome() {
             ${textarea("理念文案", content.home.philosophyText, "home.philosophyText")}
             ${textarea("底部预约标题", content.home.ctaTitle, "home.ctaTitle")}
         </div>
-        <div class="item-list">
-            ${content.home.heroSlides.map((item, index) => renderItem("home.heroSlides", item, index, "title", [
-                ["轮播标题", "title"],
-                ["轮播图片", "image", "image"],
-                ["图片说明", "alt"]
-            ], true)).join("")}
+        <div class="data-table-wrap">
+            <div id="carouselTableContainer"></div>
         </div>
     `;
+    renderCarouselTable();
+}
+
+function renderCarouselTable() {
+    const container = document.getElementById("carouselTableContainer");
+    if (!container) return;
+
+    const slides = content.home.heroSlides;
+    container.innerHTML = `
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>图片</th>
+                    <th>标题</th>
+                    <th>说明</th>
+                    <th>状态</th>
+                    <th class="col-actions">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${slides.length ? slides.map((slide, index) => `
+                    <tr>
+                        <td>
+                            ${slide.image
+                                ? `<img class="table-thumb" src="${escapeAttr(assetSrc(slide.image))}" alt="">`
+                                : `<span class="badge badge-muted">无图</span>`}
+                        </td>
+                        <td class="cell-title" title="${escapeAttr(slide.title || "")}">${escapeHtml(slide.title || "未命名轮播")}</td>
+                        <td>${escapeHtml(slide.alt || "-")}</td>
+                        <td><span class="badge ${slide.visible ? "badge-ok" : "badge-muted"}">${slide.visible ? "显示" : "隐藏"}</span></td>
+                        <td class="col-actions">
+                            <button class="ghost-btn btn-sm" type="button" data-carousel-edit="${index}">
+                                <i class="fas fa-pen"></i> 编辑
+                            </button>
+                            <button class="danger-btn btn-sm" type="button" data-carousel-delete="${index}">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </td>
+                    </tr>
+                `).join("") : `
+                    <tr><td colspan="5" class="empty-row">暂无轮播图</td></tr>
+                `}
+            </tbody>
+        </table>
+    `;
+}
+
+function openCarouselEditor(index) {
+    carouselEditorIndex = index == null ? null : Number(index);
+    renderCarouselEditor();
+}
+
+function closeCarouselEditor() {
+    carouselEditorIndex = null;
+    document.removeEventListener("keydown", onCarouselModalKeydown);
+    const modal = document.getElementById("carouselModal");
+    if (modal) modal.remove();
+}
+
+function onCarouselModalKeydown(event) {
+    if (event.key === "Escape") closeCarouselEditor();
+}
+
+function renderCarouselEditor() {
+    const editing = carouselEditorIndex != null;
+    const slide = editing ? content.home.heroSlides[carouselEditorIndex] : null;
+    carouselImageValue = (slide && slide.image) || "";
+    const imageSrc = carouselImageValue ? assetSrc(carouselImageValue) : "";
+
+    const modal = document.createElement("div");
+    modal.className = "modal-overlay";
+    modal.id = "carouselModal";
+    modal.innerHTML = `
+        <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-head">
+                <div>
+                    <h3>${editing ? "编辑轮播" : "添加轮播"}</h3>
+                    <p>轮播图展示在首页顶部，最多建议 3-4 张。</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <label class="field field-wide">
+                    <span>轮播标题</span>
+                    <input id="carouselTitle" maxlength="60" value="${escapeAttr(slide ? slide.title : "")}" placeholder="请输入轮播标题">
+                </label>
+                <div class="field field-wide image-field">
+                    <span>轮播图片</span>
+                    <div class="image-picker">
+                        <div class="image-preview" id="carouselImagePreview">
+                            ${imageSrc
+                                ? `<img src="${escapeAttr(imageSrc)}" alt="">`
+                                : `<div class="image-preview-empty"><i class="fas fa-image"></i></div>`}
+                        </div>
+                        <div class="image-picker-main">
+                            <div class="image-picker-actions">
+                                <label class="small-btn file-btn">
+                                    <i class="fas fa-folder-open"></i>
+                                    选择图片
+                                    <input class="image-file-input" type="file" id="carouselImageFile" accept="image/*">
+                                </label>
+                                <button class="ghost-btn" type="button" id="carouselImageClear" ${carouselImageValue ? "" : "hidden"}>
+                                    <i class="fas fa-xmark"></i> 清除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <label class="field field-wide">
+                    <span>图片说明</span>
+                    <input id="carouselAlt" maxlength="100" value="${escapeAttr(slide ? slide.alt : "")}" placeholder="轮播图的替代文字，可留空">
+                </label>
+                <div class="field-wide">
+                    <label class="switch-field">
+                        <input type="checkbox" id="carouselVisible" ${slide && slide.visible !== false ? "checked" : ""}>
+                        在首页显示该轮播
+                    </label>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="ghost-btn" type="button" id="carouselCancelBtn">取消</button>
+                <button class="primary-btn" type="button" id="carouselSaveBtn">
+                    <i class="fas fa-floppy-disk"></i> 保存轮播
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    document.addEventListener("keydown", onCarouselModalKeydown);
+
+    modal.addEventListener("click", event => {
+        if (event.target === modal) closeCarouselEditor();
+    });
+    document.getElementById("carouselCancelBtn").addEventListener("click", closeCarouselEditor);
+    document.getElementById("carouselSaveBtn").addEventListener("click", saveCarouselSlide);
+    document.getElementById("carouselImageClear").addEventListener("click", () => {
+        carouselImageValue = "";
+        updateCarouselImagePreview();
+    });
+    document.getElementById("carouselImageFile").addEventListener("change", handleCarouselImageFile);
+    document.getElementById("carouselTitle").focus();
+}
+
+function updateCarouselImagePreview() {
+    const preview = document.getElementById("carouselImagePreview");
+    const clearButton = document.getElementById("carouselImageClear");
+    if (preview) {
+        preview.innerHTML = carouselImageValue
+            ? `<img src="${escapeAttr(assetSrc(carouselImageValue))}" alt="">`
+            : `<div class="image-preview-empty"><i class="fas fa-image"></i></div>`;
+    }
+    if (clearButton) clearButton.hidden = !carouselImageValue;
+}
+
+async function handleCarouselImageFile(event) {
+    const file = event.target.files && event.target.files[0];
+    event.target.value = "";
+    if (!file) return;
+
+    if (!file.type || !file.type.startsWith("image/")) {
+        setState("请选择图片文件", "error");
+        return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+        setState("图片不能超过 10MB", "error");
+        return;
+    }
+    if (!apiMode) {
+        setState("请通过本地服务或部署后的后台上传图片", "error");
+        return;
+    }
+
+    setState("正在上传图片");
+    try {
+        carouselImageValue = await uploadImage(file);
+        updateCarouselImagePreview();
+        setState("图片已上传，保存轮播后生效", "ok");
+    } catch (error) {
+        setState(error.message || "图片上传失败", "error");
+        console.error(error);
+    }
+}
+
+async function saveCarouselSlide() {
+    const title = document.getElementById("carouselTitle").value.trim() || "新轮播";
+    const slide = {
+        title,
+        image: carouselImageValue,
+        alt: document.getElementById("carouselAlt").value.trim(),
+        visible: document.getElementById("carouselVisible").checked
+    };
+    if (carouselEditorIndex == null) {
+        content.home.heroSlides.push(slide);
+    } else {
+        content.home.heroSlides[carouselEditorIndex] = slide;
+    }
+    closeCarouselEditor();
+    await saveContent();
+    render();
+}
+
+function removeCarouselSlide(index) {
+    if (!window.confirm("确定删除这张轮播图？此操作不可恢复。")) return;
+    content.home.heroSlides.splice(index, 1);
+    render();
 }
 
 function getCollectionConfig(type) {
@@ -565,11 +767,7 @@ function setByPath(path, value) {
 }
 
 function addItem(path) {
-    if (path === "home.heroSlides") {
-        content.home.heroSlides.push({ title: "新轮播", image: "", alt: "", visible: true });
-    } else {
-        content[path].push(clone(getCollectionConfig(path).defaultItem));
-    }
+    content[path].push(clone(getCollectionConfig(path).defaultItem));
     render();
 }
 
@@ -1095,6 +1293,24 @@ document.addEventListener("click", event => {
     const removeButton = event.target.closest("[data-remove]");
     if (removeButton) {
         removeItem(removeButton.dataset.remove, removeButton.dataset.index);
+        return;
+    }
+
+    const carouselAddButton = event.target.closest("[data-carousel-add]");
+    if (carouselAddButton) {
+        openCarouselEditor(null);
+        return;
+    }
+
+    const carouselEditButton = event.target.closest("[data-carousel-edit]");
+    if (carouselEditButton) {
+        openCarouselEditor(carouselEditButton.dataset.carouselEdit);
+        return;
+    }
+
+    const carouselDeleteButton = event.target.closest("[data-carousel-delete]");
+    if (carouselDeleteButton) {
+        removeCarouselSlide(Number(carouselDeleteButton.dataset.carouselDelete));
         return;
     }
 
