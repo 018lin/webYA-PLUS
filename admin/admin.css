@@ -326,8 +326,9 @@ h1 {
 .image-preview img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
+    background: #fff;
 }
 
 .image-preview-empty {
@@ -397,10 +398,10 @@ h1 {
 .content-item-thumb {
     width: 48px;
     height: 38px;
-    object-fit: cover;
+    object-fit: contain;
     border: 1px solid var(--line);
     border-radius: 6px;
-    background: #f3f5f2;
+    background: #fff;
     flex-shrink: 0;
 }
 

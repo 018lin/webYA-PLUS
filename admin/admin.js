@@ -85,12 +85,16 @@ function normalizeContent(raw) {
     delete site.mapLng;
     delete site.mapLat;
 
+    const doctors = Array.isArray(raw.doctors)
+        ? raw.doctors.map(({ featured, ...doctor }) => doctor)
+        : [];
+
     return {
         ...clone(fallbackContent),
         ...raw,
         site,
         home: { ...fallbackContent.home, ...(raw.home || {}) },
-        doctors: Array.isArray(raw.doctors) ? raw.doctors : [],
+        doctors,
         specialties: Array.isArray(raw.specialties) ? raw.specialties : [],
         articles: Array.isArray(raw.articles) ? raw.articles : [],
         media: Array.isArray(raw.media) ? raw.media : []
@@ -358,7 +362,7 @@ function getCollectionConfig(type) {
     return {
         doctors: {
             title: "医生管理",
-            desc: "维护医生列表、简介、标签、头像和首页推荐状态。",
+            desc: "维护医生列表、简介、标签、头像和显示状态。",
             addText: "添加医生",
             titleKey: "name",
             subKey: "title",
@@ -370,8 +374,8 @@ function getCollectionConfig(type) {
                 ["擅长标签（用逗号分隔）", "tags"],
                 ["简介", "summary", "textarea"]
             ],
-            defaultItem: { name: "新医生", title: "医生", avatar: "", href: "team.html", tags: "", summary: "", featured: false, visible: true },
-            switches: [["首页推荐", "featured"], ["显示", "visible"]]
+            defaultItem: { name: "新医生", title: "医生", avatar: "", href: "team.html", tags: "", summary: "", visible: true },
+            switches: [["显示", "visible"]]
         },
         specialties: {
             title: "专科管理",

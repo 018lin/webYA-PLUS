@@ -34,7 +34,6 @@
       "avatar": "images/杨医生海报.png",
       "tags": "口腔正畸,颜面管理,美学修复",
       "summary": "遵义医科大学毕业（2009年），从事口腔正畸与颜面管理、口腔美学修复多年。2018年获中华口腔医学会口腔正畸专业委员会举办的「COS 全国口腔正畸青年医师优秀病例展评」第一名，KQ88 口腔网校牙医沙龙讲师。",
-      "featured": true,
       "visible": true,
       "href": "doctor-yangyuanyang.html"
     },
@@ -44,7 +43,6 @@
       "avatar": "images/吴医生海报.png",
       "tags": "全科治疗,口腔预防,口腔保健",
       "summary": "擅长全科综合治疗与口腔预防保健，为患者提供全面的口腔健康管理服务。",
-      "featured": true,
       "visible": true,
       "href": "doctor-wuguoping.html"
     },
@@ -54,7 +52,6 @@
       "avatar": "images/林医生海报.png",
       "tags": "儿童矫治,早期干预,颜面发育",
       "summary": "擅长儿童早期矫治，致力于儿童口腔健康管理与颌面发育引导。",
-      "featured": true,
       "visible": true,
       "href": "doctor-linxuemei.html"
     },
@@ -64,7 +61,6 @@
       "avatar": "images/范医生海报.png",
       "tags": "种植修复,牙周治疗",
       "summary": "擅长种植修复与牙周治疗，注重牙周健康维护与种植体长期稳定。",
-      "featured": false,
       "visible": true,
       "href": "doctor-fanyubo.html"
     },
@@ -74,7 +70,6 @@
       "avatar": "images/宋医生海报.png",
       "tags": "儿童口腔,口腔内科,修复治疗",
       "summary": "擅长儿童口腔、口腔内科、修复治疗及综合治疗，在口腔修复领域经验丰富。",
-      "featured": false,
       "visible": true,
       "href": "doctor-songzhenfang.html"
     },
@@ -84,7 +79,6 @@
       "avatar": "images/古医生海报.png",
       "tags": "全科治疗,口腔预防,牙体修复,口腔保健",
       "summary": "擅长口腔全科综合治疗与口腔预防保健，在龋病治疗、牙体牙髓病、牙周基础治疗及各类口腔修复方面具有丰富的临床经验。",
-      "featured": false,
       "visible": true,
       "href": "doctor-gujiahui.html"
     },
@@ -94,7 +88,6 @@
       "avatar": "images/黄医生海报.png",
       "tags": "全科治疗,口腔修复,牙体牙髓,口腔保健",
       "summary": "擅长口腔全科综合诊疗与口腔美学修复，在牙体牙髓病治疗、口腔修复及牙周基础治疗等方面具有丰富的临床经验。",
-      "featured": false,
       "visible": true,
       "href": "doctor-huangmeiting.html"
     },
@@ -104,7 +97,6 @@
       "avatar": "images/何医生海报.png",
       "tags": "口腔全科,口腔预防,综合治疗",
       "summary": "从事口腔临床工作多年，具有扎实的专业理论基础和丰富的临床实践经验，始终以严谨细致的诊疗态度为患者提供优质的口腔医疗服务。",
-      "featured": false,
       "visible": true,
       "href": "doctor-hedongming.html"
     },
@@ -114,7 +106,6 @@
       "avatar": "images/医生团队/古佩珊医生(PSD).png",
       "tags": "口腔全科,口腔预防,综合治疗",
       "summary": "从事口腔临床工作多年，具备扎实的专业功底和丰富的临床经验，始终以精益求精的态度为患者提供高质量的口腔诊疗服务。",
-      "featured": false,
       "visible": true,
       "href": "doctor-gupeishan.html"
     },
@@ -124,7 +115,6 @@
       "avatar": "images/医生团队/徐艺坤医生.png",
       "tags": "口腔全科,口腔预防,综合治疗",
       "summary": "从事口腔临床工作多年，具有扎实的专业理论基础和丰富的临床实践经验，为患者提供优质的口腔医疗服务。",
-      "featured": false,
       "visible": true,
       "href": "doctor-xuyikun.html"
     }
