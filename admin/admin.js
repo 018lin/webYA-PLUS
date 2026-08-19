@@ -774,12 +774,9 @@ function renderArticleEditor() {
                     <span>正文</span>
                     <textarea id="articleBody" rows="14" placeholder="正文内容，空行分段">${escapeHtml(article ? article.body : "")}</textarea>
                 </label>
-                <label class="field">
-                    <span>发布时间</span>
-                    <input type="date" id="articleDate" value="${escapeAttr(article ? article.date : new Date().toISOString().slice(0, 10))}">
-                </label>
             </div>
             <div class="modal-foot">
+                <span class="modal-foot-note">发布时间在首次保存时自动生成，不可修改</span>
                 <button class="ghost-btn" type="button" id="articleCancelBtn">取消</button>
                 <button class="ghost-btn" type="button" id="articleDraftBtn">
                     <i class="fas fa-pen-to-square"></i> 保存草稿
@@ -852,7 +849,6 @@ function readArticleForm() {
     return {
         title: document.getElementById("articleTitle").value.trim(),
         category: document.getElementById("articleCategory").value,
-        date: document.getElementById("articleDate").value,
         summary: document.getElementById("articleSummary").value,
         body: document.getElementById("articleBody").value,
         image: articleCoverValue
@@ -865,6 +861,7 @@ function articleFromForm(values, visible) {
         ...existing,
         ...values,
         visible,
+        date: existing.date || new Date().toISOString().slice(0, 10),
         topic: existing.topic || `art-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`
     };
 }

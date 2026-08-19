@@ -598,12 +598,19 @@ h1 {
 .modal-foot {
     padding: 16px 22px;
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     gap: 10px;
     border-top: 1px solid var(--line);
     background: #fbfcfa;
     position: sticky;
     bottom: 0;
+}
+
+.modal-foot-note {
+    margin-right: auto;
+    color: var(--muted);
+    font-size: 12px;
 }
 
 .consultation-list {
