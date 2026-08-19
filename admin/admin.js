@@ -48,9 +48,9 @@ let carouselEditorIndex = null;
 let carouselImageValue = "";
 let dirty = false;
 let collectionOpenIndex = null;
-let authToken = localStorage.getItem("here-dental-auth-token") || "";
-let authExpiresAt = Number(localStorage.getItem("here-dental-auth-expires") || 0);
-let authUser = localStorage.getItem("here-dental-auth-user") || "";
+let authToken = sessionStorage.getItem("here-dental-auth-token") || "";
+let authExpiresAt = Number(sessionStorage.getItem("here-dental-auth-expires") || 0);
+let authUser = sessionStorage.getItem("here-dental-auth-user") || "";
 let authRequired = false;
 let revision = 0;
 let consultationFilter = "all";
@@ -279,9 +279,9 @@ function clearAuth() {
     authToken = "";
     authExpiresAt = 0;
     authUser = "";
-    localStorage.removeItem("here-dental-auth-token");
-    localStorage.removeItem("here-dental-auth-expires");
-    localStorage.removeItem("here-dental-auth-user");
+    sessionStorage.removeItem("here-dental-auth-token");
+    sessionStorage.removeItem("here-dental-auth-expires");
+    sessionStorage.removeItem("here-dental-auth-user");
 }
 
 function showCurrentUser() {
@@ -344,9 +344,9 @@ async function performLogin(username, password) {
             authExpiresAt = Number(data.expiresAt || 0);
             authUser = data.user || "管理员";
             if (authToken) {
-                localStorage.setItem("here-dental-auth-token", authToken);
-                localStorage.setItem("here-dental-auth-expires", String(authExpiresAt));
-                localStorage.setItem("here-dental-auth-user", authUser);
+                sessionStorage.setItem("here-dental-auth-token", authToken);
+                sessionStorage.setItem("here-dental-auth-expires", String(authExpiresAt));
+                sessionStorage.setItem("here-dental-auth-user", authUser);
             }
             authRequired = true;
             return true;
