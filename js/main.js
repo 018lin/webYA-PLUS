@@ -154,3 +154,99 @@ if (sections.length > 0) {
 
     startTimer();
 })();
+
+// ======================== Appointment Form ========================
+(function initAppointmentForm() {
+    var form = document.getElementById('appointmentForm');
+    if (!form) return;
+
+    var button = form.querySelector('.submit-btn');
+    var statusEl = document.createElement('p');
+    statusEl.className = 'form-status';
+    if (button) button.insertAdjacentElement('afterend', statusEl);
+
+    function fieldValue(selector) {
+        var el = form.querySelector(selector);
+        return el ? el.value.trim() : '';
+    }
+
+    function setStatus(text, tone) {
+        statusEl.textContent = text || '';
+        statusEl.className = 'form-status' + (tone ? ' ' + tone : '');
+    }
+
+    async function postConsultation(payload) {
+        var urls = ['api/consultations', '/api/consultations'];
+        var lastError = null;
+
+        for (var i = 0; i < urls.length; i += 1) {
+            try {
+                var response = await fetch(urls[i], {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                var text = await response.text();
+                var data = {};
+                try {
+                    data = text ? JSON.parse(text) : {};
+                } catch (error) {
+                    data = {};
+                }
+
+                if (!response.ok) {
+                    throw new Error(data.error || text || '提交失败');
+                }
+
+                return data;
+            } catch (error) {
+                lastError = error;
+            }
+        }
+
+        throw lastError || new Error('提交失败');
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+
+        var payload = {
+            name: fieldValue('#name'),
+            phone: fieldValue('#phone'),
+            type: fieldValue('#type'),
+            date: fieldValue('#date'),
+            message: fieldValue('#message'),
+            page: window.location.pathname
+        };
+
+        if (!payload.name) {
+            setStatus('请填写姓名', 'error');
+            return;
+        }
+        if (!/^[0-9+\-\s()]{6,30}$/.test(payload.phone)) {
+            setStatus('请填写正确的手机号', 'error');
+            return;
+        }
+
+        if (button) {
+            button.disabled = true;
+            button.textContent = '正在提交...';
+        }
+        setStatus('');
+
+        try {
+            await postConsultation(payload);
+            form.reset();
+            setStatus('预约信息已提交，我们会尽快与您联系。', 'ok');
+        } catch (error) {
+            setStatus(error.message || '提交失败，请稍后再试。', 'error');
+        } finally {
+            if (button) {
+                button.disabled = false;
+                button.textContent = '提交预约';
+            }
+        }
+    }
+
+    form.addEventListener('submit', handleSubmit);
+})();

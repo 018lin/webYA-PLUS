@@ -4,7 +4,8 @@ const modules = [
     { id: "doctors", label: "医生管理", icon: "fa-user-doctor" },
     { id: "specialties", label: "专科管理", icon: "fa-tooth" },
     { id: "articles", label: "科普文章", icon: "fa-book-medical" },
-    { id: "media", label: "媒体资源", icon: "fa-images" }
+    { id: "media", label: "媒体资源", icon: "fa-images" },
+    { id: "consultations", label: "咨询信息", icon: "fa-inbox" }
 ];
 
 const fallbackContent = {
@@ -36,9 +37,14 @@ let content = JSON.parse(JSON.stringify(fallbackContent));
 let activeModule = "settings";
 let apiMode = false;
 let apiUrl = "../api/content";
+let consultations = [];
+let consultationsLoaded = false;
+let consultationsLoading = false;
+let consultationApiUrl = "../api/consultations";
 
 const apiUrls = ["../api/content", "/api/content"];
 const uploadUrls = ["../api/upload", "/api/upload"];
+const consultationUrls = ["../api/consultations", "/api/consultations"];
 const staticContentUrls = ["../data/site-content.json", "/data/site-content.json"];
 
 const navEl = document.getElementById("adminNav");
@@ -147,6 +153,41 @@ function shouldUseLocalDraft(localDraft, staticContent) {
     return contentScore(localDraft) > contentScore(staticContent);
 }
 
+function normalizeConsultations(raw) {
+    const items = Array.isArray(raw && raw.items)
+        ? raw.items
+        : Array.isArray(raw)
+            ? raw
+            : [];
+
+    return items
+        .filter(Boolean)
+        .sort((a, b) => Date.parse(b.createdAt || 0) - Date.parse(a.createdAt || 0));
+}
+
+async function loadConsultations(showState = true) {
+    consultationsLoading = true;
+    if (showState) setState("正在读取咨询信息");
+
+    try {
+        const apiConsultations = await fetchFirstJson(consultationUrls);
+        consultationApiUrl = apiConsultations.url;
+        consultations = normalizeConsultations(apiConsultations.data);
+        consultationsLoaded = true;
+        if (showState) setState("咨询信息已读取", "ok");
+    } catch (error) {
+        consultations = [];
+        consultationsLoaded = showState || activeModule === "consultations";
+        if (showState || activeModule === "consultations") {
+            setState(error.message || "咨询信息读取失败", "error");
+        }
+    } finally {
+        consultationsLoading = false;
+        renderSummary();
+        if (activeModule === "consultations") renderConsultations();
+    }
+}
+
 async function loadContent() {
     setState("正在读取内容");
     try {
@@ -179,6 +220,7 @@ async function loadContent() {
         }
     }
     render();
+    loadConsultations(false);
 }
 
 async function saveContent() {
@@ -221,6 +263,7 @@ function render() {
     renderSummary();
     const module = modules.find(item => item.id === activeModule);
     titleEl.textContent = module ? module.label : "内容管理";
+    saveBtn.hidden = activeModule === "consultations";
 
     if (activeModule === "settings") renderSettings();
     if (activeModule === "home") renderHome();
@@ -228,6 +271,7 @@ function render() {
     if (activeModule === "specialties") renderCollection("specialties");
     if (activeModule === "articles") renderCollection("articles");
     if (activeModule === "media") renderCollection("media");
+    if (activeModule === "consultations") renderConsultations();
 }
 
 function renderNav() {
@@ -240,12 +284,14 @@ function renderNav() {
 }
 
 function renderSummary() {
+    const pendingConsultations = consultations.filter(item => item.status !== "handled").length;
     const cards = [
         ["医生", content.doctors.length],
         ["专科", content.specialties.length],
         ["文章", content.articles.length],
         ["轮播", content.home.heroSlides.length],
-        ["媒体", content.media.length]
+        ["媒体", content.media.length],
+        ["待处理咨询", pendingConsultations]
     ];
     summaryEl.innerHTML = cards.map(([label, value]) => `
         <div class="summary-card">
@@ -370,7 +416,6 @@ function getCollectionConfig(type) {
                 ["姓名", "name"],
                 ["职称", "title"],
                 ["头像/海报", "avatar", "image"],
-                ["详情页链接", "href"],
                 ["擅长标签（用逗号分隔）", "tags"],
                 ["简介", "summary", "textarea"]
             ],
@@ -446,6 +491,86 @@ function renderCollection(type) {
                 return renderItem(type, item, index, config.titleKey, config.fields, openByDefault, config);
             }).join("") : `<div class="empty-state">暂无内容</div>`}
         </div>
+    `;
+}
+
+function formatDateTime(value) {
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return "未知时间";
+
+    return new Intl.DateTimeFormat("zh-CN", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+    }).format(date);
+}
+
+function renderConsultations() {
+    if (!consultationsLoaded && !consultationsLoading) {
+        loadConsultations();
+    }
+
+    const action = `
+        <button class="small-btn" type="button" data-refresh-consultations>
+            <i class="fas fa-rotate-right"></i>
+            刷新
+        </button>
+    `;
+
+    const body = consultationsLoading
+        ? `<div class="empty-state">正在读取咨询信息</div>`
+        : consultations.length
+            ? `<div class="consultation-list">${consultations.map(renderConsultationItem).join("")}</div>`
+            : `<div class="empty-state">暂无咨询信息</div>`;
+
+    panelEl.innerHTML = `
+        ${panelHead("咨询信息", "接收前台在线预约提交的姓名、电话、项目、期望日期和备注。", action)}
+        ${body}
+    `;
+}
+
+function renderConsultationItem(item) {
+    const handled = item.status === "handled";
+    const phone = String(item.phone || "");
+    const tel = phone.replace(/[^\d+]/g, "");
+    const statusText = handled ? "已处理" : "未处理";
+    const nextStatus = handled ? "new" : "handled";
+    const nextText = handled ? "标记未处理" : "标记已处理";
+    const dateText = item.date ? escapeHtml(item.date) : "未填写";
+    const typeText = item.type ? escapeHtml(item.type) : "未选择";
+    const pageText = item.page ? escapeHtml(item.page) : "未知来源";
+    const message = item.message ? escapeHtml(item.message) : "未填写备注";
+
+    return `
+        <article class="consultation-item ${handled ? "handled" : ""}">
+            <div class="consultation-head">
+                <div>
+                    <strong>${escapeHtml(item.name || "未填写姓名")}</strong>
+                    ${phone ? `<a href="tel:${escapeAttr(tel)}">${escapeHtml(phone)}</a>` : ""}
+                </div>
+                <span class="consultation-status ${handled ? "handled" : "new"}">${statusText}</span>
+            </div>
+            <div class="consultation-meta">
+                <span><i class="fas fa-tooth"></i>${typeText}</span>
+                <span><i class="fas fa-calendar-day"></i>${dateText}</span>
+                <span><i class="fas fa-clock"></i>${formatDateTime(item.createdAt)}</span>
+                <span><i class="fas fa-location-dot"></i>${pageText}</span>
+            </div>
+            <p class="consultation-message">${message}</p>
+            <div class="consultation-actions">
+                <button class="small-btn" type="button" data-consultation-status="${escapeAttr(item.id)}" data-status="${nextStatus}">
+                    <i class="fas fa-check"></i>
+                    ${nextText}
+                </button>
+                <button class="danger-btn" type="button" data-remove-consultation="${escapeAttr(item.id)}">
+                    <i class="fas fa-trash"></i>
+                    删除
+                </button>
+            </div>
+        </article>
     `;
 }
 
@@ -611,6 +736,73 @@ async function handleImageSelection(input, path) {
     }
 }
 
+async function requestConsultations(method, payload = null, id = "") {
+    const urls = [
+        consultationApiUrl,
+        ...consultationUrls.filter(url => url !== consultationApiUrl)
+    ];
+    let lastError = null;
+
+    for (const url of urls) {
+        try {
+            const targetUrl = method === "DELETE"
+                ? `${url}?id=${encodeURIComponent(id)}`
+                : url;
+            const options = { method };
+            if (payload) {
+                options.headers = { "Content-Type": "application/json" };
+                options.body = JSON.stringify(payload);
+            }
+
+            const response = await fetch(targetUrl, options);
+            const text = await response.text();
+            let data = {};
+            try {
+                data = text ? JSON.parse(text) : {};
+            } catch (parseError) {
+                data = {};
+            }
+
+            if (!response.ok) {
+                throw new Error(data.error || text || "咨询信息操作失败");
+            }
+
+            consultationApiUrl = url;
+            consultations = normalizeConsultations(data);
+            consultationsLoaded = true;
+            renderSummary();
+            renderConsultations();
+            return data;
+        } catch (error) {
+            lastError = error;
+        }
+    }
+
+    throw lastError || new Error("咨询信息操作失败");
+}
+
+async function updateConsultationStatus(id, status) {
+    setState("正在更新咨询状态");
+    try {
+        await requestConsultations("PATCH", { id, status });
+        setState("咨询状态已更新", "ok");
+    } catch (error) {
+        setState(error.message || "咨询状态更新失败", "error");
+    }
+}
+
+async function removeConsultation(id) {
+    if (!window.confirm("确定删除这条咨询信息？")) return;
+
+    setState("正在删除咨询信息");
+    try {
+        await requestConsultations("DELETE", null, id);
+        setState("咨询信息已删除", "ok");
+    } catch (error) {
+        setState(error.message || "咨询信息删除失败", "error");
+    }
+}
+
 document.addEventListener("input", event => {
     const path = event.target.dataset.path;
     if (!path) return;
@@ -659,6 +851,27 @@ document.addEventListener("click", event => {
         return;
     }
 
+    const refreshConsultationsButton = event.target.closest("[data-refresh-consultations]");
+    if (refreshConsultationsButton) {
+        loadConsultations();
+        return;
+    }
+
+    const consultationStatusButton = event.target.closest("[data-consultation-status]");
+    if (consultationStatusButton) {
+        updateConsultationStatus(
+            consultationStatusButton.dataset.consultationStatus,
+            consultationStatusButton.dataset.status
+        );
+        return;
+    }
+
+    const removeConsultationButton = event.target.closest("[data-remove-consultation]");
+    if (removeConsultationButton) {
+        removeConsultation(removeConsultationButton.dataset.removeConsultation);
+        return;
+    }
+
     const toggleButton = event.target.closest("[data-toggle-item]");
     if (toggleButton) {
         toggleButton.closest(".content-item").classList.toggle("open");
@@ -666,6 +879,12 @@ document.addEventListener("click", event => {
 });
 
 saveBtn.addEventListener("click", saveContent);
-reloadBtn.addEventListener("click", loadContent);
+reloadBtn.addEventListener("click", () => {
+    if (activeModule === "consultations") {
+        loadConsultations();
+    } else {
+        loadContent();
+    }
+});
 
 loadContent();

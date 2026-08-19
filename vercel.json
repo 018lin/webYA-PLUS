@@ -2,6 +2,9 @@
   "functions": {
     "api/content.js": {
       "includeFiles": "data/site-content.json"
+    },
+    "api/consultations.js": {
+      "includeFiles": "data/consultations.json"
     }
   }
 }

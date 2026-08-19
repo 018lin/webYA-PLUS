@@ -7,6 +7,7 @@ const { URL } = require("url");
 const rootDir = __dirname;
 const dataDir = path.join(rootDir, "data");
 const dataFile = path.join(dataDir, "site-content.json");
+const consultationsFile = path.join(dataDir, "consultations.json");
 const backupDir = path.join(dataDir, "backups");
 const uploadDir = path.join(rootDir, "images", "uploads");
 const port = Number(process.env.PORT || 8080);
@@ -112,6 +113,140 @@ function writeContent(nextContent) {
     };
     fs.writeFileSync(dataFile, JSON.stringify(content, null, 2), "utf8");
     return content;
+}
+
+function normalizeConsultationStore(value) {
+    const items = Array.isArray(value && value.items)
+        ? value.items
+        : Array.isArray(value)
+            ? value
+            : [];
+
+    return {
+        items: items
+            .filter(Boolean)
+            .sort((a, b) => Date.parse(b.createdAt || 0) - Date.parse(a.createdAt || 0)),
+        updatedAt: value && value.updatedAt ? value.updatedAt : null
+    };
+}
+
+function readConsultations() {
+    ensureDataDirs();
+    if (!fs.existsSync(consultationsFile)) return { items: [], updatedAt: null };
+    return normalizeConsultationStore(JSON.parse(fs.readFileSync(consultationsFile, "utf8")));
+}
+
+function writeConsultations(items) {
+    ensureDataDirs();
+    if (fs.existsSync(consultationsFile)) {
+        const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+        fs.copyFileSync(consultationsFile, path.join(backupDir, `consultations-${stamp}.json`));
+    }
+
+    const store = normalizeConsultationStore({
+        items,
+        updatedAt: new Date().toISOString()
+    });
+    fs.writeFileSync(consultationsFile, JSON.stringify(store, null, 2), "utf8");
+    return store;
+}
+
+function cleanText(value, maxLength) {
+    return String(value == null ? "" : value)
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, maxLength);
+}
+
+function cleanMessage(value) {
+    return String(value == null ? "" : value)
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
+        .trim()
+        .slice(0, 500);
+}
+
+function createConsultation(payload) {
+    const name = cleanText(payload.name, 40);
+    const phone = cleanText(payload.phone, 30);
+    if (!name) throw new Error("请填写姓名");
+    if (!/^[0-9+\-\s()]{6,30}$/.test(phone)) throw new Error("请填写正确的手机号");
+
+    return {
+        id: `${Date.now()}-${crypto.randomBytes(4).toString("hex")}`,
+        name,
+        phone,
+        type: cleanText(payload.type, 60),
+        date: cleanText(payload.date, 30),
+        message: cleanMessage(payload.message),
+        page: cleanText(payload.page, 160),
+        status: "new",
+        createdAt: new Date().toISOString()
+    };
+}
+
+async function handleConsultations(req, res, requestUrl) {
+    if (req.method === "GET") {
+        try {
+            sendJson(res, 200, readConsultations());
+        } catch (error) {
+            sendJson(res, 500, { error: "Cannot read consultations" });
+        }
+        return true;
+    }
+
+    if (req.method === "POST") {
+        try {
+            const payload = JSON.parse(await readBody(req) || "{}");
+            const current = readConsultations();
+            const created = createConsultation(payload);
+            const saved = writeConsultations([created, ...current.items]);
+            sendJson(res, 201, { item: created, ...saved });
+        } catch (error) {
+            sendJson(res, 400, { error: error.message || "Cannot submit consultation" });
+        }
+        return true;
+    }
+
+    if (req.method === "PATCH") {
+        try {
+            const payload = JSON.parse(await readBody(req) || "{}");
+            const status = payload.status === "handled" ? "handled" : "new";
+            const current = readConsultations();
+            let found = false;
+            const items = current.items.map(item => {
+                if (item.id !== payload.id) return item;
+                found = true;
+                return {
+                    ...item,
+                    status,
+                    handledAt: status === "handled" ? new Date().toISOString() : null
+                };
+            });
+            if (!found) throw new Error("Consultation not found");
+            sendJson(res, 200, writeConsultations(items));
+        } catch (error) {
+            sendJson(res, 400, { error: error.message || "Cannot update consultation" });
+        }
+        return true;
+    }
+
+    if (req.method === "DELETE") {
+        try {
+            const id = requestUrl.searchParams.get("id");
+            if (!id) throw new Error("Missing consultation id");
+            const current = readConsultations();
+            const items = current.items.filter(item => item.id !== id);
+            if (items.length === current.items.length) throw new Error("Consultation not found");
+            sendJson(res, 200, writeConsultations(items));
+        } catch (error) {
+            sendJson(res, 400, { error: error.message || "Cannot delete consultation" });
+        }
+        return true;
+    }
+
+    sendJson(res, 405, { error: "Method not allowed" });
+    return true;
 }
 
 function multipartBoundary(contentType) {
@@ -220,7 +355,9 @@ async function handleUpload(req, res) {
     return true;
 }
 
-async function handleApi(req, res, pathname) {
+async function handleApi(req, res, requestUrl) {
+    const pathname = requestUrl.pathname;
+    if (pathname === "/api/consultations") return handleConsultations(req, res, requestUrl);
     if (pathname === "/api/upload") return handleUpload(req, res);
     if (pathname !== "/api/content") return false;
 
@@ -283,7 +420,7 @@ const server = http.createServer(async (req, res) => {
     const requestUrl = new URL(req.url, `http://${req.headers.host}`);
     const pathname = requestUrl.pathname;
 
-    if (await handleApi(req, res, pathname)) return;
+    if (await handleApi(req, res, requestUrl)) return;
     serveStatic(req, res, pathname);
 });
 

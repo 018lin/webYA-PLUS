@@ -1239,6 +1239,28 @@ img { max-width: 100%; display: block; }
     box-shadow: 0 6px 20px rgba(0,91,172,0.35);
 }
 
+.submit-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.72;
+    transform: none;
+    box-shadow: none;
+}
+
+.form-status {
+    min-height: 20px;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.form-status.ok {
+    color: #0f766e;
+}
+
+.form-status.error {
+    color: #b91c1c;
+}
+
 /* ========== Footer ========== */
 .footer {
     background: #1a2a3a;

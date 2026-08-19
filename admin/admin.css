@@ -208,7 +208,7 @@ h1 {
 
 .admin-summary {
     display: grid;
-    grid-template-columns: repeat(5, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 12px;
     margin-bottom: 16px;
 }
@@ -462,6 +462,90 @@ h1 {
     padding: 40px 22px;
     color: var(--muted);
     text-align: center;
+}
+
+.consultation-list {
+    display: grid;
+    gap: 12px;
+    padding: 22px;
+}
+
+.consultation-item {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 16px;
+}
+
+.consultation-item.handled {
+    background: #fbfcfa;
+}
+
+.consultation-head,
+.consultation-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.consultation-head strong {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.consultation-head a {
+    color: var(--brand);
+    text-decoration: none;
+    font-weight: 650;
+}
+
+.consultation-status {
+    min-height: 28px;
+    border-radius: 999px;
+    padding: 4px 10px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.consultation-status.new {
+    color: #b45309;
+    background: #fff7ed;
+}
+
+.consultation-status.handled {
+    color: #0f766e;
+    background: #ecfdf5;
+}
+
+.consultation-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.consultation-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.consultation-message {
+    margin: 14px 0;
+    color: var(--ink);
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+.consultation-actions {
+    justify-content: flex-start;
 }
 
 @media (max-width: 1080px) {

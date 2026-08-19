@@ -84,14 +84,14 @@
             </div>
             <div class="contact-form-card fade-in">
                 <h3>在线预约</h3>
-                <form>
+                <form id="appointmentForm">
                     <div class="form-group">
                         <label for="name">姓名</label>
-                        <input type="text" id="name" placeholder="请输入您的姓名">
+                        <input type="text" id="name" placeholder="请输入您的姓名" autocomplete="name" required>
                     </div>
                     <div class="form-group">
                         <label for="phone">手机号码</label>
-                        <input type="tel" id="phone" placeholder="请输入您的手机号">
+                        <input type="tel" id="phone" placeholder="请输入您的手机号" autocomplete="tel" required>
                     </div>
                     <div class="form-group">
                         <label for="type">预约项目</label>
@@ -116,7 +116,7 @@
                         <label for="message">备注</label>
                         <textarea id="message" placeholder="如有特殊需求请在此说明"></textarea>
                     </div>
-                    <button type="button" class="submit-btn">提交预约</button>
+                    <button type="submit" class="submit-btn">提交预约</button>
                 </form>
             </div>
         </div>
