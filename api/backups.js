@@ -1,3 +1,5 @@
+const { requireAuth, sendUnauthorized } = require("./_lib/auth");
+
 const BLOB_PREFIX = "cms/site-content-";
 const BLOB_ACCESS = process.env.CMS_BLOB_ACCESS === "public" ? "public" : "private";
 
@@ -108,6 +110,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (req.method === "POST") {
+        if (!requireAuth(req)) return sendUnauthorized(res);
         try {
             const payload = await readRequestBody(req);
             if (payload.action !== "restore") throw new Error("Unknown action");

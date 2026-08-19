@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { requireAuth, sendUnauthorized } = require("./_lib/auth");
 
 const DATA_FILE = path.join(process.cwd(), "data", "site-content.json");
 const BLOB_PREFIX = "cms/site-content-";
@@ -296,6 +297,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (req.method === "POST") {
+        if (!requireAuth(req)) return sendUnauthorized(res);
         try {
             const payload = await readRequestBody(req);
             const saved = await writeContent(payload);

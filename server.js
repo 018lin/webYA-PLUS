@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const { URL } = require("url");
+const { requireAuth, sendUnauthorized, adminPassword } = require("./api/_lib/auth");
 
 const rootDir = __dirname;
 const dataDir = path.join(rootDir, "data");
@@ -368,6 +369,10 @@ async function handleConsultations(req, res, requestUrl) {
     }
 
     if (req.method === "PATCH") {
+        if (!requireAuth(req)) {
+            sendUnauthorized(res);
+            return true;
+        }
         try {
             const payload = JSON.parse(await readBody(req) || "{}");
             const status = payload.status === "handled" ? "handled" : "new";
@@ -391,6 +396,10 @@ async function handleConsultations(req, res, requestUrl) {
     }
 
     if (req.method === "DELETE") {
+        if (!requireAuth(req)) {
+            sendUnauthorized(res);
+            return true;
+        }
         try {
             const id = requestUrl.searchParams.get("id");
             if (!id) throw new Error("Missing consultation id");
@@ -499,6 +508,11 @@ async function handleUpload(req, res) {
         return true;
     }
 
+    if (!requireAuth(req)) {
+        sendUnauthorized(res);
+        return true;
+    }
+
     try {
         const body = await readBufferBody(req);
         const parts = parseMultipart(req.headers["content-type"], body);
@@ -549,6 +563,10 @@ async function handleBackups(req, res) {
     }
 
     if (req.method === "POST") {
+        if (!requireAuth(req)) {
+            sendUnauthorized(res);
+            return true;
+        }
         try {
             const payload = JSON.parse(await readBody(req) || "{}");
             if (payload.action !== "restore") throw new Error("Unknown action");
@@ -586,6 +604,10 @@ async function handleEditLog(req, res) {
 
 async function handleApi(req, res, requestUrl) {
     const pathname = requestUrl.pathname;
+    if (pathname === "/api/auth") {
+        await require("./api/auth")(req, res);
+        return true;
+    }
     if (pathname === "/api/consultations") return handleConsultations(req, res, requestUrl);
     if (pathname === "/api/upload") return handleUpload(req, res);
     if (pathname === "/api/backups") return handleBackups(req, res);
@@ -602,6 +624,10 @@ async function handleApi(req, res, requestUrl) {
     }
 
     if (req.method === "POST") {
+        if (!requireAuth(req)) {
+            sendUnauthorized(res);
+            return true;
+        }
         try {
             const body = await readBody(req);
             const payload = JSON.parse(body);
@@ -658,4 +684,7 @@ const server = http.createServer(async (req, res) => {
 server.listen(port, () => {
     console.log(`Here Dental site running at http://localhost:${port}/`);
     console.log(`Admin console running at http://localhost:${port}/admin/`);
+    console.log(process.env.SITE_ADMIN_PASSWORD
+        ? "Admin auth: using SITE_ADMIN_PASSWORD environment variable"
+        : `Admin auth: using default password "admin123" (set SITE_ADMIN_PASSWORD to override)`);
 });

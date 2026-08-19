@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const { URL } = require("url");
+const { requireAuth, sendUnauthorized } = require("./_lib/auth");
 
 const DATA_FILE = path.join(process.cwd(), "data", "consultations.json");
 const BLOB_PREFIX = "cms/consultations-";
@@ -211,6 +212,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (req.method === "PATCH") {
+        if (!requireAuth(req)) return sendUnauthorized(res);
         try {
             const payload = await readRequestBody(req);
             const status = payload.status === "handled" ? "handled" : "new";
@@ -234,6 +236,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (req.method === "DELETE") {
+        if (!requireAuth(req)) return sendUnauthorized(res);
         try {
             const id = consultationUrl(req).searchParams.get("id");
             if (!id) throw new Error("Missing consultation id");

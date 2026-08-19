@@ -48,6 +48,9 @@ let carouselEditorIndex = null;
 let carouselImageValue = "";
 let dirty = false;
 let collectionOpenIndex = null;
+let authToken = localStorage.getItem("here-dental-auth-token") || "";
+let authExpiresAt = Number(localStorage.getItem("here-dental-auth-expires") || 0);
+let authRequired = false;
 let revision = 0;
 let consultationFilter = "all";
 let consultationSearch = "";
@@ -58,6 +61,7 @@ let editLogLoading = false;
 let editLogLoaded = false;
 
 const apiUrls = ["../api/content", "/api/content"];
+const authUrls = ["../api/auth", "/api/auth"];
 const uploadUrls = ["../api/upload", "/api/upload"];
 const consultationUrls = ["../api/consultations", "/api/consultations"];
 const editLogUrls = ["../api/edit-log", "/api/edit-log"];
@@ -70,6 +74,7 @@ const panelEl = document.getElementById("editorPanel");
 const stateEl = document.getElementById("saveState");
 const saveBtn = document.getElementById("saveBtn");
 const reloadBtn = document.getElementById("reloadBtn");
+const logoutBtn = document.getElementById("logoutBtn");
 
 function clone(value) {
     return JSON.parse(JSON.stringify(value));
@@ -263,6 +268,128 @@ async function fetchFirstJson(urls) {
     throw lastError || new Error("Cannot load content");
 }
 
+function authHeaders(extra = {}) {
+    return authToken ? { ...extra, Authorization: `Bearer ${authToken}` } : extra;
+}
+
+function clearAuth() {
+    authToken = "";
+    authExpiresAt = 0;
+    localStorage.removeItem("here-dental-auth-token");
+    localStorage.removeItem("here-dental-auth-expires");
+}
+
+// 探测服务端鉴权状态：已登录返回 true；需要登录返回 false（并弹遮罩）；
+// 服务不可达（静态模式 / 旧部署无 auth 接口）时视为无需鉴权。
+async function checkAuthStatus() {
+    if (authToken && authExpiresAt > Date.now()) {
+        authRequired = true;
+        return true;
+    }
+
+    let lastError = null;
+    for (const url of authUrls) {
+        try {
+            const response = await fetch(url, { cache: "no-store", headers: authHeaders() });
+            if (response.status === 200) {
+                authRequired = true;
+                return true;
+            }
+            if (response.status === 503) {
+                setState("服务端尚未配置管理员密码（SITE_ADMIN_PASSWORD）", "error");
+            }
+            authRequired = true;
+            clearAuth();
+            return false;
+        } catch (error) {
+            lastError = error;
+        }
+    }
+    authRequired = false;
+    return true;
+}
+
+async function performLogin(password) {
+    let lastError = null;
+    for (const url of authUrls) {
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password })
+            });
+            const text = await response.text();
+            let data = {};
+            try {
+                data = text ? JSON.parse(text) : {};
+            } catch (parseError) {
+                data = {};
+            }
+            if (!response.ok) throw new Error(data.error || "登录失败");
+            authToken = data.token || "";
+            authExpiresAt = Number(data.expiresAt || 0);
+            if (authToken) {
+                localStorage.setItem("here-dental-auth-token", authToken);
+                localStorage.setItem("here-dental-auth-expires", String(authExpiresAt));
+            }
+            authRequired = true;
+            return true;
+        } catch (error) {
+            lastError = error;
+        }
+    }
+    throw lastError || new Error("登录失败");
+}
+
+function handleUnauthorized() {
+    clearAuth();
+    logoutBtn.hidden = true;
+    showLoginOverlay("登录已过期，请重新输入密码");
+}
+
+function showLoginOverlay(message = "") {
+    if (document.getElementById("loginOverlay")) return;
+    const overlay = document.createElement("div");
+    overlay.className = "login-overlay";
+    overlay.id = "loginOverlay";
+    overlay.innerHTML = `
+        <div class="login-card" role="dialog" aria-modal="true">
+            <img src="../images/01_logo.png" alt="惠尔口腔">
+            <h2>惠尔口腔 · 内容管理</h2>
+            <p class="login-desc">请输入管理密码继续操作</p>
+            <form id="loginForm">
+                <input type="password" id="loginPassword" placeholder="管理密码" autocomplete="current-password">
+                <button class="primary-btn" type="submit">
+                    <i class="fas fa-unlock"></i> 进入后台
+                </button>
+            </form>
+            <p class="login-error" id="loginError">${escapeHtml(message)}</p>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const passwordInput = overlay.querySelector("#loginPassword");
+    overlay.querySelector("#loginForm").addEventListener("submit", async event => {
+        event.preventDefault();
+        const errorEl = overlay.querySelector("#loginError");
+        const submitButton = overlay.querySelector("button[type=submit]");
+        submitButton.disabled = true;
+        errorEl.textContent = "";
+        try {
+            await performLogin(passwordInput.value);
+            overlay.remove();
+            logoutBtn.hidden = false;
+            setState("登录成功，可以保存内容了", "ok");
+        } catch (error) {
+            errorEl.textContent = error.message || "登录失败";
+            passwordInput.select();
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+    passwordInput.focus();
+}
+
 function contentScore(value) {
     if (!value) return 0;
     return [
@@ -378,9 +505,10 @@ async function saveContent() {
     try {
         const response = await fetch(apiUrl, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: authHeaders({ "Content-Type": "application/json" }),
             body: JSON.stringify(content)
         });
+        if (response.status === 401) handleUnauthorized();
         if (!response.ok) {
             const text = await response.text();
             let message = text;
@@ -1360,6 +1488,7 @@ async function uploadImage(file) {
         try {
             const response = await fetch(url, {
                 method: "POST",
+                headers: authHeaders(),
                 body: formData
             });
             const text = await response.text();
@@ -1370,6 +1499,7 @@ async function uploadImage(file) {
                 payload = {};
             }
 
+            if (response.status === 401) handleUnauthorized();
             if (!response.ok) {
                 throw new Error(payload.error || text || "图片上传失败");
             }
@@ -1435,9 +1565,9 @@ async function requestConsultations(method, payload = null, id = "") {
             const targetUrl = method === "DELETE"
                 ? `${url}?id=${encodeURIComponent(id)}`
                 : url;
-            const options = { method };
+            const options = { method, headers: authHeaders() };
             if (payload) {
-                options.headers = { "Content-Type": "application/json" };
+                options.headers["Content-Type"] = "application/json";
                 options.body = JSON.stringify(payload);
             }
 
@@ -1450,6 +1580,7 @@ async function requestConsultations(method, payload = null, id = "") {
                 data = {};
             }
 
+            if (response.status === 401) handleUnauthorized();
             if (!response.ok) {
                 throw new Error(data.error || text || "咨询信息操作失败");
             }
@@ -1551,9 +1682,10 @@ async function rollbackEditLogItem(id) {
         const endpoint = await fetchFirstJson(backupUrls);
         const response = await fetch(endpoint.url, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: authHeaders({ "Content-Type": "application/json" }),
             body: JSON.stringify({ action: "restore", file: item.backup })
         });
+        if (response.status === 401) handleUnauthorized();
         if (!response.ok) {
             const text = await response.text();
             let message = text;
@@ -1827,4 +1959,18 @@ if (modules.some(item => item.id === initialHash)) {
     activeModule = initialHash;
 }
 
-loadContent();
+logoutBtn.addEventListener("click", () => {
+    clearAuth();
+    logoutBtn.hidden = true;
+    setState("已退出登录", "warn");
+    showLoginOverlay();
+});
+
+(async function init() {
+    const loggedIn = await checkAuthStatus();
+    logoutBtn.hidden = !authRequired || !authToken;
+    loadContent();
+    if (authRequired && !loggedIn) {
+        showLoginOverlay();
+    }
+})();

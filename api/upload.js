@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const { requireAuth, sendUnauthorized } = require("./_lib/auth");
 
 const uploadDir = path.join(process.cwd(), "images", "uploads");
 
@@ -149,6 +150,8 @@ module.exports = async function handler(req, res) {
         sendJson(res, 405, { error: "Method not allowed" });
         return;
     }
+
+    if (!requireAuth(req)) return sendUnauthorized(res);
 
     try {
         const body = await readRequestBuffer(req);
