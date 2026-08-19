@@ -76,7 +76,6 @@
             value.doctors,
             value.specialties,
             value.articles,
-            value.media,
             value.home && value.home.heroSlides
         ].reduce((sum, list) => sum + (Array.isArray(list) ? list.length : 0), 0);
     }

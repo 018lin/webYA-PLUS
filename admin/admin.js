@@ -4,7 +4,6 @@ const modules = [
     { id: "doctors", label: "医生管理", icon: "fa-user-doctor" },
     { id: "specialties", label: "专科管理", icon: "fa-tooth" },
     { id: "articles", label: "科普文章", icon: "fa-book-medical" },
-    { id: "media", label: "媒体资源", icon: "fa-images" },
     { id: "consultations", label: "咨询信息", icon: "fa-inbox" }
 ];
 
@@ -29,8 +28,7 @@ const fallbackContent = {
     },
     doctors: [],
     specialties: [],
-    articles: [],
-    media: []
+    articles: []
 };
 
 let content = JSON.parse(JSON.stringify(fallbackContent));
@@ -105,8 +103,7 @@ function normalizeContent(raw) {
         home: { ...fallbackContent.home, ...(raw.home || {}) },
         doctors,
         specialties: Array.isArray(raw.specialties) ? raw.specialties : [],
-        articles: Array.isArray(raw.articles) ? raw.articles : [],
-        media: Array.isArray(raw.media) ? raw.media : []
+        articles: Array.isArray(raw.articles) ? raw.articles : []
     };
 }
 
@@ -134,7 +131,6 @@ function contentScore(value) {
         value.doctors,
         value.specialties,
         value.articles,
-        value.media,
         value.home && value.home.heroSlides
     ].reduce((sum, list) => sum + (Array.isArray(list) ? list.length : 0), 0);
 }
@@ -269,7 +265,6 @@ function render() {
     if (activeModule === "doctors") renderCollection("doctors");
     if (activeModule === "specialties") renderCollection("specialties");
     if (activeModule === "articles") renderArticles();
-    if (activeModule === "media") renderCollection("media");
     if (activeModule === "consultations") renderConsultations();
 }
 
@@ -418,21 +413,6 @@ function getCollectionConfig(type) {
             ],
             defaultItem: { name: "新专科", subtitle: "", cover: "", href: "specialties.html", tags: "", doctorNames: "", summary: "", visible: true },
             switches: [["显示", "visible"]]
-        },
-        media: {
-            title: "媒体资源",
-            desc: "维护网站常用图片和资源分类。",
-            addText: "添加资源",
-            titleKey: "name",
-            subKey: "category",
-            fields: [
-                ["资源名称", "name"],
-                ["分类", "category"],
-                ["图片文件", "path", "image"],
-                ["替代文字", "alt"]
-            ],
-            defaultItem: { name: "新图片", category: "未分类", path: "", alt: "", visible: true },
-            switches: [["可用", "visible"]]
         }
     }[type];
 }
@@ -448,7 +428,7 @@ function renderCollection(type) {
         `)}
         <div class="item-list">
             ${content[type].length ? content[type].map((item, index) => {
-                const openByDefault = type !== "media" && content[type].length <= 12;
+                const openByDefault = content[type].length <= 12;
                 return renderItem(type, item, index, config.titleKey, config.fields, openByDefault, config);
             }).join("") : `<div class="empty-state">暂无内容</div>`}
         </div>
@@ -541,7 +521,6 @@ function renderItem(collectionPath, item, index, titleKey, fields, open = false,
     return `
         <article class="content-item ${open ? "open" : ""}" data-item="${collectionPath}.${index}">
             <div class="content-item-head">
-                ${collectionPath === "media" && item.path ? `<img class="content-item-thumb" src="${escapeAttr(assetSrc(item.path))}" alt="">` : ""}
                 <div class="content-item-title">
                     <strong>${escapeHtml(item[titleKey] || "未命名内容")}</strong>
                     <span>${escapeHtml(sub || collectionPath)}</span>
@@ -928,7 +907,6 @@ function applyUploadedImageMetadata(path, fileName) {
     if (!baseName) return;
 
     if ("alt" in parent && !parent.alt) parent.alt = baseName;
-    if (path.startsWith("media.") && (!parent.name || parent.name === "新图片")) parent.name = baseName;
 }
 
 async function uploadImage(file) {

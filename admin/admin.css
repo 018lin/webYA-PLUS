@@ -363,16 +363,6 @@ h1 {
     border-bottom: 1px solid var(--line);
 }
 
-.content-item-thumb {
-    width: 48px;
-    height: 38px;
-    object-fit: contain;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    background: #fff;
-    flex-shrink: 0;
-}
-
 .content-item-title {
     min-width: 0;
     flex: 1;
