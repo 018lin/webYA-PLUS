@@ -103,10 +103,11 @@ function sendUnauthorized(res) {
     res.end(JSON.stringify({ error: "Unauthorized" }));
 }
 
-// ---- 登录限流（内存版）：连续失败 MAX_LOGIN_FAILURES 次后锁定 LOGIN_LOCK_MS ----
-// 说明：Vercel serverless 多实例各自独立计数，本限流是尽力而为；
+// ---- 登录限流（内存版）：仅在 LOGIN_LOCK_MS 窗口内【连续】失败
+// MAX_LOGIN_FAILURES 次才锁定；窗口内成功登录清零、超过窗口重新计数，
+// 历史失败不累计。Vercel serverless 多实例各自独立计数，本限流是尽力而为；
 // 高安全要求建议接入 Vercel KV 等外部存储做全局限流。
-const MAX_LOGIN_FAILURES = 5;
+const MAX_LOGIN_FAILURES = 7;
 const LOGIN_LOCK_MS = 15 * 60 * 1000;
 
 const loginFailures = new Map(); // key: `${ip}:${username}` -> { count, lockedUntil }
@@ -128,15 +129,22 @@ function trimLoginFailures() {
 function recordLoginFailure(ip, username) {
     trimLoginFailures();
     const key = loginKey(ip, username);
-    const entry = loginFailures.get(key) || { count: 0, lockedUntil: 0 };
-    // 仅在已锁定且已过期时重置计数（lockedUntil 为 0 表示从未锁定）
-    if (entry.lockedUntil && Date.now() > entry.lockedUntil) {
+    const now = Date.now();
+    const entry = loginFailures.get(key) || { count: 0, lockedUntil: 0, lastFailAt: 0 };
+    // 锁定已过期则整体重置
+    if (entry.lockedUntil && now > entry.lockedUntil) {
         entry.count = 0;
         entry.lockedUntil = 0;
+        entry.lastFailAt = 0;
+    }
+    // 距上次失败超过窗口则不累计，仅连续失败才累计
+    if (entry.lastFailAt && now - entry.lastFailAt > LOGIN_LOCK_MS) {
+        entry.count = 0;
     }
     entry.count += 1;
+    entry.lastFailAt = now;
     if (entry.count >= MAX_LOGIN_FAILURES) {
-        entry.lockedUntil = Date.now() + LOGIN_LOCK_MS;
+        entry.lockedUntil = now + LOGIN_LOCK_MS;
     }
     loginFailures.set(key, entry);
 }
