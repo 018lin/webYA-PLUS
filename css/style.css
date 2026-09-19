@@ -1289,6 +1289,9 @@ img { max-width: 100%; display: block; }
     color: rgba(255,255,255,0.58);
     margin-bottom: 18px;
 }
+.footer-social {
+    display: none;
+}
 .footer-social a {
     display: inline-flex;
     width: 36px; height: 36px;
